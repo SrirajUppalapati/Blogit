@@ -1,0 +1,130 @@
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const validator = require("validator");
+
+const userSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      lowercase: true,
+      required: [true, "You should enter a fullname."],
+      minlength: [3, "fullname must be 3 letters long"],
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: [true, "You should enter a email."],
+      lowercase: true,
+      unique: true,
+      validate: [
+        validator.isEmail,
+        "The entered data should be in email format.",
+      ],
+    },
+    password: {
+      type: String,
+      required: [true, "You should enter a password."],
+      minlength: [8, "Password must be 8 letters long"],
+    },
+    username: {
+      type: String,
+      unique: true,
+      minlength: [3, "Username must be 3 letters long"],
+      trim: true,
+      lowercase: true,
+    },
+    bio: {
+      type: String,
+      maxlength: [200, "Bio should not be more than 200"],
+      default: "",
+      trim: true,
+    },
+    profile_img: {
+      type: String,
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
+    socialLinks: {
+      youtube: {
+        type: String,
+        default: "",
+        trim: true,
+      },
+      instagram: {
+        type: String,
+        default: "",
+        trim: true,
+      },
+      facebook: {
+        type: String,
+        default: "",
+        trim: true,
+      },
+      twitter: {
+        type: String,
+        default: "",
+        trim: true,
+      },
+      github: {
+        type: String,
+        default: "",
+        trim: true,
+      },
+      website: {
+        type: String,
+        default: "",
+        trim: true,
+      },
+    },
+    accountInfo: {
+      total_posts: {
+        type: Number,
+        default: 0,
+      },
+      totalReads: {
+        type: Number,
+        default: 0,
+      },
+    },
+    googleAuth: {
+      type: Boolean,
+      default: false,
+    },
+    blogs: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "blogs",
+      default: [],
+    },
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+  },
+  { timeStamps: true },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
+
+//Hash the password as soon as the user changes it
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+  this.password = await bcrypt.hash(this.password, 15);
+  next();
+});
+
+//Check the login apssword with hashed password
+userSchema.methods.checkPassword = async function (
+  enteredPassword,
+  userPassword
+) {
+  return await bcrypt.compare(enteredPassword, userPassword);
+};
+
+const User = mongoose.model("users", userSchema);
+
+module.exports = User;
