@@ -2,6 +2,7 @@ const catchAsync = require("../utils/catchAsync");
 const User = require("../models/userModel");
 const AppError = require("../utils/appError");
 const { verifyJWT, createAndSendJWT } = require("../utils/jwt");
+const crypto = require("crypto");
 
 const signUp = catchAsync(async (req, res, next) => {
   const user = await User.create({
@@ -27,7 +28,7 @@ const logIn = catchAsync(async (req, res, next) => {
 
   //Find the email
   const user = await User.findOne({ email }).select(
-    "-socialLinks -accountInfo -bio -blogs -googleAuth -role -__v"
+    "-socialLinks -accountInfo -bio -blogs -role -__v"
   );
 
   //Verify password and email
@@ -37,65 +38,28 @@ const logIn = catchAsync(async (req, res, next) => {
   createAndSendJWT(user, res, 200);
 });
 
-//To check if user is logged in for react pages.
-const isLoggedIn = catchAsync(async (req, res, next) => {
-  //Check if we created a bearer token
-  if (req.cookies.jwt) {
-    token = req.cookies.jwt;
-
-    //Verify the token
-    const user = verifyJWT(req.cookies.jwt).payload;
-
-    //Find the user from the users model
-    const currentUser = await User.findById(user.id);
-    if (!currentUser) {
-      return next();
-    }
-
-    //There is a logged in user
-    res.locals.user = currentUser;
-    return next();
+const googleAuth = catchAsync(async (req, res, next) => {
+  const { email, name, profilePicture } = req.body;
+  const user = await User.findOne({ email }).select(
+    "-socialLinks -accountInfo -bio -blogs -role -__v"
+  );
+  if (user) {
+    createAndSendJWT(user, res, 200);
+  } else {
+    const randomPassword = crypto.randomBytes(20).toString("hex");
+    console.log(randomPassword);
+    const username =
+      name.split(" ")[0].toLowerCase() +
+      Math.floor(Math.random() * (99999 - 10000 + 1));
+    const newUser = await User.create({
+      email,
+      password: randomPassword,
+      name,
+      username,
+      profilePicture,
+    });
+    createAndSendJWT(newUser, res, 200);
   }
-  next();
 });
 
-const protectAccess = catchAsync(async (req, res, next) => {
-  let token = "";
-
-  //Check if we created a bearer token
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
-  } else if (req.cookies.jwt) {
-    token = req.cookies.jwt;
-  }
-
-  if (!token) {
-    return next(new AppError("Please login!", 401));
-  }
-
-  //Verify the JWT
-  const user = verifyJWT(token).payload;
-
-  //Find the user from the users model
-  const currentUser = await User.findById(user.id);
-  if (!currentUser) {
-    return next(new AppError("The user does not exist.", 401));
-  }
-
-  //Add the user to req
-  req.user = currentUser;
-  next();
-});
-
-const verifyRoles =
-  (...roles) =>
-  (req, res, next) => {
-    if (!roles.includes(req.user.role))
-      return next(new AppError("Access failed for this URL!!", 400));
-    next();
-  };
-
-module.exports = { signUp, logIn, protectAccess, verifyRoles, isLoggedIn };
+module.exports = { signUp, logIn, googleAuth };

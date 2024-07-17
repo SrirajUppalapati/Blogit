@@ -2,20 +2,19 @@ import Input from "../components/Input";
 import { FaRegUser } from "react-icons/fa";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { HiOutlineKey } from "react-icons/hi2";
-import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import AnimationWrapper from "../components/AnimationWrapper";
 import { FiAtSign } from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import { Alert, Button, Spinner } from "flowbite-react";
 import axios from "axios";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   signinStart,
   signinFailure,
   signinSuccess,
 } from "../features/users/userSlice";
+import Oauth from "../features/users/Oauth";
 
 function Signup() {
   const {
@@ -37,8 +36,7 @@ function Signup() {
     axios
       .post(`${import.meta.env.VITE_API_URL}/users/signup`, data)
       .then(({ data }) => {
-        console.log(data);
-        dispatch(signinSuccess(data));
+        dispatch(signinSuccess(data.data));
         reset();
         navigate("/");
       })
@@ -196,10 +194,7 @@ function Signup() {
             <hr className="w-1/2 border-slate-300 mt-1" />
           </div>
 
-          <Button className="center" color="light">
-            <span className="pt-1 mr-3">Continue with google</span>
-            <FcGoogle className="text-3xl" />
-          </Button>
+          <Oauth />
 
           <Link
             to="/signin"

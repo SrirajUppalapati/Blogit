@@ -39,8 +39,10 @@ const userSchema = mongoose.Schema(
       default: "",
       trim: true,
     },
-    profile_img: {
+    profilePicture: {
       type: String,
+      default:
+        "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png",
     },
     role: {
       type: String,
@@ -88,10 +90,6 @@ const userSchema = mongoose.Schema(
         type: Number,
         default: 0,
       },
-    },
-    googleAuth: {
-      type: Boolean,
-      default: false,
     },
     blogs: {
       type: [mongoose.Schema.Types.ObjectId],

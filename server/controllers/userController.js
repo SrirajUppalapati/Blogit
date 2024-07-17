@@ -22,13 +22,7 @@ exports.getMyProfile = catchAsync(async (req, res, next) => {
 
 //Update user data after login --User only
 exports.updateMyProfile = catchAsync(async (req, res, next) => {
-  const filteredBody = filterObj(
-    req.body,
-    "password",
-    "googleAuth",
-    "role",
-    "password"
-  );
+  const filteredBody = filterObj(req.body, "password", "role", "password");
   const user = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,

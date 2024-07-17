@@ -1,11 +1,5 @@
 const express = require("express");
-const {
-  signUp,
-  logIn,
-  protectAccess,
-  verifyRoles,
-  isLoggedIn,
-} = require("../controllers/authController");
+const { signUp, logIn, googleAuth } = require("../controllers/authController");
 const {
   getAllUsers,
   getUser,
@@ -19,12 +13,8 @@ router.route("/signup").post(signUp);
 
 router.route("/login").post(logIn);
 
-//Protect the access for all the below routes
-router.use(isLoggedIn);
-
+router.route("/google").post(googleAuth);
 //Restict user data to only admins for all the below routes
-
-router.use(verifyRoles("admin", "user"));
 
 router.route("/getAllUsers").get(getAllUsers);
 

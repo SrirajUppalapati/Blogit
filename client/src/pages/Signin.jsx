@@ -1,7 +1,6 @@
 import Input from "../components/Input";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { HiOutlineKey } from "react-icons/hi2";
-import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import AnimationWrapper from "../components/AnimationWrapper";
@@ -13,6 +12,7 @@ import {
   signinFailure,
 } from "../features/users/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Oauth from "../features/users/Oauth";
 
 function Signin() {
   const {
@@ -32,7 +32,6 @@ function Signin() {
       .post(`${import.meta.env.VITE_API_URL}/users/login`, data)
       .then(({ data }) => {
         console.log("Succesful signin");
-        console.log(data.data);
         dispatch(signinSuccess(data.data));
         reset();
         navigate("/");
@@ -122,11 +121,7 @@ function Signin() {
             <p className="text-center text-slate-300">or</p>
             <hr className="w-1/2 border-slate-300 mt-1" />
           </div>
-
-          <Button className="center" color="light">
-            <span className="pt-1 mr-3">Continue with google</span>
-            <FcGoogle className="text-3xl" />
-          </Button>
+          <Oauth />
           <Link
             to="/signup"
             className="flex text-center justify-center items-center mt-4 gap-2 tracking-widest hover:font-bold text-sm md:text-md"
