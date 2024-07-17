@@ -10,6 +10,12 @@ import { useForm } from "react-hook-form";
 import { Alert, Button, Spinner } from "flowbite-react";
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signinStart,
+  signinFailure,
+  signinSuccess,
+} from "../features/users/userSlice";
 
 function Signup() {
   const {
@@ -23,23 +29,22 @@ function Signup() {
   let pwd = watch("password");
 
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const dispatch = useDispatch();
+  const { error, loading } = useSelector((state) => state.user);
 
   function onSubmit(data) {
-    setIsLoading(true);
+    dispatch(signinStart());
     axios
       .post(`${import.meta.env.VITE_API_URL}/users/signup`, data)
       .then(({ data }) => {
         console.log(data);
-        setIsLoading(false);
+        dispatch(signinSuccess(data));
         reset();
         navigate("/");
       })
       .catch(({ response }) => {
         console.error(response);
-        setErrorMessage(response.data.message);
-        setIsLoading(false);
+        dispatch(signinFailure(response.data.message));
         reset();
       });
   }
@@ -170,9 +175,9 @@ function Signup() {
               </span>
             )}
           </div>
-          {errorMessage && (
+          {error && (
             <Alert color="failure" className="p-1 px-3">
-              <span className="text-xs">{errorMessage}</span>
+              <span className="text-xs">{error}</span>
             </Alert>
           )}
           <Button
@@ -180,9 +185,9 @@ function Signup() {
             className="center mt-5"
             color="dark"
             onClick={handleSubmit}
-            disabled={isLoading}
+            disabled={loading}
           >
-            {isLoading ? <Spinner /> : "Submit"}
+            {loading ? <Spinner /> : "Submit"}
           </Button>
 
           <div className="flex relative w-full items-center gap-2 my-2">

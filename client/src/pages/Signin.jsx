@@ -6,8 +6,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import AnimationWrapper from "../components/AnimationWrapper";
 import { Alert, Button, Spinner } from "flowbite-react";
-import { useState } from "react";
 import axios from "axios";
+import {
+  signinStart,
+  signinSuccess,
+  signinFailure,
+} from "../features/users/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function Signin() {
   const {
@@ -18,23 +23,24 @@ function Signin() {
   } = useForm();
 
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const dispatch = useDispatch();
+  const { error, loading } = useSelector((state) => state.user);
 
   function onSubmit(data) {
-    setIsLoading(true);
+    dispatch(signinStart());
     axios
       .post(`${import.meta.env.VITE_API_URL}/users/login`, data)
-      .then((response) => {
+      .then(({ data }) => {
         console.log("Succesful signin");
-        setIsLoading(false);
+        console.log(data.data);
+        dispatch(signinSuccess(data.data));
         reset();
         navigate("/");
       })
       .catch((response) => {
         console.error(response);
-        setErrorMessage("Please check your email and password.");
-        setIsLoading(false);
+        dispatch(signinFailure("Please check your email and password."));
+
         reset();
       });
   }
@@ -96,9 +102,9 @@ function Signin() {
             )}
           </div>
 
-          {errorMessage && (
+          {error && (
             <Alert color="failure" className="p-1 px-3">
-              <span className="text-xs">{errorMessage}</span>
+              <span className="text-xs">{error}</span>
             </Alert>
           )}
           <Button
@@ -106,9 +112,9 @@ function Signin() {
             className="center mt-5"
             color="dark"
             onClick={handleSubmit}
-            disabled={isLoading}
+            disabled={loading}
           >
-            {isLoading ? <Spinner /> : "Submit"}
+            {loading ? <Spinner /> : "Submit"}
           </Button>
 
           <div className="flex relative w-full items-center gap-2 my-10">
