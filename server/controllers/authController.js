@@ -62,4 +62,11 @@ const googleAuth = catchAsync(async (req, res, next) => {
   }
 });
 
-module.exports = { signUp, logIn, googleAuth };
+const signout = (req, res, next) => {
+  res
+    .clearCookie("access_token")
+    .status(200)
+    .json({ status: "Success", message: "Succesful signout" });
+};
+
+module.exports = { signUp, logIn, googleAuth, signout };

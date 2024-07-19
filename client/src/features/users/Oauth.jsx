@@ -3,14 +3,15 @@ import { FcGoogle } from "react-icons/fc";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "../../firebase";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { signinSuccess } from "./userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { signinSuccess } from "./authSlice";
 import { useNavigate } from "react-router-dom";
 
 function Oauth() {
   const auth = getAuth(app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { theme } = useSelector((state) => state.theme);
 
   async function handleGoogleClick() {
     const provider = new GoogleAuthProvider();
@@ -38,7 +39,7 @@ function Oauth() {
   return (
     <Button
       className="center focus:ring-0"
-      color="light"
+      color={theme === "dark" ? "cyan" : "dark"}
       onClick={handleGoogleClick}
     >
       <span className="pt-1 mr-3">Continue with google</span>

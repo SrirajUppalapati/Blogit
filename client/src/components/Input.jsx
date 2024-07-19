@@ -7,7 +7,7 @@ function Input({ name, type, id, value, placeholder, Icon, register }) {
 
   const Password = passwordVisible ? IoEyeOutline : IoEyeOffOutline;
   return (
-    <div className="relative w-full flex justify-center items-center">
+    <div className="relative flex justify-center items-center md:w-[400px]">
       <div className="w-[100%] flex items-center gap-x-3">
         <Icon className="input-icon" />
         <TextInput
@@ -19,12 +19,13 @@ function Input({ name, type, id, value, placeholder, Icon, register }) {
           placeholder={placeholder}
           id={id}
           className="w-full"
+          color="gray"
           {...register}
         />
       </div>
       {type === "password" && (
         <Password
-          className="hover:cursor-pointer ml-2 text-lg"
+          className="absolute right-2 hover:cursor-pointer ml-2 text-lg"
           onClick={() => setPasswordVisible(!passwordVisible)}
         />
       )}

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const AppError = require("./appError");
+const catchAsync = require("./catchAsync");
 
 const createAndSendJWT = (user, res, statusCode) => {
   //Create a token
@@ -22,14 +23,18 @@ const createAndSendJWT = (user, res, statusCode) => {
   res.status(statusCode).json({ status: "success", data: user });
 };
 
-const verifyJWT = (token) => {
+const verifyJWT = catchAsync(async (req, res, next) => {
+  const token = req.cookie.access_token;
+  if (!token) {
+    return next(new AppError("Please login!", 400));
+  }
   const user = jwt.verify(token, process.env.JWT_SECRET, { complete: true });
 
   if (!user) {
-    return new AppError("Please login!", 400);
+    return next(new AppError("Please login!", 400));
   }
-
-  return user;
-};
+  req.user = user;
+  next();
+});
 
 module.exports = { createAndSendJWT, verifyJWT };

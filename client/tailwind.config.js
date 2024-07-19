@@ -21,7 +21,7 @@ export default {
       colors: {
         light: "#f1f5f9",
         light_text: "#0f172a",
-        light_background: "#cbd5e1",
+        light_background: "#f9fafb",
         light_hover: " #475569",
         light_button: "#0f172a",
         light_button_hover: "#1e293b",

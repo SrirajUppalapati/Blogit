@@ -42,6 +42,7 @@ app.use("/api/users", limiter);
 app.use(express.json());
 
 app.use(cookieParser());
+
 //Cleaning the request.body data - Data sanitization aganinst NOsql injection
 app.use(mongoSanitize());
 

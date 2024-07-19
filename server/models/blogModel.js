@@ -10,22 +10,22 @@ const blogSchema = mongoose.Schema(
     },
     banner: {
       type: String,
-      // required: true,
+      required: true,
       trim: true,
     },
     description: {
       type: String,
       maxlength: 200,
       trim: true,
-      // required: true
+      required: true,
     },
     content: {
-      type: [],
-      // required: true
+      type: String,
+      required: true,
     },
     tags: {
       type: [String],
-      // required: true
+      required: true,
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,
