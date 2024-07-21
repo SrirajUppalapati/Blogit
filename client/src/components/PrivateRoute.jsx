@@ -4,21 +4,16 @@ import { useNavigate } from "react-router-dom";
 
 function PrivateRoute({ children }) {
   const { currentUser } = useSelector((state) => state.auth);
-
   const navigate = useNavigate();
 
-  useEffect(
-    function () {
-      if (!currentUser) {
-        navigate("/signin");
-      }
-    },
-    [currentUser, navigate]
-  );
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/signin");
+    }
+  }, [currentUser, navigate]);
 
-  if (currentUser) {
-    return children;
-  }
+  // If currentUser is available, render children
+  return currentUser ? <>{children}</> : null; // Use a fragment to ensure valid JSX return
 }
 
 export default PrivateRoute;

@@ -1,7 +1,7 @@
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/userModel");
 const AppError = require("../utils/appError");
-const { verifyJWT, createAndSendJWT } = require("../utils/jwt");
+const { createAndSendJWT } = require("../utils/jwt");
 const crypto = require("crypto");
 
 const signUp = catchAsync(async (req, res, next) => {
@@ -27,15 +27,13 @@ const logIn = catchAsync(async (req, res, next) => {
     return next(new AppError("Please enter both email and password", 400));
 
   //Find the email
-  const user = await User.findOne({ email }).select(
-    "-socialLinks -accountInfo -bio -blogs -role -__v"
-  );
+  const user = await User.findOne({ email });
 
   //Verify password and email
   if (!user || !(await user.checkPassword(req.body.password, user.password))) {
     return next(new AppError("Incorrect email or password.", 400));
   }
-  createAndSendJWT(user, res, 200);
+  createAndSendJWT(user, res, 200, req);
 });
 
 const googleAuth = catchAsync(async (req, res, next) => {
@@ -63,6 +61,7 @@ const googleAuth = catchAsync(async (req, res, next) => {
 });
 
 const signout = (req, res, next) => {
+  console.log(res.cookies);
   res
     .clearCookie("access_token")
     .status(200)

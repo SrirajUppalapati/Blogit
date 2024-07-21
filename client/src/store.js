@@ -12,7 +12,12 @@ const rootReducer = combineReducers({
   blog: blogReducer,
 });
 
-const persistConfig = { key: "root", storage, version: 1 };
+const persistConfig = {
+  key: "root",
+  storage,
+  version: 1,
+  blacklist: ["blog", "theme"],
+};
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

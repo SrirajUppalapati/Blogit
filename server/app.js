@@ -11,6 +11,7 @@ const usersRouter = require("./routes/userRoute");
 const AppError = require("./utils/appError");
 const ErrorHandler = require("./controllers/errorController");
 const cookieParser = require("cookie-parser");
+const blogRouter = require("./routes/blogRoute");
 
 const app = express();
 
@@ -36,7 +37,7 @@ const limiter = rateLimiter({
   message: "Too many requests from one ip, please try again in 1 hour.",
 });
 
-app.use("/api/users", limiter);
+app.use("/api/v1/users", limiter);
 
 //Reading the data from body to request.body.
 app.use(express.json());
@@ -59,6 +60,8 @@ app.use((req, res, next) => {
 
 // Route handlers
 app.use("/api/v1/users", usersRouter);
+
+app.use("/api/v1/blog", blogRouter);
 
 //Route error handler
 app.all("*", (req, res, next) => {

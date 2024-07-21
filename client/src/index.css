@@ -17,14 +17,6 @@
   }
 
   body {
-    @apply font-lato font-normal;
+    @apply font-lato font-normal h-screen;
   }
-
-  .input {
-    @apply border-2 dark:bg-dark_background dark:text-dark_text focus:ring-0 dark:focus:border-dark_background rounded-xl bg-light_background dark:border-dark_background text-light_text focus:border-light_background border-light_background;
-  }
-}
-
-.ql-editor {
-  font-size: 1.05rem;
 }

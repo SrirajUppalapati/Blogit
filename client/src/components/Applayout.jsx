@@ -1,23 +1,11 @@
-import { useRef } from "react";
-import { useDispatch } from "react-redux";
-import { Outlet, useLocation } from "react-router-dom";
-import { clearBlog } from "../features/blogs/blogSlice";
+import { Outlet } from "react-router-dom";
 
 function Applayout() {
-  const location = useLocation().pathname;
-  const previousLocation = useRef();
-  const dispatch = useDispatch();
-
-  if (location === "/write") {
-    previousLocation.current = location;
-  }
-  if (previousLocation.current === "/write") {
-    dispatch(clearBlog());
-  }
-
   return (
-    <div className="min-h-screen h-full">
-      <Outlet />
+    <div className="min-h-screen flex flex-col">
+      <main className="flex-1 pt-24 md:pt-16">
+        <Outlet />
+      </main>
     </div>
   );
 }

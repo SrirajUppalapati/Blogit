@@ -7,8 +7,6 @@ const handleCastErrorDB = (err) => {
 
 const handleDuplicateFieldsDB = (err) => {
   const value = Object.keys(err.keyValue)[0];
-  console.log(value);
-
   const message = `This ${value} already exists.`;
   return new AppError(message, 400);
 };
@@ -63,6 +61,7 @@ module.exports = (err, req, res, next) => {
   err.status = err.status || "error";
 
   if (process.env.NODE_ENV === "development") {
+    console.error(err);
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === "production") {
     let error = { ...err };

@@ -82,7 +82,7 @@ const userSchema = mongoose.Schema(
       },
     },
     accountInfo: {
-      total_posts: {
+      totalPosts: {
         type: Number,
         default: 0,
       },

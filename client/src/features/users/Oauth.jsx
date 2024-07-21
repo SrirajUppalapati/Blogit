@@ -23,16 +23,17 @@ function Oauth() {
         email: resFromGoogle.user.email,
         profilePicture: resFromGoogle.user.photoURL,
       };
-      axios
+      await axios
         .post(`${import.meta.env.VITE_API_URL}/users/google`, data)
         .then(({ data }) => {
           console.log("Succesful signin");
-          console.log(data.data);
-          dispatch(signinSuccess(data.data));
-          navigate("/");
+          console.log(data);
+          dispatch(
+            signinSuccess({ user: data.data, token: data.access_token })
+          );
+          navigate("/dashboard");
         });
     } catch (err) {
-      console.log("test");
       console.error(err);
     }
   }

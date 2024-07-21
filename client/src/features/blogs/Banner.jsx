@@ -1,120 +1,74 @@
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "../../firebase";
-import { Alert, Button, FileInput, Spinner } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { FileInput, Label, Spinner } from "flowbite-react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { writeBlog } from "./blogSlice";
-import { IoAlertCircleOutline } from "react-icons/io5";
+import { setError, uploadBanner } from "./blogSlice";
 
 function Banner() {
   const dispatch = useDispatch();
-  const { blog } = useSelector((state) => state.blog);
-  const { theme } = useSelector((state) => state.theme);
-  const [file, setFile] = useState(null);
-  const [imgUrl, setImgUrl] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  useEffect(
-    function () {
-      if (file) {
-        setImgUrl(URL.createObjectURL(file));
-      }
-    },
-    [file, setImgUrl]
-  );
-  useEffect(
-    function () {
-      setError(null);
-    },
-    [dispatch]
-  );
-  function handleImageUpload() {
-    if (!file) {
-      setError("Please upload an image.");
-      return;
-    }
-    setLoading(true);
+  const { blog, loading } = useSelector((state) => state.blog);
 
-    const fileName = Date.now() + file.name;
-    const imageRef = ref(storage, `Banner/${fileName}`);
-    uploadBytes(imageRef, file)
-      .then((img) => {
-        getDownloadURL(img.ref)
-          .then((url) => {
-            console.log(url);
-            dispatch(writeBlog({ ...blog, banner: url }));
-            setError(null);
-            setImgUrl(url);
-            setLoading(false);
-          })
-          .catch((err) => {
-            setError("Please upload an image.");
-            setLoading(false);
-            console.error(err);
-          });
-      })
-      .catch((err) => {
-        setLoading(false);
+  useEffect(() => {
+    dispatch(setError(null));
+  }, [dispatch]);
 
-        setError("Please upload an image.");
-        console.error(err);
-      });
+  function handleImageUpload(file) {
+    dispatch(setError(null));
+    dispatch(uploadBanner(file));
   }
-
-  function handleRemoveImage() {
-    setImgUrl(null);
-    dispatch(writeBlog({ ...blog, banner: "" }));
-  }
-  console.log(blog.banner);
 
   return (
-    <div>
-      <div className="flex justify-center items-center">
-        <img
-          src={blog.banner || imgUrl || "src/images/blog_banner.png"}
-          alt="banner"
-          className="mb-3 dark:border-slate-800 border-slate-200 border-2 rounded-lg max-w-full h-auto max-h-[450px]"
-        />
-      </div>
-
-      <div className="flex gap-4 justify-between">
-        <FileInput
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
-          disabled={loading}
-        />
-        {error && (
-          <div className="flex justify-center items-center">
-            <Alert
-              color="failure"
-              className="p-1 px-3 w-fit"
-              icon={IoAlertCircleOutline}
-            >
-              <span className="text-sm text-center">{error}</span>
-            </Alert>
-          </div>
-        )}
-        <div className="flex justify-around">
-          {blog.banner && (
-            <Button
-              className="focus:ring-0 text-xs"
-              color="light"
-              onClick={handleRemoveImage}
-            >
-              Remove Image
-            </Button>
-          )}
-          <Button
-            onClick={handleImageUpload}
-            disabled={loading}
-            className="focus:ring-0"
-            color={theme === "dark" ? "cyan" : "dark"}
-          >
-            {loading ? <Spinner /> : "Upload Image"}
-          </Button>
+    <div className="flex w-full items-center justify-center mb-4">
+      {loading ? (
+        <div className="h-[360px] w-[640px] flex items-center justify-center bg-slate-100 dark:bg-slate-400 rounded-lg border-2 border-dashed border-gray-300">
+          <Spinner size="lg" />
         </div>
-      </div>
+      ) : (
+        <Label
+          htmlFor="dropzone-file"
+          className=" flex h-[360px] w-[640px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+        >
+          {blog?.banner ? (
+            <img
+              src={blog?.banner}
+              alt="Uploaded Banner"
+              className=" w-full object-cover rounded-lg h-full"
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center pb-6 pt-5">
+              <svg
+                className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 16"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                />
+              </svg>
+              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <span className="font-semibold">Click to upload a banner</span>{" "}
+                or drag and drop
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                SVG, PNG, JPG or JPEG
+              </p>
+            </div>
+          )}
+          <FileInput
+            id="dropzone-file"
+            className="hidden"
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleImageUpload(e.target.files[0])}
+            disabled={loading}
+          />
+        </Label>
+      )}
     </div>
   );
 }

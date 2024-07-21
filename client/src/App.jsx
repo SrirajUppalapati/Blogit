@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
 import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
 import Blogs from "./pages/Blogs";
@@ -18,6 +17,7 @@ function App() {
     <>
       <BrowserRouter>
         <Header />
+
         <Routes>
           <Route
             element={
@@ -26,14 +26,15 @@ function App() {
               </PrivateRoute>
             }
           >
-            <Route path="/" element={<Home />} />
+            {/* <Route path="/" element={<Blogs />} /> */}
             <Route path="about" element={<About />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="/write" element={<WriteBlog />} />
             <Route path="manageblog" element={<ManageBlog />} />
             <Route path="notification" element={<Notification />} />
           </Route>
-          <Route path="blogs" element={<Blogs />} />
+
+          <Route path="/" element={<Blogs />} />
           <Route path="signup" element={<Signup />} />
           <Route path="signin" element={<Signin />} />
           <Route path="*" element={<PageNotFound />} />
