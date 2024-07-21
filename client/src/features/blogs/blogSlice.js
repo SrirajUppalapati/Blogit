@@ -82,7 +82,7 @@ const blogSlice = createSlice({
     setBanner: (state, action) => {
       state.blog.banner = action.payload;
     },
-    clearBlog: (state, action) => {
+    clearBlog: (state) => {
       state.blog = {
         title: "",
         banner: "",

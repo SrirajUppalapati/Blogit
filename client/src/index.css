@@ -5,10 +5,7 @@
 @tailwind utilities;
 
 * {
-  scrollbar-width: thin;
-  .scroller {
-    overflow-y: scroll;
-  }
+  scrollbar-width: none;
 }
 
 @layer components {

@@ -18,7 +18,6 @@ function Tags() {
     if (e.code === "Enter" || e.code === "Comma") {
       e.preventDefault();
       if (!blog?.tags?.includes(tag) && tag.length !== 0) {
-        console.log(tag.length);
         dispatch(writeBlog({ ...blog, tags: [...blog.tags, tag] }));
       }
       e.target.value = "";
