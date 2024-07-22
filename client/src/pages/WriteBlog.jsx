@@ -1,43 +1,39 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CreateBlog from "../features/blogs/CreateBlog";
 import PublishBlog from "../features/blogs/PublishBlog";
-import { useEffect, useState } from "react";
-import { setError } from "../features/blogs/blogSlice";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 function WriteBlog() {
   const [openPublish, setOpenPublish] = useState(false);
-  const dispatch = useDispatch();
-  const { error, blog } = useSelector((state) => state.blog);
-
-  useEffect(() => {
-    dispatch(setError(null));
-  }, [dispatch]);
+  const { blog } = useSelector((state) => state.blog);
 
   function handleErrors() {
-    if (error) {
-      return;
-    }
     if (!blog.title.length) {
-      dispatch(setError("Please add a title"));
-      console.log(error);
+      toast.error("Please add a title.");
+      return 0;
+    }
+    // eslint-disable-next-line no-useless-escape
+    if (!/^[a-zA-Z0-9 ,\-]+$/.test(blog.title)) {
+      toast.error("Please use only alphanumerics for title");
       return 0;
     }
     if (!blog.banner.length) {
-      dispatch(setError("Please add a banner"));
+      toast.error("Please upload a banner.");
       return 0;
     }
-    if (!blog.content?.blocks?.length) {
-      dispatch(setError("Please add some Content."));
+    if (!blog.content?.blocks.length) {
+      toast.error("Please write some content.");
       return 0;
     }
 
     if (openPublish) {
       if (!blog.description.length) {
-        dispatch(setError("Please add a description"));
+        toast.error("Please write some description.");
         return 0;
       }
       if (blog.tags.length < 3) {
-        dispatch(setError("Please add tags between 3 to 10."));
+        toast.error("Please add atleast 3 tags.");
         return 0;
       }
     }

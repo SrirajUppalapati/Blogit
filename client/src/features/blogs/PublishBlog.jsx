@@ -1,42 +1,33 @@
-/* eslint-disable no-useless-escape */
 import { Button, Modal, Spinner, Textarea } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearBlog, setError, uploadBlog, writeBlog } from "./blogSlice";
-import AnimationWrapper from "../../components/AnimationWrapper";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { uploadBlog, writeBlog } from "./blogSlice";
+import AnimationWrapper from "../../components/AnimationWrapper";
 import Tags from "./Tags";
-import Error from "../../components/Error";
-import { toast } from "react-hot-toast";
 import { RiCloseLargeLine } from "react-icons/ri";
 import BlogTItle from "./BlogTItle";
+import toast from "react-hot-toast";
 
 function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
   const dispatch = useDispatch();
-  const { blog, error, loading } = useSelector((state) => state.blog);
+  const { blog, loading } = useSelector((state) => state.blog);
   const { theme } = useSelector((state) => state.theme);
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(setError(null));
-  }, [dispatch]);
-
   function handleBlogPublishType(e, type) {
     e.preventDefault();
-    if (!handleErrors()) {
-      return;
+    if (handleErrors()) {
+      dispatch(writeBlog({ draft: type === "Drafted" ? true : false }));
+      dispatch(uploadBlog({ blog, token })).then((res) => {
+        if (res.payload) {
+          toast.success(`${type} blog successfully!`);
+          navigate("/");
+        } else {
+          toast.error(res.error.message);
+        }
+      });
     }
-    dispatch(writeBlog({ draft: type === "Drafted" ? true : false }));
-    dispatch(uploadBlog({ data: blog, token })).then((response) => {
-      if (response.type === "blog/upload/rejected") {
-        return;
-      } else {
-        dispatch(clearBlog());
-        toast.success(`${type} blog successfully!`);
-        navigate("/");
-      }
-    });
   }
   function handlePublish(e) {
     handleBlogPublishType(e, "Published");
@@ -87,6 +78,7 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
                 </label>
                 <Textarea
                   className="h-40 resize-none leading-7 pl-4 border-0 focus:ring-0"
+                  autoFocus
                   onChange={(e) => {
                     dispatch(writeBlog({ description: e.target.value }));
                   }}
@@ -104,8 +96,6 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
         </Modal.Body>
 
         <div className="flex flex-col gap-4 justify-center pb-3 dark:bg-slate-800 px-10">
-          {error && <Error error={error} />}
-
           <Button
             onClick={handlePublish}
             className="focus:ring-0"

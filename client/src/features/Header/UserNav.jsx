@@ -9,7 +9,6 @@ import Signout from "../users/Signout";
 
 function UserNav() {
   const { currentUser } = useSelector((state) => state.auth);
-  const { theme } = useSelector((state) => state.theme);
 
   return (
     <div className="flex gap-5 justify-center items-center mr-2">

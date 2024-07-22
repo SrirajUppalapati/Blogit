@@ -1,13 +1,12 @@
 import { MdOutlineMailOutline } from "react-icons/md";
 import Input from "../../components/Input";
 import { HiOutlineKey } from "react-icons/hi2";
-import { Alert, Button, Spinner } from "flowbite-react";
+import { Button, Spinner } from "flowbite-react";
 import Oauth from "./Oauth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { signinFailure, signinStart, signinSuccess } from "./authSlice";
-import axios from "axios";
+import { signInUser } from "./authSlice";
 import toast from "react-hot-toast";
 
 function SigninForm() {
@@ -17,30 +16,19 @@ function SigninForm() {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm();
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { error, loading } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.auth);
 
   function onSubmit(data) {
-    dispatch(signinStart());
-    axios
-      .post(`${import.meta.env.VITE_API_URL}/users/login`, data)
-      .then(({ data }) => {
-        console.log("Succesful signin");
-        dispatch(signinSuccess({ user: data.data, token: data.access_token }));
-        reset();
-        navigate("/");
-        toast.success("Signin Successful!");
-      })
-      .catch((response) => {
-        console.error(response);
-        dispatch(signinFailure("Please check your email and password."));
-
-        reset();
-      });
+    dispatch(signInUser(data)).then((data) => {
+      if (data.payload) {
+        toast.success("SignIn successful!");
+      } else {
+        toast.error("Please check your email and password!");
+      }
+    });
   }
   return (
     <form
@@ -93,17 +81,10 @@ function SigninForm() {
           </span>
         )}
       </div>
-
-      {error && (
-        <Alert color="failure" className="p-1 px-3">
-          <span className="text-xs">{error}</span>
-        </Alert>
-      )}
       <Button
         type="submit"
         className="center mt-5"
         color={theme === "dark" ? "cyan" : "dark"}
-        onClick={handleSubmit}
         disabled={loading}
       >
         {loading ? <Spinner /> : "Submit"}

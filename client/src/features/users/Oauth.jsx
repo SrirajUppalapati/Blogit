@@ -1,41 +1,21 @@
 import { Button } from "flowbite-react";
 import { FcGoogle } from "react-icons/fc";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { app } from "../../firebase";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { signinSuccess } from "./authSlice";
-import { useNavigate } from "react-router-dom";
+import { signInWithGoogle } from "./authSlice";
 import toast from "react-hot-toast";
 
 function Oauth() {
-  const auth = getAuth(app);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { theme } = useSelector((state) => state.theme);
 
   async function handleGoogleClick() {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: "select_account" });
-    try {
-      const resFromGoogle = await signInWithPopup(auth, provider);
-      const data = {
-        name: resFromGoogle.user.displayName,
-        email: resFromGoogle.user.email,
-        profilePicture: resFromGoogle.user.photoURL,
-      };
-      await axios
-        .post(`${import.meta.env.VITE_API_URL}/users/google`, data)
-        .then(({ data }) => {
-          dispatch(
-            signinSuccess({ user: data.data, token: data.access_token })
-          );
-          navigate("/");
-          toast.success("Signined successfully with google!");
-        });
-    } catch (err) {
-      console.error(err);
-    }
+    dispatch(signInWithGoogle()).then((data) => {
+      if (data.payload) {
+        toast.success("SignIn with google successful!");
+      } else {
+        toast.error("Unable to signin with google!");
+      }
+    });
   }
   return (
     <Button

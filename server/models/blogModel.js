@@ -12,7 +12,7 @@ const blogSchema = mongoose.Schema(
       unique: [true, "Title should be unique."],
       trim: true,
       lowercase: true,
-      match: [/^[A-Za-z0-9\s]+$/, "Title should be alphanumeric."],
+      match: [/^[a-zA-Z0-9 ,\-]+$/, "Title should be alphanumeric."],
     },
     banner: {
       type: String,

@@ -1,5 +1,5 @@
 import EditorJs from "@editorjs/editorjs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { writeBlog } from "./blogSlice";
 import { useEffect, useRef } from "react";
 import { tools } from "./tools";
@@ -7,6 +7,7 @@ import { tools } from "./tools";
 function Editor() {
   const dispatch = useDispatch();
   const editorRef = useRef();
+  const { blog } = useSelector((state) => state.blog);
 
   useEffect(
     function () {
@@ -14,6 +15,7 @@ function Editor() {
         const editor = new EditorJs({
           holder: "editorjs",
           tools: tools,
+          data: blog.content,
           placeholder: "Add your content here.",
           onChange: () =>
             editor.save().then((data) => {
@@ -23,7 +25,7 @@ function Editor() {
         editorRef.current = editor;
       }
     },
-    [dispatch]
+    [dispatch, blog]
   );
 
   return <div id="editorjs"></div>;

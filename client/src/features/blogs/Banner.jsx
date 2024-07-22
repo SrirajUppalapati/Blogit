@@ -1,18 +1,12 @@
 import { FileInput, Label, Spinner } from "flowbite-react";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setError, uploadBanner } from "./blogSlice";
+import { uploadBanner } from "./blogSlice";
 
 function Banner() {
   const dispatch = useDispatch();
   const { blog, loading } = useSelector((state) => state.blog);
 
-  useEffect(() => {
-    dispatch(setError(null));
-  }, [dispatch]);
-
   function handleImageUpload(file) {
-    dispatch(setError(null));
     dispatch(uploadBanner(file));
   }
 

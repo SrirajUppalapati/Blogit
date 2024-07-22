@@ -1,19 +1,21 @@
 import { FaSignOutAlt } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { signoutSuccess } from "./authSlice";
-import axios from "axios";
+import { signOutUser } from "./authSlice";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function Signout() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   function handleSignout() {
-    axios
-      .post(`${import.meta.env.VITE_API_URL}/users/signout`)
-      .then(() => {
-        dispatch(signoutSuccess());
-        toast.success("Signout Successful!");
-      })
-      .catch((err) => console.error(err));
+    dispatch(signOutUser()).then((data) => {
+      if (data.payload) {
+        navigate("/");
+        toast.success("Signout successful!");
+      } else {
+        toast.error(data.error);
+      }
+    });
   }
   return (
     <span

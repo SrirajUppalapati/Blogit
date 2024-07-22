@@ -5,11 +5,10 @@ import { FaRegUser } from "react-icons/fa";
 import { HiOutlineKey } from "react-icons/hi2";
 import { Alert, Button, Spinner } from "flowbite-react";
 import Oauth from "./Oauth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { signinFailure, signinStart, signinSuccess } from "./authSlice";
-import axios from "axios";
+import { signUpUser } from "./authSlice";
 import toast from "react-hot-toast";
 
 function SignupForm() {
@@ -18,31 +17,22 @@ function SignupForm() {
     handleSubmit,
     formState: { errors },
     watch,
-    reset,
   } = useForm();
 
   let pwd = watch("password");
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { error, loading } = useSelector((state) => state.auth);
   const { theme } = useSelector((state) => state.theme);
 
   function onSubmit(data) {
-    dispatch(signinStart());
-    axios
-      .post(`${import.meta.env.VITE_API_URL}/users/signup`, data)
-      .then(({ data }) => {
-        dispatch(signinSuccess({ user: data.data, token: data.access_token }));
-        reset();
-        navigate("/");
-        toast.success("Created your account Successfully!");
-      })
-      .catch(({ response }) => {
-        console.error(response);
-        dispatch(signinFailure(response.data.message));
-        reset();
-      });
+    dispatch(signUpUser(data)).then((data) => {
+      if (data.payload) {
+        toast.success("SignUp successful!");
+      } else {
+        toast.error(data.error.message);
+      }
+    });
   }
   return (
     <form

@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../firebase";
-import axios from "axios";
+import toast from "react-hot-toast";
+import { createBlogAPI } from "../../api/blogsAPI";
 
 const initialState = {
   blog: {
@@ -18,49 +19,22 @@ const initialState = {
 
 export const uploadBanner = createAsyncThunk(
   "blog/uploadBanner",
-  async (file, { dispatch, rejectWithValue }) => {
+  async (file) => {
     try {
       const fileName = Date.now() + "-" + file.name;
       const imageRef = ref(storage, `Banner/${fileName}`);
       const img = await uploadBytes(imageRef, file);
       const url = await getDownloadURL(img.ref);
-      dispatch(setBanner(url));
       return url;
     } catch (err) {
-      return rejectWithValue("Please upload an image");
+      toast.error("Please upload image files.");
+      console.error(err);
     }
   }
 );
 
-export const uploadBlog = createAsyncThunk(
-  "blog/upload",
-  async ({ data, token }, { dispatch, rejectWithValue }) => {
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/blog/createblog`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      return res.data;
-    } catch (error) {
-      if (error.response) {
-        console.error("Server error:", error.response.data);
-        return rejectWithValue(
-          error.response.data.message || "Server error occurred"
-        );
-      } else if (error.request) {
-        console.error("No response from server:", error.request);
-        return rejectWithValue("No response from server");
-      } else {
-        console.error("Request error:", error.message);
-        return rejectWithValue("Request error");
-      }
-    }
-  }
+export const uploadBlog = createAsyncThunk("blog/upload", ({ blog, token }) =>
+  createBlogAPI({ blog, token })
 );
 
 const blogSlice = createSlice({
@@ -71,27 +45,6 @@ const blogSlice = createSlice({
       state.blog = { ...state.blog, ...action.payload };
       state.error = null;
     },
-    setError: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    setBanner: (state, action) => {
-      state.blog.banner = action.payload;
-    },
-
-    clearBlog: (state) => {
-      state.blog = {
-        title: "",
-        banner: "",
-        description: "",
-        content: {},
-        tags: [],
-        draft: false,
-      };
-      state.contentText = { isReady: false };
-      state.error = null;
-      state.loading = false;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -99,7 +52,8 @@ const blogSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(uploadBanner.fulfilled, (state) => {
+      .addCase(uploadBanner.fulfilled, (state, action) => {
+        state.blog.banner = action.payload;
         state.loading = false;
       })
       .addCase(uploadBanner.rejected, (state, action) => {
@@ -110,16 +64,18 @@ const blogSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(uploadBlog.fulfilled, (state) => {
+      .addCase(uploadBlog.fulfilled, (state, action) => {
         state.loading = false;
+        state.blog = initialState.blog;
+        state.error = null;
       })
       .addCase(uploadBlog.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload || "Something went wrong!";
       });
   },
 });
 
-export const { writeBlog, setError, setBanner, clearBlog } = blogSlice.actions;
+export const { writeBlog, clearBlog } = blogSlice.actions;
 
 export default blogSlice.reducer;
