@@ -11,13 +11,13 @@ import PrivateRoute from "./components/PrivateRoute";
 import Applayout from "./components/Applayout";
 import PageNotFound from "./pages/PageNotFound";
 import Header from "./features/Header/Header";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Header />
-
         <Routes>
           <Route
             element={
@@ -40,6 +40,20 @@ function App() {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
+      <Toaster
+        position="top-center"
+        containerStyle={{ margin: "6px" }}
+        toastOptions={{
+          success: {
+            duration: 3000,
+            className: "success",
+          },
+          error: {
+            duration: 6000,
+            className: "error",
+          },
+        }}
+      />
     </>
   );
 }

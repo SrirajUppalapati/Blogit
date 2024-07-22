@@ -7,6 +7,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Tags from "./Tags";
 import Error from "../../components/Error";
+import { toast } from "react-hot-toast";
+import { RiCloseLargeLine } from "react-icons/ri";
+import BlogTItle from "./BlogTItle";
 
 function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
   const dispatch = useDispatch();
@@ -19,36 +22,28 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
     dispatch(setError(null));
   }, [dispatch]);
 
-  function handlePublish(e) {
+  function handleBlogPublishType(e, type) {
     e.preventDefault();
     if (!handleErrors()) {
       return;
     }
-    dispatch(writeBlog({ draft: false }));
+    dispatch(writeBlog({ draft: type === "Drafted" ? true : false }));
     dispatch(uploadBlog({ data: blog, token })).then((response) => {
       if (response.type === "blog/upload/rejected") {
         return;
       } else {
         dispatch(clearBlog());
+        toast.success(`${type} blog successfully!`);
         navigate("/");
       }
     });
   }
+  function handlePublish(e) {
+    handleBlogPublishType(e, "Published");
+  }
 
   function handleDraft(e) {
-    e.preventDefault();
-    if (!handleErrors()) {
-      return;
-    }
-    dispatch(writeBlog({ draft: true }));
-    dispatch(uploadBlog({ data: blog, token })).then((response) => {
-      if (response.type === "blog/upload/rejected") {
-        return;
-      } else {
-        dispatch(clearBlog());
-        navigate("/");
-      }
-    });
+    handleBlogPublishType(e, "Drafted");
   }
 
   return (
@@ -58,11 +53,17 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
         show={openPublish}
         onClose={() => setOpenPublish(false)}
         size="7xl"
-        className={`${theme} p-4`}
+        className={`${theme}`}
       >
-        <Modal.Header className="border-b-0 uppercase text-center flex flex-col-reverse justify-center items-center dark:bg-slate-700">
-          <span className="text-2xl font-serif">Preview</span>
-        </Modal.Header>
+        <Modal.Body className="flex justify-between dark:bg-slate-800 dark:text-slate-100">
+          <span className="text-4xl italic text-center">Your Blog</span>
+          <button
+            className="text-white focus:ring-0"
+            onClick={() => setOpenPublish(false)}
+          >
+            <RiCloseLargeLine className="hover:text-xl" />
+          </button>
+        </Modal.Body>
         <Modal.Body className="dark:bg-slate-800">
           <div className="grid lg:grid-cols-2">
             <div className="space-y-6 flex justify-center items-center flex-col-reverse mb-4 gap-3 md:flex-col">
@@ -78,37 +79,19 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
             <div className="ml-4">
               <div>
                 <label className="ml-2 capitalize text-slate-300">Title</label>
-                <Textarea
-                  type="text"
-                  placeholder="Title"
-                  id="title"
-                  onChange={(e) => {
-                    if (
-                      e.target.value &&
-                      !/^[a-zA-Z0-9 ]+$/.test(e.target.value)
-                    ) {
-                      return dispatch(
-                        setError("Please use only alphanumeric charecters.")
-                      );
-                    }
-                    dispatch(writeBlog({ title: e.target.value }));
-                  }}
-                  className=" line-clamp-1 resize-none border-0 mb-4 focus:ring-0"
-                  maxLength="50"
-                  defaultValue={blog?.title}
-                />
+                <BlogTItle className=" line-clamp-1 resize-none border-0 mb-4 focus:ring-0" />
               </div>
               <div className="mt-3">
                 <label className="ml-2 capitalize text-slate-300">
                   Description
                 </label>
                 <Textarea
-                  className="h-40 resize-none leading-7 pl-4"
+                  className="h-40 resize-none leading-7 pl-4 border-0 focus:ring-0"
                   onChange={(e) => {
                     dispatch(writeBlog({ description: e.target.value }));
                   }}
                   maxLength="200"
-                  defaultValue={blog?.description}
+                  value={blog?.description}
                   onKeyDown={(e) => e.code === "Enter" && e.preventDefault()}
                 />
                 <p className="text-xs text-right text-slate-300 mt-1 italic mr-1">

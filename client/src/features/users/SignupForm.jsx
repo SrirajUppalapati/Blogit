@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { signinFailure, signinStart, signinSuccess } from "./authSlice";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 function SignupForm() {
   const {
@@ -35,6 +36,7 @@ function SignupForm() {
         dispatch(signinSuccess({ user: data.data, token: data.access_token }));
         reset();
         navigate("/");
+        toast.success("Created your account Successfully!");
       })
       .catch(({ response }) => {
         console.error(response);

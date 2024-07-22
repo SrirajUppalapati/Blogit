@@ -12,7 +12,6 @@ const initialState = {
     tags: [],
     draft: false,
   },
-  contentText: { isReady: false },
   error: null,
   loading: false,
 };
@@ -76,12 +75,10 @@ const blogSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    setContentText: (state, action) => {
-      state.contentText = action.payload;
-    },
     setBanner: (state, action) => {
       state.blog.banner = action.payload;
     },
+
     clearBlog: (state) => {
       state.blog = {
         title: "",
@@ -123,7 +120,6 @@ const blogSlice = createSlice({
   },
 });
 
-export const { writeBlog, setError, setContentText, setBanner, clearBlog } =
-  blogSlice.actions;
+export const { writeBlog, setError, setBanner, clearBlog } = blogSlice.actions;
 
 export default blogSlice.reducer;

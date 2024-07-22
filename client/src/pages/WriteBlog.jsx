@@ -2,12 +2,12 @@ import { useDispatch, useSelector } from "react-redux";
 import CreateBlog from "../features/blogs/CreateBlog";
 import PublishBlog from "../features/blogs/PublishBlog";
 import { useEffect, useState } from "react";
-import { setError, writeBlog } from "../features/blogs/blogSlice";
+import { setError } from "../features/blogs/blogSlice";
 
 function WriteBlog() {
   const [openPublish, setOpenPublish] = useState(false);
   const dispatch = useDispatch();
-  const { error, blog, contentText } = useSelector((state) => state.blog);
+  const { error, blog } = useSelector((state) => state.blog);
 
   useEffect(() => {
     dispatch(setError(null));
@@ -22,8 +22,12 @@ function WriteBlog() {
       console.log(error);
       return 0;
     }
-    if (blog.banner === "") {
+    if (!blog.banner.length) {
       dispatch(setError("Please add a banner"));
+      return 0;
+    }
+    if (!blog.content?.blocks?.length) {
+      dispatch(setError("Please add some Content."));
       return 0;
     }
 
@@ -41,7 +45,7 @@ function WriteBlog() {
   }
 
   return (
-    <div className="flex flex-col items-center mt-2 justify-center">
+    <div className="flex flex-col items-center mt-2">
       <CreateBlog publishBlog={setOpenPublish} handleErrors={handleErrors} />
       <PublishBlog
         setOpenPublish={setOpenPublish}

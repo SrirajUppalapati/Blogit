@@ -6,6 +6,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { signinSuccess } from "./authSlice";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Oauth() {
   const auth = getAuth(app);
@@ -26,12 +27,11 @@ function Oauth() {
       await axios
         .post(`${import.meta.env.VITE_API_URL}/users/google`, data)
         .then(({ data }) => {
-          console.log("Succesful signin");
-          console.log(data);
           dispatch(
             signinSuccess({ user: data.data, token: data.access_token })
           );
-          navigate("/dashboard");
+          navigate("/");
+          toast.success("Signined successfully with google!");
         });
     } catch (err) {
       console.error(err);

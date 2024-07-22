@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { signinFailure, signinStart, signinSuccess } from "./authSlice";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 function SigninForm() {
   const { theme } = useSelector((state) => state.theme);
@@ -32,6 +33,7 @@ function SigninForm() {
         dispatch(signinSuccess({ user: data.data, token: data.access_token }));
         reset();
         navigate("/");
+        toast.success("Signin Successful!");
       })
       .catch((response) => {
         console.error(response);

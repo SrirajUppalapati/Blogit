@@ -10,11 +10,11 @@ function Search() {
           <MdSearch className="text-xl" />
         </button>
       </div>
-      <div className=" mt-2 px-4 absolute w-full top-full md:inset-0 md:left-[10%] md:top-[7%] md:w-fit">
+      <div className=" mt-2 px-4 absolute w-full top-full md:inset-0 md:left-28 md:top-[7%] md:w-fit">
         <input
           type="text"
           placeholder="Search"
-          className={`rounded-3xl border-slate-300 text-black bg-inherit dark:border-slate-600 dark:bg-slate-700 focus:ring-slate-200 focus:border-slate-400 text-sm md:w-auto w-full md:block dark:text-slate-50 ${
+          className={`rounded-3xl border-slate-300 text-black bg-inherit dark:border-slate-600 dark:bg-slate-700 focus:ring-slate-200 focus:border-slate-400 text-sm md:w-[300px] w-full md:block dark:text-slate-50 ${
             !show && "hidden"
           } `}
         />

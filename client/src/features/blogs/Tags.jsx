@@ -1,5 +1,4 @@
 /* eslint-disable no-useless-escape */
-import { TextInput } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import { writeBlog } from "./blogSlice";
 import Tag from "./Tag";
@@ -25,11 +24,13 @@ function Tags() {
   }
   return (
     <div>
-      <div className="mt-3 p-2">
-        <TextInput
+      <div className="mt-3">
+        <label className="ml-2 capitalize text-slate-300">Tags</label>
+
+        <input
           type="text"
-          placeholder="Add your topics"
-          className="relative"
+          className="relative focus:ring-0 border-0 bg-slate-50 dark:bg-gray-700 rounded-md dark:text-slate-50 w-full text-sm p-3"
+          color="gray"
           onKeyDown={handleTagsKeyDown}
           disabled={blog.tags.length === 10}
         />
