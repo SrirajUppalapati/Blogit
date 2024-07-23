@@ -15,7 +15,6 @@ let app, storage;
 try {
   app = initializeApp(firebaseConfig);
   storage = getStorage(app);
-  console.log("Firebase initialized successfully.");
 } catch (error) {
   console.error("Error initializing Firebase:", error);
 }

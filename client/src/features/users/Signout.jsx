@@ -1,12 +1,15 @@
 import { FaSignOutAlt } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signOutUser } from "./authSlice";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "flowbite-react";
 
 function Signout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.auth);
+
   function handleSignout() {
     dispatch(signOutUser()).then((data) => {
       if (data.payload) {
@@ -16,6 +19,10 @@ function Signout() {
         toast.error(data.error);
       }
     });
+  }
+
+  if (loading) {
+    return <Spinner />;
   }
   return (
     <span

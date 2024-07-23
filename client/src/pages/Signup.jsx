@@ -11,7 +11,7 @@ function Signup() {
   ) : (
     <AnimationWrapper>
       <Header />
-      <div className="flex flex-col items-center pt-28 justify-center">
+      <div className="flex flex-col items-center pt-28 justify-center min-h-screen">
         <h1 className="text-5xl capitalize text-center mb-16 font-medium tracking-wide">
           Join Us Today!
         </h1>

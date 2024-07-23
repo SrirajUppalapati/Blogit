@@ -21,6 +21,8 @@ export const signInWithGoogle = createAsyncThunk(
 
 export const signOutUser = createAsyncThunk("/user/signout", signOutAPI);
 
+const thunks = [signInUser, signUpUser, signInWithGoogle, signOutUser];
+
 const initialState = {
   currentUser: null,
   token: null,
@@ -31,90 +33,30 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    signinStart: (state) => {
-      state.loading = false;
-      state.error = null;
-    },
-    signinSuccess: (state, action) => {
-      state.currentUser = action.payload.user;
-      state.token = action.payload.token;
-      state.loading = false;
-      state.error = null;
-    },
-    signinFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    signoutSuccess: (state) => {
-      state.currentUser = null;
-      state.token = null;
-      state.error = null;
-      state.loading = false;
-    },
-  },
   extraReducers: (builder) => {
-    builder
-      .addCase(signInUser.pending, (state, action) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(signInUser.fulfilled, (state, action) => {
-        state.currentUser = action.payload.data;
-        state.token = action.payload.access_token;
-        state.loading = false;
-        state.error = null;
-      })
-      .addCase(signInUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(signUpUser.pending, (state, action) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(signUpUser.fulfilled, (state, action) => {
-        state.currentUser = action.payload.data;
-        state.token = action.payload.access_token;
-        state.loading = false;
-        state.error = null;
-      })
-      .addCase(signUpUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(signInWithGoogle.pending, (state, action) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(signInWithGoogle.fulfilled, (state, action) => {
-        state.currentUser = action.payload.data;
-        state.token = action.payload.access_token;
-        state.loading = false;
-        state.error = null;
-      })
-      .addCase(signInWithGoogle.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(signOutUser.pending, (state, action) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(signOutUser.fulfilled, (state, action) => {
-        state.currentUser = null;
-        state.token = null;
-        state.loading = false;
-        state.error = null;
-      })
-      .addCase(signOutUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
+    thunks.forEach((thunk) =>
+      builder
+        .addCase(thunk.pending, (state, action) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(thunk.fulfilled, (state, action) => {
+          if (thunk !== signOutUser) {
+            state.currentUser = action.payload.data;
+            state.token = action.payload.access_token;
+          } else {
+            state.currentUser = initialState.currentUser;
+            state.token = initialState.token;
+          }
+          state.loading = false;
+          state.error = null;
+        })
+        .addCase(thunk.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+        })
+    );
   },
 });
-
-export const { signinStart, signinSuccess, signinFailure, signoutSuccess } =
-  authSlice.actions;
 
 export default authSlice.reducer;
