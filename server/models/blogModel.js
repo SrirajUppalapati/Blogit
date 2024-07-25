@@ -85,7 +85,8 @@ const blogSchema = mongoose.Schema(
 );
 
 blogSchema.pre("save", async function () {
-  const blogid = this.title + "-" + Date.now();
+  const temp = this.title.split(" ").splice(0, 3).join("-");
+  const blogid = temp + "-" + Date.now();
   this.blogId = slugify(blogid, {
     lower: true,
     trim: true,

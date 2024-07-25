@@ -36,16 +36,16 @@ function UserNav() {
             {currentUser.email}
           </span>
         </Dropdown.Header>
-        <Dropdown.Item>
-          {location !== "/write" && (
+        {location !== "/write" && (
+          <Dropdown.Item className="md:hidden">
             <Link to="/write">
               <p className="flex justify-center items-center italic gap-[0.3rem] text-sm ">
                 <FaPaperPlane className="text-[0.6rem] hover:text-xs" />
                 Write a blog
               </p>
             </Link>
-          )}
-        </Dropdown.Item>
+          </Dropdown.Item>
+        )}
         <Dropdown.Item>
           <Link
             to="/dashboard"

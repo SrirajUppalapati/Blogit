@@ -38,6 +38,10 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
     handleBlogPublishType(e, "Drafted");
   }
 
+  if (loading || !Object.keys(blog).length) {
+    return <Spinner />;
+  }
+
   return (
     <AnimationWrapper>
       <Modal
@@ -84,11 +88,11 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
                     dispatch(writeBlog({ description: e.target.value }));
                   }}
                   maxLength="200"
-                  value={blog?.description}
+                  value={blog.description}
                   onKeyDown={(e) => e.code === "Enter" && e.preventDefault()}
                 />
                 <p className="text-xs text-right text-slate-300 mt-1 italic mr-1">
-                  {200 - blog.description?.length || 200} charecters left
+                  {200 - blog.description.length || 200} charecters left
                 </p>
               </div>
               <Tags />

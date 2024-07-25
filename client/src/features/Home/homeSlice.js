@@ -1,9 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAllBlogsAPI, getTrendingBlogsAPI } from "../../api/blogsAPI";
+import {
+  getAllBlogsAPI,
+  getOneBlogAPI,
+  getTrendingBlogsAPI,
+} from "../../api/blogsAPI";
 
 const initialState = {
   blogs: [],
   trendingBlogs: [],
+  blog: {},
   loading: false,
   error: null,
   page: 1,
@@ -22,11 +27,18 @@ export const getTrendingBlogs = createAsyncThunk(
   getTrendingBlogsAPI
 );
 
+export const getOneBlog = createAsyncThunk(
+  "/home/allblogs/oneblog",
+  ({ blogId }) => getOneBlogAPI({ blogId })
+);
+
+const thunks = [getBlogs, getTrendingBlogs, getOneBlog];
+
 const homeSlice = new createSlice({
   name: "home",
   initialState,
   reducers: {
-    increasePage: (state, action) => {
+    increasePage: (state) => {
       state.page += 1;
     },
     changeFilter: (state, action) => {
@@ -36,32 +48,37 @@ const homeSlice = new createSlice({
     },
   },
   extraReducers: (builder) => {
+    thunks.map((curr) =>
+      builder
+        .addCase(curr.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(curr.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.error;
+        })
+    );
+
     builder
       .addCase(getBlogs.fulfilled, (state, action) => {
-        state.blogs = state.blogs.concat(action.payload);
+        if (state.page === 1) {
+          state.blogs = action.payload;
+        } else {
+          state.blogs = state.blogs.concat(action.payload);
+        }
         state.loading = false;
         state.error = null;
-      })
-      .addCase(getBlogs.pending, (state, action) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(getBlogs.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
       })
       .addCase(getTrendingBlogs.fulfilled, (state, action) => {
         state.trendingBlogs = action.payload;
         state.loading = false;
         state.error = null;
       })
-      .addCase(getTrendingBlogs.pending, (state, action) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(getTrendingBlogs.rejected, (state, action) => {
+      .addCase(getOneBlog.fulfilled, (state, action) => {
+        state.blog = action.payload;
         state.loading = false;
-        state.error = action.payload;
+        state.error = null;
       });
   },
 });

@@ -17,23 +17,23 @@
     @apply font-lato font-normal h-screen;
   }
 
-  #editorjs h1,
-  h1 {
+  #editorjs h4,
+  h4 {
     @apply text-3xl leading-normal font-bold max-md:text-lg max-md:leading-normal !important;
-  }
-
-  #editorjs h2,
-  h2 {
-    @apply text-4xl leading-normal font-bold max-md:text-xl max-md:leading-normal !important;
   }
 
   #editorjs h3,
   h3 {
+    @apply text-4xl leading-normal font-bold max-md:text-xl max-md:leading-normal !important;
+  }
+
+  #editorjs h2,
+  h2 {
     @apply text-5xl leading-loose max-md:text-2xl max-md:leading-normal !important;
   }
 
-  #editorjs h4,
-  h4 {
+  #editorjs h1,
+  h1 {
     @apply text-6xl leading-loose max-md:text-4xl max-md:leading-normal !important;
   }
 
@@ -53,6 +53,9 @@
 
   .error {
     @apply max-w-[350px] p-2 text-xs bg-red-50 text-red-700 font-lato font-light;
+  }
+  .cdx-marker {
+    @apply bg-yellow-100 text-black dark:text-white;
   }
 }
 
@@ -89,4 +92,13 @@
 
 .mini-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #555; /* Adjust hover color as needed */
+}
+
+.font {
+  font-family: "Times New Roman", Times, serif;
+}
+
+.highlighted-text {
+  background-color: yellow; /* Highlight color */
+  color: black; /* Font color */
 }

@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { dateTOString } from "../../helpers/date";
-import { BiLike, BiSolidLike } from "react-icons/bi";
-import { LiaComments } from "react-icons/lia";
 import { HR } from "flowbite-react";
-import { useState } from "react";
 import FilterTags from "./FilterTags";
+import UserDetails from "./UserDetails";
+import UserActivity from "./UserActivity";
 
 function BlogCard({ blog }) {
   const {
@@ -21,44 +20,18 @@ function BlogCard({ blog }) {
 
   const width = window.innerWidth;
 
-  const [like, setLike] = useState(false);
-
-  function handleLike(e) {
-    e.preventDefault();
-    setLike(!like);
-  }
-
-  function handleProfile(e) {
-    e.preventDefault();
-  }
-
-  function handleComments(e) {
-    e.preventDefault();
-  }
   return (
-    <Link to={`/${blogId}`} className="hover:cursor-pointer">
+    <Link to={`blog/${blogId}`} className="hover:cursor-pointer">
       <div className="w-full pl-8 text-slate-500 dark:text-slate-300 flex flex-row justify-between items-center pr-10 gap-10">
         <div>
-          <button
-            className="w-fit flex justify-between items-center gap-2"
-            onClick={handleProfile}
-          >
-            <img
-              src={author.profilePicture}
-              alt="author_profile"
-              className="w-5 h-5 rounded-full border-2 dark:border-slate-800"
-            />
-            <p className="capitalize text-[0.85rem] font-medium hover:underline">
-              {author.name}
-            </p>
-          </button>
+          <UserDetails author={author} />
           <div className="dark:text-white text-black">
-            <p className="font-bold text-2xl mt-4 leading-tight line-clamp-2 break-words">
+            <p className="font-bold text-2xl mt-4 leading-tight line-clamp-2 break-words lg:max-w-[90%]">
               {title}
             </p>
           </div>
           <div>
-            <p className="mt-4 text-[1rem] line-clamp-2 break-words">
+            <p className="mt-4 text-[1rem] line-clamp-2 break-words lg:max-w-[90%]">
               {description}
             </p>
           </div>
@@ -66,18 +39,9 @@ function BlogCard({ blog }) {
             <p className="text-xs font-light">
               {dateTOString(updatedAt) || dateTOString(createdAt)}
             </p>
-            <button onClick={handleLike}>
-              <div className="text-[0.75rem] flex justify-center items-center gap-2">
-                {like ? <BiSolidLike /> : <BiLike />}
-                {activity.total_likes}
-              </div>
-            </button>
-            <button onClick={(e) => handleComments(e)}>
-              <div className="text-[0.75rem] flex justify-center items-center gap-2">
-                <LiaComments />
-                {activity.total_comments}
-              </div>
-            </button>
+
+            <UserActivity activity={activity} />
+
             {width > 450 && (
               <div className="flex capitalize justify-center items-center gap-3 text-[0.75rem]">
                 Tags:

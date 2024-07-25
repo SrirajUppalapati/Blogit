@@ -1,5 +1,5 @@
 import InlineCode from "@editorjs/inline-code";
-import Embed from "@editorjs/embed";
+// import Embed from "@editorjs/embed";
 import List from "@editorjs/list";
 import Header from "@editorjs/header";
 import Marker from "@editorjs/marker";
@@ -20,7 +20,6 @@ export const tools = {
     class: InlineCode,
     shortcut: "CMD+SHIFT+M",
   },
-  embed: Embed,
   list: {
     class: List,
     inlineToolbar: true,

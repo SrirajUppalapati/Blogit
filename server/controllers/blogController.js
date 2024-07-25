@@ -45,7 +45,7 @@ const getAllBlogs = catchAsync(async (req, res, next) => {
 const getTrendingBlogs = catchAsync(async (req, res, next) => {
   const data = await Blog.find({
     draft: false,
-    createdAt: { $gt: new Date("2020-01-01T00:00:00Z") },
+    createdAt: { $gt: new Date("2024-01-01T00:00:00Z") },
   })
     .populate({
       path: "author",
@@ -61,8 +61,17 @@ const getTrendingBlogs = catchAsync(async (req, res, next) => {
 });
 
 const getOneBlog = catchAsync(async (req, res, next) => {
-  const { blogId } = req.params.blogId;
-  const data = Blog.find({ blogId });
+  const { blogId } = req.params;
+  const data = await Blog.findOneAndUpdate(
+    { blogId },
+    { $inc: { "activity.total_reads": 1 } },
+    { new: true, runValidators: true }
+  )
+    .populate("author", "name profilePicture username activity socialLinks")
+    .select(
+      "blogId title banner description content tags activity.total_likes activity.total_comments activity.total_reads updatedAt"
+    );
+
   if (!data) {
     return next(
       new AppError(`No document found with id ${req.params.blogId}`, 404)

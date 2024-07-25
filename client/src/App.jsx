@@ -7,6 +7,9 @@ import Signin from "./pages/Signin";
 import WriteBlog from "./pages/WriteBlog";
 import ManageBlog from "./pages/ManageBlog";
 import Notification from "./pages/Notification";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
+import Blog from "./pages/Blog";
 import PrivateRoute from "./components/PrivateRoute";
 import Applayout from "./components/Applayout";
 import PageNotFound from "./pages/PageNotFound";
@@ -30,11 +33,15 @@ function App() {
             <Route path="about" element={<About />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="/write" element={<WriteBlog />} />
-            <Route path="manageblog" element={<ManageBlog />} />
+            <Route path="manageblog/:blogId" element={<ManageBlog />} />
             <Route path="notification" element={<Notification />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
 
           <Route path="/" element={<Blogs />} />
+          <Route path="blog/:blogId" element={<Blog />} />
+          <Route path="profile/:username" element={<Profile />} />
           <Route path="signup" element={<Signup />} />
           <Route path="signin" element={<Signin />} />
           <Route path="*" element={<PageNotFound />} />

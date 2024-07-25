@@ -43,6 +43,20 @@ export const getAllBlogsAPI = async ({ page, filter }) => {
   }
 };
 
+export const getOneBlogAPI = async ({ blogId }) => {
+  try {
+    const data = await axios.patch(
+      `${import.meta.env.VITE_API_URL}/blog/allblogs/${blogId}`
+    );
+    if (!data) {
+      throw new Error(`Couldnt get the blog with id: ${blogId}`);
+    }
+    return data.data.data;
+  } catch ({ response }) {
+    throw response.data.message;
+  }
+};
+
 export const getTrendingBlogsAPI = async () => {
   try {
     const data = await axios.get(

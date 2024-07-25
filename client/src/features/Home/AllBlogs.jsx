@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getBlogs, increasePage } from "./homeSlice";
+import { changeFilter, getBlogs, increasePage } from "./homeSlice";
 import { Spinner } from "flowbite-react";
 import BlogCard from "./BlogCard";
 import toast from "react-hot-toast";
+import { MdClose } from "react-icons/md";
 
 function AllBlogs() {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ function AllBlogs() {
   }, [page, filter, dispatch]);
 
   useEffect(() => {
-    if (lastBlogRef.current) {
+    if (lastBlogRef.current && blogs.length > 7) {
       lastBlogRef.current.scrollIntoView({
         behavior: "smooth",
         block: "end",
@@ -38,11 +39,26 @@ function AllBlogs() {
 
   return (
     <div className="pb-10 md:pt-20 pt-2">
+      {filter && (
+        <div className="text-lg pl-8 italic flex flex-row items-center gap-2 pb-2 border-b-[1px] mb-4 dark:border-slate-700">
+          <span className=" ">Filter:</span>
+          <button
+            onClick={() => {
+              dispatch(changeFilter());
+            }}
+          >
+            <div className="flex flex-row justify-center items-center gap-1 dark:bg-slate-700 px-2 rounded-lg hover:underline hover:underline-offset-2 bg-slate-100 italic">
+              <p className="text-xs py-1">{filter.tag}</p>
+              <MdClose className="text-sm pt-1" />
+            </div>
+          </button>
+        </div>
+      )}
       {blogs.map((blog, index) => {
         return (
           <div
             key={index}
-            ref={index === blogs.length - 5 ? lastBlogRef : null}
+            ref={index === blogs.length - 7 ? lastBlogRef : null}
           >
             <BlogCard blog={blog} className="border-0" />
           </div>

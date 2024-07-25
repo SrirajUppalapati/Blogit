@@ -41,7 +41,7 @@ function WriteBlog() {
   }
 
   return (
-    <div className="flex flex-col items-center mt-2">
+    <div className="flex flex-col items-center mt-2 font">
       <CreateBlog publishBlog={setOpenPublish} handleErrors={handleErrors} />
       <PublishBlog
         setOpenPublish={setOpenPublish}
