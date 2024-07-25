@@ -42,7 +42,7 @@ function TrendingBlogCard({ blog, id }) {
           </div>
         </div>
       </div>
-      <HR className="mx-10" />
+      <HR className="mx-5" />
     </Link>
   );
 }

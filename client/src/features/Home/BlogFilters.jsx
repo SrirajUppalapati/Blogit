@@ -13,6 +13,7 @@ function BlogFilters() {
       .then((data) => setTags(data))
       .catch((err) => toast.error(err));
   }, []);
+
   return (
     <div className="flex flex-col pl-3 pt-10">
       <div className="flex justify-start items-center pl-5 pb-4 gap-2">
@@ -21,6 +22,7 @@ function BlogFilters() {
           Most written topics
         </p>
       </div>
+
       <div className="flex flex-wrap max-w-full gap-y-4">
         {tags?.map((curr, index) => (
           <FilterTags

@@ -43,7 +43,10 @@ const getAllBlogs = catchAsync(async (req, res, next) => {
 });
 
 const getTrendingBlogs = catchAsync(async (req, res, next) => {
-  const data = await Blog.find({ draft: false })
+  const data = await Blog.find({
+    draft: false,
+    createdAt: { $gt: new Date("2020-01-01T00:00:00Z") },
+  })
     .populate({
       path: "author",
       select: "name email username profilePicture -_id",
@@ -105,6 +108,14 @@ const updateBlog = catchAsync(async (req, res, next) => {
 
 const getTopTenTags = catchAsync(async (req, res, next) => {
   const topTen = await Blog.aggregate([
+    {
+      $match: {
+        $or: [
+          { createdAt: { $gt: new Date("2020-01-01T00:00:00Z") } },
+          { updatedAt: { $gt: new Date("2020-01-01T00:00:00Z") } },
+        ],
+      },
+    },
     { $unwind: "$tags" },
     { $group: { _id: "$tags", count: { $sum: 1 } } },
     { $sort: { count: -1 } },
