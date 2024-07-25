@@ -39,8 +39,8 @@ function Header() {
               {theme === "dark" ? <FaMoon /> : <FaSun />}
             </button>
             {location !== "/write" && (
-              <Link to="/write">
-                <p className="flex justify-center items-center italic gap-[0.3rem] text-sm border-2 p-2 rounded-2xl dark:border-slate-500 dark:text-slate-300 hover:dark:bg-slate-500 text-slate-600 border-slate-100 hover:border-slate-200 hover:bg-slate-200">
+              <Link to="/write" className="hidden md:block">
+                <p className="flex justify-center items-center italic gap-[0.3rem] text-sm border-2 p-2 rounded-2xl dark:border-slate-500  hover:dark:bg-slate-500 text-slate-100 hover:bg-slate-700 hover:border-slate-500 bg-slate-900 dark:bg-slate-400 dark:text-slate-800 border-slate-700">
                   <FaPaperPlane className="text-[0.6rem] hover:text-xs" />
                   Write a blog
                 </p>

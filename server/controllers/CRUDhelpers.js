@@ -12,7 +12,7 @@ exports.getAll = (Model) =>
     });
   });
 
-exports.getOne = (Model, populate) =>
+exports.getOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const query = Model.findById(req.params.id);
     const data = await query;

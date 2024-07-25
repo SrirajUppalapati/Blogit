@@ -1,11 +1,26 @@
 const express = require("express");
 const { verifyJWT } = require("../utils/jwt");
-const { createBlog } = require("../controllers/blogController");
+const {
+  createBlog,
+  getAllBlogs,
+  getOneBlog,
+  updateBlog,
+  getTopTenTags,
+  getTrendingBlogs,
+} = require("../controllers/blogController");
 
 const router = express.Router();
+
+router.route("/allblogs").get(getAllBlogs);
+
+router.route("/toptentags").get(getTopTenTags);
+
+router.route("/trendingblogs").get(getTrendingBlogs);
 
 router.use(verifyJWT);
 
 router.route("/createblog").post(createBlog);
+
+router.route("/:blogId").get(getOneBlog).patch(updateBlog);
 
 module.exports = router;

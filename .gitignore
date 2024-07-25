@@ -2,6 +2,8 @@
 client/node_modules/
 server/node_modules/
 
+server/generateDummyData.js
+
 # Build output
 client/dist/
 client/build/

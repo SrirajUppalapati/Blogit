@@ -44,7 +44,7 @@ const verifyJWT = catchAsync(async (req, res, next) => {
     return next(new AppError("Please login!", 400));
   }
   req.user = user;
-
+  // console.log(user);
   next();
 });
 

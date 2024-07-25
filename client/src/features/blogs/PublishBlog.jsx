@@ -17,8 +17,9 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
 
   function handleBlogPublishType(e, type) {
     e.preventDefault();
+    const draft = type === "Drafted" ? true : false;
     if (handleErrors()) {
-      dispatch(writeBlog({ draft: type === "Drafted" ? true : false }));
+      dispatch(writeBlog({ draft }));
       dispatch(uploadBlog({ blog, token })).then((res) => {
         if (res.payload) {
           toast.success(`${type} blog successfully!`);

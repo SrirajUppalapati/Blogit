@@ -26,7 +26,6 @@ export const signInWithGoogleAPI = async () => {
       email: resFromGoogle.user.email,
       profilePicture: resFromGoogle.user.photoURL,
     };
-
     try {
       const user = await axios.post(
         `${import.meta.env.VITE_API_URL}/users/google`,

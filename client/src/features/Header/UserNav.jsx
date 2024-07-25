@@ -4,11 +4,13 @@ import { FiSettings } from "react-icons/fi";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { MdDashboard } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Signout from "../users/Signout";
+import { FaPaperPlane } from "react-icons/fa";
 
 function UserNav() {
   const { currentUser } = useSelector((state) => state.auth);
+  const location = useLocation().pathname;
 
   return (
     <div className="flex gap-5 justify-center items-center mr-2">
@@ -34,6 +36,16 @@ function UserNav() {
             {currentUser.email}
           </span>
         </Dropdown.Header>
+        <Dropdown.Item>
+          {location !== "/write" && (
+            <Link to="/write">
+              <p className="flex justify-center items-center italic gap-[0.3rem] text-sm ">
+                <FaPaperPlane className="text-[0.6rem] hover:text-xs" />
+                Write a blog
+              </p>
+            </Link>
+          )}
+        </Dropdown.Item>
         <Dropdown.Item>
           <Link
             to="/dashboard"

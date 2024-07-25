@@ -9,7 +9,6 @@ const blogSchema = mongoose.Schema(
     title: {
       type: String,
       required: [true, "Please add a title."],
-      unique: [true, "Title should be unique."],
       trim: true,
       lowercase: true,
       match: [/^[a-zA-Z0-9 ,\-]+$/, "Title should be alphanumeric."],
@@ -36,7 +35,7 @@ const blogSchema = mongoose.Schema(
       required: [true, "Please add a few tags."],
       validate: {
         validator: function (val) {
-          return val.length >= 3 && val.length <= 10;
+          return val.length >= 3 && val.length <= 5;
         },
         message: "You should add between 3 and 10 tags.",
       },
@@ -77,12 +76,17 @@ const blogSchema = mongoose.Schema(
       type: Date,
       default: Date.now(),
     },
+    updatedAt: {
+      type: Date,
+      default: Date.now(),
+    },
   },
   { timeStamps: true }
 );
 
-blogSchema.pre("save", function () {
-  this.blogId = slugify(this.title, {
+blogSchema.pre("save", async function () {
+  const blogid = this.title + "-" + Date.now();
+  this.blogId = slugify(blogid, {
     lower: true,
     trim: true,
     strict: true,

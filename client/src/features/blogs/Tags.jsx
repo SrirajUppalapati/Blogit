@@ -32,13 +32,13 @@ function Tags() {
           className="relative focus:ring-0 border-0 bg-slate-50 dark:bg-gray-700 rounded-md dark:text-slate-50 w-full text-sm p-3"
           color="gray"
           onKeyDown={handleTagsKeyDown}
-          disabled={blog.tags.length === 10}
+          disabled={blog.tags.length === 5}
         />
         {blog.tags?.map((tag, index) => (
           <Tag tag={tag} key={index} />
         ))}
         <p className="text-xs text-right text-slate-300 mt-1 italic mr-1">
-          {10 - blog.tags?.length || 10} Tags left
+          {5 - blog.tags?.length || 5} Tags left
         </p>
       </div>
     </div>

@@ -74,3 +74,19 @@
 .cdx-settings-button[data-tune="stretched"] {
   display: none;
 }
+/* Mini scrollbar styles */
+.mini-scrollbar::-webkit-scrollbar {
+  width: 4px; /* Adjust width as needed */
+}
+
+.mini-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Adjust background color as needed */
+}
+
+.mini-scrollbar::-webkit-scrollbar-thumb {
+  background: #888; /* Adjust thumb color as needed */
+}
+
+.mini-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Adjust hover color as needed */
+}
