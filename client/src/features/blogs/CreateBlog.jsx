@@ -1,20 +1,46 @@
 import { Button, HR } from "flowbite-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AnimationWrapper from "../../components/AnimationWrapper";
 import Banner from "./Banner";
 import Editor from "./Editor";
 import BlogTItle from "./BlogTItle";
+import { useCallback } from "react";
+import { writeBlog } from "./blogSlice";
+import toast from "react-hot-toast";
 
 function CreateBlog({ publishBlog, handleErrors }) {
   const { theme } = useSelector((state) => state.theme);
+  const { editor } = useSelector((state) => state.blog);
+  const dispatch = useDispatch();
 
-  function handleFormSubmit(e) {
-    e.preventDefault();
-    if (!handleErrors()) {
-      return;
-    }
-    publishBlog(true);
-  }
+  const handleFormSubmit = useCallback(
+    async function (e) {
+      e.preventDefault();
+
+      if (!handleErrors()) {
+        return;
+      }
+      if (editor.isReady) {
+        try {
+          const data = await editor.save();
+          if (data.blocks.length) {
+            dispatch(writeBlog({ content: data }));
+            if (!handleErrors()) {
+              return;
+            }
+            publishBlog(true);
+            return;
+          } else {
+            toast.error("Please add some content.");
+          }
+        } catch (error) {
+          console.error("Failed to save editor content:", error);
+          toast.error("Failed to save content.");
+        }
+      }
+    },
+    [editor, dispatch, handleErrors, publishBlog]
+  );
 
   return (
     <AnimationWrapper>
@@ -26,9 +52,8 @@ function CreateBlog({ publishBlog, handleErrors }) {
           <BlogTItle className="text-2xl md:text-3xl line-clamp-2 resize-none leading-10 bg-inherit border-0 dark:bg-inherit mb-4 focus:ring-0" />
           <Banner />
           <HR />
-
           <Editor />
-          <div className="flex items-center justify-center md:absolute md:right-2 md:top-0">
+          <div className="flex items-center justify-center md:absolute md:-right-20 md:top-0">
             <Button
               className="focus:ring-0"
               color={theme === "dark" ? "cyan" : "light"}

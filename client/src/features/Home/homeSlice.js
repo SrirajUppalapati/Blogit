@@ -8,18 +8,15 @@ import {
 const initialState = {
   blogs: [],
   trendingBlogs: [],
-  blog: {},
+  blog: [],
   loading: false,
   error: null,
   page: 1,
   filter: null,
 };
 
-export const getBlogs = createAsyncThunk(
-  "/home/allblogs",
-  ({ page, filter }) => {
-    return getAllBlogsAPI({ page, filter });
-  }
+export const getBlogs = createAsyncThunk("/home/allblogs", ({ page, filter }) =>
+  getAllBlogsAPI({ page, filter })
 );
 
 export const getTrendingBlogs = createAsyncThunk(
@@ -29,7 +26,7 @@ export const getTrendingBlogs = createAsyncThunk(
 
 export const getOneBlog = createAsyncThunk(
   "/home/allblogs/oneblog",
-  ({ blogId }) => getOneBlogAPI({ blogId })
+  ({ blogId, mode }) => getOneBlogAPI({ blogId, mode })
 );
 
 const thunks = [getBlogs, getTrendingBlogs, getOneBlog];
@@ -75,6 +72,7 @@ const homeSlice = new createSlice({
         state.loading = false;
         state.error = null;
       })
+
       .addCase(getOneBlog.fulfilled, (state, action) => {
         state.blog = action.payload;
         state.loading = false;

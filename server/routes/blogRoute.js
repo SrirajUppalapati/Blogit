@@ -7,6 +7,8 @@ const {
   updateBlog,
   getTopTenTags,
   getTrendingBlogs,
+  searchTags,
+  searchTitle,
 } = require("../controllers/blogController");
 
 const router = express.Router();

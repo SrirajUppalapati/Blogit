@@ -34,6 +34,7 @@ function SignupForm() {
       }
     });
   }
+
   return (
     <form
       className="flex flex-col gap-y-4 justify-center items-center pb-20"

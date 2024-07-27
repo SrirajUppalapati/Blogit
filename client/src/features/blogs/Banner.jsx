@@ -6,7 +6,9 @@ function Banner() {
   const dispatch = useDispatch();
   const { blog, loading } = useSelector((state) => state.blog);
 
-  function handleImageUpload(file) {
+  function handleImageUpload(e) {
+    e.preventDefault();
+    const file = e.target.files[0];
     dispatch(uploadBanner(file));
   }
 
@@ -58,7 +60,7 @@ function Banner() {
             className="hidden"
             type="file"
             accept="image/*"
-            onChange={(e) => handleImageUpload(e.target.files[0])}
+            onChange={handleImageUpload}
             disabled={loading}
           />
         </Label>

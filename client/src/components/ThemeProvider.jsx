@@ -10,7 +10,7 @@ function ThemeProvider({ children }) {
     <div className={themeClass}>
       <div
         className={`bg-white text-gray-900 ${
-          themeClass === "dark" ? "dark:bg-gray-900 dark:text-white" : ""
+          themeClass === "dark" ? "dark:bg-slate-900 dark:text-white" : ""
         }`}
       >
         {children}

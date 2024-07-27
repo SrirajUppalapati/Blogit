@@ -12,8 +12,7 @@ function PrivateRoute({ children }) {
     }
   }, [currentUser, navigate]);
 
-  // If currentUser is available, render children
-  return currentUser ? <>{children}</> : null; // Use a fragment to ensure valid JSX return
+  return currentUser ? <>{children}</> : null;
 }
 
 export default PrivateRoute;

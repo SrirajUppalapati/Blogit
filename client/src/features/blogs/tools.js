@@ -1,5 +1,4 @@
 import InlineCode from "@editorjs/inline-code";
-// import Embed from "@editorjs/embed";
 import List from "@editorjs/list";
 import Header from "@editorjs/header";
 import Marker from "@editorjs/marker";
@@ -11,7 +10,7 @@ export const tools = {
   header: {
     class: Header,
     config: {
-      placeholder: "Add your header here......",
+      placeholder: "Add your header here...",
       levels: [1, 2, 3, 4],
       defaultLevel: 2,
     },
@@ -30,7 +29,7 @@ export const tools = {
   paragraph: {
     class: Paragraph,
     config: {
-      placeholder: "Add your content here......",
+      placeholder: "Add your content here...",
       preserveBlank: false,
       alignTypes: ["left", "center", "right", "justify"],
       defaultAlignType: "left",
@@ -44,6 +43,12 @@ export const tools = {
       captionPlaceholder: "Enter a caption",
     },
   },
-  Marker: Marker,
-  underline: Underline,
+  marker: {
+    class: Marker,
+    shortcut: "CMD+SHIFT+H",
+  },
+  underline: {
+    class: Underline,
+    shortcut: "CMD+SHIFT+U",
+  },
 };

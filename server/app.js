@@ -12,13 +12,13 @@ const AppError = require("./utils/appError");
 const ErrorHandler = require("./controllers/errorController");
 const cookieParser = require("cookie-parser");
 const blogRouter = require("./routes/blogRoute");
+const searchRouter = require("./routes/searchRoute");
 
 const app = express();
 
-//Allow other servers to access the url
 app.use(
   cors({
-    origin: "http://localhost:5173", // or '*'
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -62,6 +62,8 @@ app.use((req, res, next) => {
 app.use("/api/v1/users", usersRouter);
 
 app.use("/api/v1/blog", blogRouter);
+
+app.use("/api/v1/search", searchRouter);
 
 //Route error handler
 app.all("*", (req, res, next) => {

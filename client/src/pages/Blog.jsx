@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getOneBlog } from "../features/Home/homeSlice";
 import { Button, HR } from "flowbite-react";
 import { dateTOString } from "../helpers/date";
@@ -10,18 +10,25 @@ import UserDetails from "../features/Home/UserDetails";
 import Content from "../features/Home/Content";
 import UserActivity from "../features/Home/UserActivity";
 import Spinner from "../components/Spinner";
-
+import toast from "react-hot-toast";
 function Blog() {
   const dispatch = useDispatch();
   const { blog, loading } = useSelector((state) => state.home);
   const { currentUser } = useSelector((state) => state.auth);
   const { blogId } = useParams();
 
+  const navigate = useNavigate();
   useEffect(
     function () {
-      dispatch(getOneBlog({ blogId }));
+      dispatch(getOneBlog({ blogId })).then((data) => {
+        console.log(data);
+        if (!data.payload) {
+          toast.error(data.error.message);
+          navigate(-1);
+        }
+      });
     },
-    [dispatch, blogId]
+    [dispatch, blogId, navigate]
   );
 
   if (loading || !Object.keys(blog).length) {
@@ -29,6 +36,7 @@ function Blog() {
   }
 
   const { title, banner, tags, author, updatedAt, activity, content } = blog;
+
   return (
     <AnimationWrapper>
       <div className="min-h-screen p-5 md:pt-20 font pt-28">
@@ -55,18 +63,23 @@ function Blog() {
             <UserActivity activity={activity} />
           </div>
 
-          {currentUser?.username === author.username && (
-            <Link to="/edit/:blogid">
-              <Button color="dark">Edit</Button>
-            </Link>
+          {author?.socialLinks && (
+            <SocialLinks socialLinks={author.socialLinks} />
           )}
-
-          <SocialLinks socialLinks={author.socialLinks} />
         </div>
         <HR className="text-slate-100 md:mx-[20%]" />
+        {currentUser?.username === author?.username && (
+          <div className="flex items-center justify-center">
+            <Link to={`/write/${blogId}`}>
+              <Button color="dark" className="px-1 py-1">
+                Edit
+              </Button>
+            </Link>
+          </div>
+        )}
         <div>
           <div className="p-3 md:px-[10%]">
-            {content.blocks.map((curr, index) => {
+            {content[0].blocks.map((curr, index) => {
               return (
                 <div key={index} className="my-4 md:my-6">
                   <Content block={curr} />

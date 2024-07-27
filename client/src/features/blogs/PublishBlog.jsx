@@ -1,7 +1,7 @@
 import { Button, Modal, Spinner, Textarea } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { uploadBlog, writeBlog } from "./blogSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { updateBlog, uploadBlog, writeBlog } from "./blogSlice";
 import AnimationWrapper from "../../components/AnimationWrapper";
 import Tags from "./Tags";
 import { RiCloseLargeLine } from "react-icons/ri";
@@ -15,27 +15,30 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  function handleBlogPublishType(e, type) {
-    e.preventDefault();
-    const draft = type === "Drafted" ? true : false;
-    if (handleErrors()) {
-      dispatch(writeBlog({ draft }));
-      dispatch(uploadBlog({ blog, token })).then((res) => {
-        if (res.payload) {
-          toast.success(`${type} blog successfully!`);
-          navigate("/");
-        } else {
-          toast.error(res.error.message);
-        }
-      });
-    }
-  }
-  function handlePublish(e) {
-    handleBlogPublishType(e, "Published");
-  }
+  const { blogId } = useParams();
 
-  function handleDraft(e) {
-    handleBlogPublishType(e, "Drafted");
+  function handlePublish(e) {
+    if (handleErrors()) {
+      if (blogId) {
+        dispatch(updateBlog({ blog, token, blogId })).then((res) => {
+          if (res.payload) {
+            toast.success(`Updated blog successfully!`);
+            navigate("/");
+          } else {
+            toast.error(res.error.message);
+          }
+        });
+      } else {
+        dispatch(uploadBlog({ blog, token })).then((res) => {
+          if (res.payload) {
+            toast.success(`Published blog successfully!`);
+            navigate("/");
+          } else {
+            toast.error(res.error.message);
+          }
+        });
+      }
+    }
   }
 
   if (loading || !Object.keys(blog).length) {
@@ -108,14 +111,6 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
             disabled={loading}
           >
             {loading ? <Spinner /> : "Publish"}
-          </Button>
-          <Button
-            color="gray"
-            className="focus:ring-0"
-            onClick={handleDraft}
-            disabled={loading}
-          >
-            {loading ? <Spinner /> : "Draft"}
           </Button>
         </div>
       </Modal>

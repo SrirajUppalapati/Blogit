@@ -26,7 +26,7 @@ const blogSchema = mongoose.Schema(
       required: [true, "Please add a description."],
     },
     content: {
-      type: {},
+      type: [],
       lowercase: true,
       required: [true, "Please add some content."],
     },
@@ -68,10 +68,6 @@ const blogSchema = mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId],
       ref: "comments",
     },
-    draft: {
-      type: Boolean,
-      default: false,
-    },
     createdAt: {
       type: Date,
       default: Date.now(),
@@ -84,6 +80,8 @@ const blogSchema = mongoose.Schema(
   { timeStamps: true }
 );
 
+blogSchema.set({ timeStamps: true });
+
 blogSchema.pre("save", async function () {
   const temp = this.title.split(" ").splice(0, 3).join("-");
   const blogid = temp + "-" + Date.now();
@@ -93,13 +91,11 @@ blogSchema.pre("save", async function () {
     strict: true,
   });
 });
-
 blogSchema.post("save", async function () {
-  const incTotalPosts = this.draft ? 1 : 0;
   const user = await User.findByIdAndUpdate(
     this.author,
     {
-      $inc: { "accountInfo.totalPosts": incTotalPosts },
+      $inc: { "accountInfo.totalPosts": 1 },
       $push: { blogs: this._id },
     },
     { new: true, runValidators: true }

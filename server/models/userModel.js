@@ -32,6 +32,7 @@ const userSchema = mongoose.Schema(
       minlength: [3, "Username must be 3 letters long"],
       trim: true,
       lowercase: true,
+      match: [/^[a-zA-Z0-9]+$/, "Title should be alphanumeric."],
     },
     bio: {
       type: String,
@@ -86,6 +87,7 @@ const userSchema = mongoose.Schema(
       ref: "blogs",
       default: [],
     },
+    createdAt: { type: Date, default: Date.now() },
     passwordResetToken: String,
     passwordResetExpires: Date,
   },

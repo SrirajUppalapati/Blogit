@@ -25,7 +25,6 @@ const thunks = [signInUser, signUpUser, signInWithGoogle, signOutUser];
 
 const initialState = {
   currentUser: null,
-  token: null,
   error: null,
   loading: false,
 };
@@ -43,10 +42,8 @@ const authSlice = createSlice({
         .addCase(thunk.fulfilled, (state, action) => {
           if (thunk !== signOutUser) {
             state.currentUser = action.payload.data;
-            state.token = action.payload.access_token;
           } else {
             state.currentUser = initialState.currentUser;
-            state.token = initialState.token;
           }
           state.loading = false;
           state.error = null;

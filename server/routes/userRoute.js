@@ -5,12 +5,7 @@ const {
   googleAuth,
   signout,
 } = require("../controllers/authController");
-const {
-  getAllUsers,
-  getUser,
-  updateUser,
-  deleteUser,
-} = require("../controllers/userController");
+const { getAllUsers, getUser } = require("../controllers/userController");
 const { verifyJWT } = require("../utils/jwt");
 
 const router = express.Router();
@@ -23,12 +18,5 @@ router.route("/google").post(googleAuth);
 
 router.route("/signout").post(signout);
 
-router.route("/getAllUsers").get(getAllUsers);
-
-router
-  .route("/:id")
-  .get(getUser)
-  .patch(verifyJWT, updateUser)
-  .delete(deleteUser);
-
+router.route("/:username").get(getUser);
 module.exports = router;

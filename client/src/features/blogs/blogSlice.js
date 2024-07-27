@@ -2,17 +2,17 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../firebase";
 import toast from "react-hot-toast";
-import { createBlogAPI } from "../../api/blogsAPI";
+import { createBlogAPI, updateOneBlogAPI } from "../../api/blogsAPI";
 
 const initialState = {
   blog: {
     title: "",
     banner: "",
     description: "",
-    content: {},
+    content: [],
     tags: [],
-    draft: false,
   },
+  editor: { isReady: false },
   error: null,
   loading: false,
 };
@@ -37,6 +37,11 @@ export const uploadBlog = createAsyncThunk("blog/upload", ({ blog, token }) =>
   createBlogAPI({ blog, token })
 );
 
+export const updateBlog = createAsyncThunk(
+  "blog/update",
+  ({ blog, token, blogId }) => updateOneBlogAPI({ blog, token, blogId })
+);
+
 const blogSlice = createSlice({
   name: "blog",
   initialState,
@@ -44,6 +49,12 @@ const blogSlice = createSlice({
     writeBlog: (state, action) => {
       state.blog = { ...state.blog, ...action.payload };
       state.error = null;
+    },
+    clearBlog: (state, action) => {
+      state.blog = initialState.blog;
+    },
+    setEditor: (state, action) => {
+      state.editor = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -72,10 +83,23 @@ const blogSlice = createSlice({
       .addCase(uploadBlog.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong!";
+      })
+      .addCase(updateBlog.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateBlog.fulfilled, (state, action) => {
+        state.loading = false;
+        state.blog = initialState.blog;
+        state.error = null;
+      })
+      .addCase(updateBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Something went wrong!";
       });
   },
 });
 
-export const { writeBlog, clearBlog } = blogSlice.actions;
+export const { writeBlog, clearBlog, setEditor } = blogSlice.actions;
 
 export default blogSlice.reducer;

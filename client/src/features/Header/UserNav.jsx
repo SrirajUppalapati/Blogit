@@ -36,7 +36,7 @@ function UserNav() {
             {currentUser.email}
           </span>
         </Dropdown.Header>
-        {location !== "/write" && (
+        {!location.startsWith("/write") && (
           <Dropdown.Item className="md:hidden">
             <Link to="/write">
               <p className="flex justify-center items-center italic gap-[0.3rem] text-sm ">
@@ -57,7 +57,7 @@ function UserNav() {
         </Dropdown.Item>
         <Dropdown.Item>
           <Link
-            to="/profile"
+            to={`/profile/${currentUser.username}`}
             className="flex justify-center items-center gap-x-1 text-sm"
           >
             <FaUser className="text-xs" />

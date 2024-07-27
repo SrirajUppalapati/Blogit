@@ -1,12 +1,44 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CreateBlog from "../features/blogs/CreateBlog";
 import PublishBlog from "../features/blogs/PublishBlog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
+import { getOneBlog } from "../features/Home/homeSlice";
+import { clearBlog, writeBlog } from "../features/blogs/blogSlice";
 
 function WriteBlog() {
   const [openPublish, setOpenPublish] = useState(false);
+  const { blogId } = useParams();
   const { blog } = useSelector((state) => state.blog);
+
+  const dispatch = useDispatch();
+
+  useEffect(
+    function () {
+      dispatch(clearBlog());
+    },
+    [dispatch]
+  );
+
+  useEffect(
+    function () {
+      if (blogId) {
+        dispatch(getOneBlog({ blogId, mode: "edit" })).then(({ payload }) => {
+          dispatch(
+            writeBlog({
+              title: payload.title,
+              banner: payload.banner,
+              description: payload.description,
+              content: payload.content,
+              tags: payload.tags,
+            })
+          );
+        });
+      }
+    },
+    [dispatch, blogId]
+  );
 
   function handleErrors() {
     if (!blog.title.length) {
@@ -20,10 +52,6 @@ function WriteBlog() {
     }
     if (!blog.banner.length) {
       toast.error("Please upload a banner.");
-      return 0;
-    }
-    if (!blog.content?.blocks.length) {
-      toast.error("Please write some content.");
       return 0;
     }
 

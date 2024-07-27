@@ -1,31 +1,42 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import EditorJs from "@editorjs/editorjs";
 import { useDispatch, useSelector } from "react-redux";
-import { writeBlog } from "./blogSlice";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { tools } from "./tools";
+import { useParams } from "react-router-dom";
+import { setEditor } from "./blogSlice";
 
 function Editor() {
+  const { blog, editor } = useSelector((state) => state.blog);
+
+  const { loading } = useSelector((state) => state.home);
+
+  const { blogId } = useParams();
+
   const dispatch = useDispatch();
-  const editorRef = useRef();
-  const { blog } = useSelector((state) => state.blog);
 
   useEffect(
     function () {
-      if (!editorRef.current) {
-        const editor = new EditorJs({
-          holder: "editorjs",
-          tools: tools,
-          data: blog.content,
-          placeholder: "Add your content here.",
-          onChange: () =>
-            editor.save().then((data) => {
-              dispatch(writeBlog({ content: data }));
-            }),
-        });
-        editorRef.current = editor;
+      if (blogId && !blog.content[0]?.blocks) {
+        dispatch(setEditor({ isReady: false }));
+        return;
+      }
+      if (!editor.isReady) {
+        dispatch(
+          setEditor(
+            new EditorJs({
+              holder: "editorjs",
+              tools: tools,
+              data: Array.isArray(blog.content)
+                ? blog.content[0]
+                : blog.content,
+              placeholder: "Add your content here.",
+            })
+          )
+        );
       }
     },
-    [dispatch, blog]
+    [blog.content, loading, blogId, dispatch]
   );
 
   return <div id="editorjs"></div>;

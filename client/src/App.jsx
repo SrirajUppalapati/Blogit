@@ -5,9 +5,7 @@ import Blogs from "./pages/Blogs";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import WriteBlog from "./pages/WriteBlog";
-import ManageBlog from "./pages/ManageBlog";
 import Notification from "./pages/Notification";
-import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Blog from "./pages/Blog";
 import PrivateRoute from "./components/PrivateRoute";
@@ -15,6 +13,8 @@ import Applayout from "./components/Applayout";
 import PageNotFound from "./pages/PageNotFound";
 import Header from "./features/Header/Header";
 import Toaster from "./components/Toaster";
+import Profile from "./features/Dashboard/Profile";
+import SearchPage from "./features/Header/SearchPage";
 
 function App() {
   return (
@@ -33,9 +33,8 @@ function App() {
             <Route path="about" element={<About />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="/write" element={<WriteBlog />} />
-            <Route path="manageblog/:blogId" element={<ManageBlog />} />
+            <Route path="write/:blogId" element={<WriteBlog />} />
             <Route path="notification" element={<Notification />} />
-            <Route path="profile" element={<Profile />} />
             <Route path="settings" element={<Settings />} />
           </Route>
 
@@ -44,6 +43,10 @@ function App() {
           <Route path="profile/:username" element={<Profile />} />
           <Route path="signup" element={<Signup />} />
           <Route path="signin" element={<Signin />} />
+          <Route path="/search/posts/:query" element={<SearchPage />} />
+          <Route path="/search/users/:query" element={<SearchPage />} />
+          <Route path="/search/tags/:query" element={<SearchPage />} />
+
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

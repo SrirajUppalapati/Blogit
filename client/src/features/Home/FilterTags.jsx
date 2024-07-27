@@ -23,7 +23,11 @@ function FilterTags({ tag, count, className, fontSize }) {
         filter?.tag === tag && count > 0 && "underline"
       }`}
     >
-      <p className={`${fontSize ? fontSize : "text-sm"} italic capitalize`}>
+      <p
+        className={`${
+          fontSize ? fontSize : "text-sm"
+        } italic capitalize whitespace-nowrap`}
+      >
         {tag}
       </p>
       {count && <p className="underline-offset-4 text-xs">{count}</p>}

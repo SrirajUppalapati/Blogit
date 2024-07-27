@@ -6,19 +6,21 @@ import persistStore from "redux-persist/es/persistStore";
 import themeReducer from "./features/Dashboard/themeSlice";
 import blogReducer from "./features/blogs/blogSlice";
 import homeReducer from "./features/Home/homeSlice";
+import dashReducer from "./features/Dashboard/dashSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
   theme: themeReducer,
   blog: blogReducer,
   home: homeReducer,
+  dash: dashReducer,
 });
 
 const persistConfig = {
   key: "root",
   storage,
   version: 1,
-  blacklist: ["blog", "home"],
+  blacklist: ["blog", "home", "dash"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

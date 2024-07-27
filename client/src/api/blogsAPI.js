@@ -1,15 +1,10 @@
 import axios from "axios";
 
-export const createBlogAPI = async ({ blog, token }) => {
+export const createBlogAPI = async ({ blog }) => {
   try {
     const data = await axios.post(
       `${import.meta.env.VITE_API_URL}/blog/createblog`,
-      blog,
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      }
+      blog
     );
     if (!data) {
       throw new Error("Couldnt upload data.");
@@ -43,13 +38,28 @@ export const getAllBlogsAPI = async ({ page, filter }) => {
   }
 };
 
-export const getOneBlogAPI = async ({ blogId }) => {
+export const getOneBlogAPI = async ({ blogId, mode }) => {
   try {
     const data = await axios.patch(
-      `${import.meta.env.VITE_API_URL}/blog/allblogs/${blogId}`
+      `${import.meta.env.VITE_API_URL}/blog/allblogs/${blogId}/?mode=${mode}`
     );
     if (!data) {
       throw new Error(`Couldnt get the blog with id: ${blogId}`);
+    }
+    return data.data.data;
+  } catch ({ response }) {
+    throw response.data.message;
+  }
+};
+
+export const updateOneBlogAPI = async ({ blog, blogId }) => {
+  try {
+    const data = await axios.patch(
+      `${import.meta.env.VITE_API_URL}/blog/${blogId}`,
+      blog
+    );
+    if (!data) {
+      throw new Error(`Couldnt update the blog with id: ${blogId}`);
     }
     return data.data.data;
   } catch ({ response }) {

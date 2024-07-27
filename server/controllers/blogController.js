@@ -1,30 +1,20 @@
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
-const { verifyJWT, createAndSendJWT } = require("../utils/jwt");
 const Blog = require("../models/blogModel");
-const CRUDhelpers = require("./CRUDhelpers");
 
 const getAllBlogs = catchAsync(async (req, res, next) => {
-  let query = Blog.find({ draft: false })
+  let query;
+  if (req.query.tags) {
+    query = Blog.find({ tags: req.query.tags });
+  } else {
+    query = Blog.find();
+  }
+  query
     .populate({
       path: "author",
       select: "name email username profilePicture -_id",
     })
     .sort({ updatedAt: -1 });
-
-  const queryObj = { ...req.query };
-
-  const excludeFilters = ["sort", "page", "limit", "fields"];
-
-  excludeFilters.forEach((el) => delete queryObj[el]);
-
-  let queryStr = JSON.stringify(queryObj);
-
-  queryStr = JSON.parse(
-    queryStr.replace(/\b(gte|lte|gt|lt|ne)\b/g, (curr) => `$${curr}`)
-  );
-
-  query = query.find(queryStr);
 
   const page = req.query.page * 1 || 1;
   const limit = 7;
@@ -44,7 +34,6 @@ const getAllBlogs = catchAsync(async (req, res, next) => {
 
 const getTrendingBlogs = catchAsync(async (req, res, next) => {
   const data = await Blog.find({
-    draft: false,
     createdAt: { $gt: new Date("2024-01-01T00:00:00Z") },
   })
     .populate({
@@ -62,9 +51,11 @@ const getTrendingBlogs = catchAsync(async (req, res, next) => {
 
 const getOneBlog = catchAsync(async (req, res, next) => {
   const { blogId } = req.params;
-  const data = await Blog.findOneAndUpdate(
+  const { mode } = req.query;
+  const incimentValue = mode === "edit" ? 0 : 1;
+  let blog = await Blog.findOneAndUpdate(
     { blogId },
-    { $inc: { "activity.total_reads": 1 } },
+    { $inc: { "activity.total_reads": incimentValue } },
     { new: true, runValidators: true }
   )
     .populate("author", "name profilePicture username activity socialLinks")
@@ -72,20 +63,18 @@ const getOneBlog = catchAsync(async (req, res, next) => {
       "blogId title banner description content tags activity.total_likes activity.total_comments activity.total_reads updatedAt"
     );
 
-  if (!data) {
-    return next(
-      new AppError(`No document found with id ${req.params.blogId}`, 404)
-    );
+  if (!blog) {
+    return next(new AppError(`No blog found.`, 404));
   }
 
   res.status(200).send({
     status: "success",
-    data: data,
+    data: blog,
   });
 });
 
 const createBlog = catchAsync(async (req, res, next) => {
-  const { title, banner, description, content, tags, draft } = req.body;
+  let { title, banner, description, content, tags } = req.body;
   const blog = await Blog.create({
     title,
     banner,
@@ -93,26 +82,30 @@ const createBlog = catchAsync(async (req, res, next) => {
     content,
     tags,
     author: req.user.id,
-    draft,
   });
 
   if (!blog) {
-    return next(new AppError("Couldnt create the blog.", 400));
+    return next(new AppError("Couldn't create the blog.", 400));
   }
   res.status(201).json({ message: "success", data: blog });
 });
 
 const updateBlog = catchAsync(async (req, res, next) => {
-  if (req.params.activity.total_likes) {
-  }
-  await Blog.findOneAndUpdate(
+  const { title, content, description, tags, banner } = req.body;
+
+  const blog = await Blog.findOneAndUpdate(
     { blogId: req.params.blogId, author: req.user.id },
-    req.params,
+    { title, content, description, tags, banner, updatedAt: Date.now() },
     {
       new: true,
       runValidators: true,
     }
   );
+
+  if (!blog) {
+    return next(new AppError("Couldnt update the blog.", 400));
+  }
+  res.status(201).json({ message: "success", data: blog });
 });
 
 const getTopTenTags = catchAsync(async (req, res, next) => {
@@ -120,8 +113,8 @@ const getTopTenTags = catchAsync(async (req, res, next) => {
     {
       $match: {
         $or: [
-          { createdAt: { $gt: new Date("2020-01-01T00:00:00Z") } },
-          { updatedAt: { $gt: new Date("2020-01-01T00:00:00Z") } },
+          { createdAt: { $gt: new Date("2024-01-01T00:00:00Z") } },
+          { updatedAt: { $gt: new Date("2024-01-01T00:00:00Z") } },
         ],
       },
     },
