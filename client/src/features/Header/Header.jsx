@@ -21,8 +21,8 @@ function Header() {
           fluid
           className={`${
             theme === "light"
-              ? "bg-slate-100 border-b-2"
-              : "bg-gray-800 border-b-2"
+              ? "bg-slate-50 border-b-[1px]"
+              : "dark:bg-gray-800 dark:border-b-[1px]"
           } pb-4`}
         >
           <Navbar.Brand as={"div"} className="flex items-center flex-grow">

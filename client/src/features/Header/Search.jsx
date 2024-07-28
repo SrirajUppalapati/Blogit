@@ -24,7 +24,7 @@ function Search() {
 
   return (
     <>
-      <div className="flex justify-center items-center text-slate-500 dark:text-slate-400 bg-inherit dark:border-slate-600 dark:bg-slate-700 focus:ring-slate-200 focus:border-slate-400 p-[0.4rem] rounded-full hover:ring-2 hover:ring-slate-200 md:hidden">
+      <div className="flex justify-center items-center text-slate-700 dark:text-slate-400 bg-inherit dark:border-slate-700 dark:bg-slate-800 focus:ring-slate-300 focus:border-slate-600 p-[0.4rem] rounded-full hover:ring-2 hover:ring-slate-200 md:hidden">
         <button onClick={() => setShow(!show)}>
           <MdSearch className="text-xl" />
         </button>
@@ -33,7 +33,7 @@ function Search() {
         <input
           type="text"
           placeholder="Search"
-          className={`rounded-3xl border-slate-300 text-black bg-inherit dark:border-slate-600 dark:bg-slate-700 focus:ring-slate-200 focus:border-slate-400 text-sm md:w-auto w-full md:block dark:text-slate-50 ${
+          className={`rounded-3xl border-slate-300 text-black bg-inherit dark:border-slate-700 dark:bg-slate-700 focus:ring-slate-200 focus:border-slate-400 text-sm md:w-auto w-full md:block dark:text-slate-50 ${
             !show && "hidden"
           }`}
           value={text}

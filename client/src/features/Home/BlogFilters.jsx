@@ -30,7 +30,7 @@ function BlogFilters() {
             count={curr.count}
             key={index}
             className={
-              "mt-2 mx-2 bg-slate-100  rounded-xl hover:bg-opacity-50 hover:underline dark:bg-slate-800 text-black dark:text-slate-100 dark:hover:bg-slate-600 hover:bg-slate-50 cursor-pointer border-0 flex justify-center items-center gap-4"
+              "mt-2 mx-2 bg-slate-100  rounded-xl hover:bg-opacity-50 text-slate-500 hover:underline dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-600 hover:bg-slate-50 cursor-pointer border-0 flex justify-center items-center gap-4"
             }
             fontSize="text-xs"
           />

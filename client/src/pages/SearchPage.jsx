@@ -98,9 +98,9 @@ function SearchPage() {
         <DatNotFound query={query} type={type} />
         <Link
           to="/"
-          className="text-lg hover:underline underline-offset-8 dark:hover:text-slate-400 hover:text-slate-500"
+          className="text-lg hover:underline underline-offset-8 dark:hover:text-slate-500 hover:text-slate-500"
         >
-          Go back to all blogs
+          &larr; Go back to all blogs
         </Link>
       </div>
     );

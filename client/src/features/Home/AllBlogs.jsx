@@ -15,7 +15,7 @@ function AllBlogs() {
   useEffect(() => {
     dispatch(getBlogs({ page, filter: filter?.tag }))
       .then(({ payload }) => {
-        if (payload?.length < 7 || filter?.count <= 7) {
+        if (payload?.length < 15 || filter?.count <= 15) {
           setDisable(true);
         }
       })
@@ -23,7 +23,7 @@ function AllBlogs() {
   }, [page, filter, dispatch]);
 
   useEffect(() => {
-    if (lastBlogRef.current && blogs.length > 7) {
+    if (lastBlogRef.current && blogs.length > 15) {
       lastBlogRef.current.scrollIntoView({
         behavior: "smooth",
         block: "end",
@@ -47,7 +47,7 @@ function AllBlogs() {
               dispatch(changeFilter());
             }}
           >
-            <div className="flex flex-row justify-center items-center gap-1 dark:bg-slate-700 px-2 rounded-lg hover:underline hover:underline-offset-2 bg-slate-100 italic">
+            <div className="flex flex-row justify-center items-center gap-1 dark:bg-slate-800 px-2 rounded-lg hover:underline hover:underline-offset-2 bg-slate-100 italic">
               <p className="text-xs py-1">{filter.tag}</p>
               <MdClose className="text-sm pt-1" />
             </div>
@@ -58,7 +58,7 @@ function AllBlogs() {
         return (
           <div
             key={index}
-            ref={index === blogs.length - 7 ? lastBlogRef : null}
+            ref={index === blogs.length - 13 ? lastBlogRef : null}
           >
             <BlogCard blog={blog} className="border-0" />
           </div>

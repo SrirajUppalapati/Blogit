@@ -17,7 +17,7 @@ const getAllBlogs = catchAsync(async (req, res, next) => {
     .sort({ updatedAt: -1 });
 
   const page = req.query.page * 1 || 1;
-  const limit = 7;
+  const limit = 15;
 
   const skip = (page - 1) * limit;
 

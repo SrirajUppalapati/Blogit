@@ -32,7 +32,6 @@ function App() {
               </PrivateRoute>
             }
           >
-            {/* <Route path="/" element={<Blogs />} /> */}
             <Route path="about" element={<About />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="/write" element={<WriteBlog />} />

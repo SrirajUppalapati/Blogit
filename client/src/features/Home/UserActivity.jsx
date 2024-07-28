@@ -13,7 +13,6 @@ function UserActivity({ activity }) {
     e.preventDefault();
   }
 
-  console.log(activity.totalComments);
   return (
     <div className=" flex flex-row md:gap-5 items-center gap-2">
       <button onClick={handleLike} className="border-0 focus:ring-0">
