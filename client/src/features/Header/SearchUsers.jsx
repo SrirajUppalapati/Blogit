@@ -1,28 +1,31 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import UserDetails from "../Home/UserDetails";
 import { useParams } from "react-router-dom";
-import { searchUser } from "./searchSlice";
+import DatNotFound from "../../api/DatNotFound";
 
 function SearchUsers() {
-  const dispatch = useDispatch();
+  const { usersResult } = useSelector((state) => state.search);
   const { query } = useParams();
-  const [check, setCheck] = useState(false);
 
-  useEffect(
-    function () {
-      dispatch(searchUser({ query })).then(({ payload }) => {
-        if (payload.data.length === 0) {
-          setCheck(true);
-        }
-      });
-    },
-    [dispatch, query]
-  );
-
-  if (check) {
-    return <div>No data</div>;
+  if (usersResult.data?.length === 0) {
+    const type = "users";
+    return DatNotFound({ query, type });
   }
-  return <div>Users</div>;
+  return (
+    <div className="flex flex-col gap-6 pl-10">
+      <div className="flex justify-start items-center gap-2">
+        {/* <GiLaurelsTrophy /> */}
+        <p className="font-light text-lg italic  capitalize flex flex-row justify-center items-center gap-3">
+          Users with <span className="text-xl font-extrabold">'{query}'</span>
+          in their name
+        </p>
+      </div>
+
+      {usersResult.data?.map((curr, index) => (
+        <UserDetails author={curr} key={index} />
+      ))}
+    </div>
+  );
 }
 
 export default SearchUsers;

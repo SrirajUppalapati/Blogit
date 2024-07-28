@@ -18,7 +18,7 @@ function UserDetails({ author }) {
             alt="profile"
             className="max-w-7 max-h-7 rounded-full border-2 dark:border-slate-700"
           />
-          <span className="capitalize text-xs">{author?.name}</span>
+          <span className="capitalize text-sm">{author?.name}</span>
         </button>
       </div>
     </div>

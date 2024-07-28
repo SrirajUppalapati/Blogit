@@ -5,7 +5,7 @@ export const getSearchTag = async ({ query }) => {
     const data = await axios.get(
       `${import.meta.env.VITE_API_URL}/search/tags/?q=${query}`
     );
-    return data.data;
+    return data.data.data;
   } catch (err) {
     console.error(err);
   }

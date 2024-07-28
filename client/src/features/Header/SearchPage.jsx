@@ -1,76 +1,136 @@
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Tabs } from "flowbite-react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import SearchPosts from "./SearchPosts";
 import SearchUsers from "./SearchUsers";
 import SearchTags from "./SearchTags";
+import { useEffect } from "react";
+import { searchTag, searchTitle, searchUser } from "./searchSlice";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../../components/Spinner";
+import { LuUsers } from "react-icons/lu";
+import { AiOutlineTags } from "react-icons/ai";
+import { SiPostman } from "react-icons/si";
+import DatNotFound from "../../api/DatNotFound";
+import AnimationWrapper from "../../components/AnimationWrapper";
 
 function SearchPage() {
   const { query } = useParams();
-  const location = useLocation().pathname;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const {
+    tagsLoading,
+    postsLoading,
+    usersLoading,
+    postsResult,
+    usersResult,
+    tagsResult,
+  } = useSelector((state) => state.search);
+
+  useEffect(
+    function () {
+      if (query.length > 4) {
+        dispatch(searchTag({ query }));
+      }
+    },
+    [dispatch, query]
+  );
+
+  useEffect(
+    function () {
+      if (query.length > 4) {
+        dispatch(searchTitle({ query }));
+      }
+    },
+    [dispatch, query]
+  );
+
+  useEffect(
+    function () {
+      if (query.length > 4) {
+        dispatch(searchUser({ query }));
+      }
+    },
+    [dispatch, query]
+  );
+
+  useEffect(
+    function () {
+      document.addEventListener(
+        "keydown",
+        (e) => {
+          if (e.code === "Escape") {
+            navigate("/");
+          }
+        },
+        false
+      );
+      return document.removeEventListener(
+        "keydown",
+        (e) => {
+          if (e.code === "Escape") {
+            navigate("/");
+          }
+        },
+        false
+      );
+    },
+    [navigate]
+  );
+
+  if (tagsLoading || postsLoading || usersLoading) {
+    return <Spinner />;
+  }
+
+  console.log(postsResult, tagsResult, usersResult);
+  if (
+    postsResult.results === 0 &&
+    tagsResult.length === 0 &&
+    usersResult.data?.length === 0
+  ) {
+    const type = "Posts, Users or Tags";
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center gap-20">
+        <DatNotFound query={query} type={type} />
+        <Link
+          to="/"
+          className="text-lg hover:underline underline-offset-8 dark:hover:text-slate-400 hover:text-slate-500"
+        >
+          Go back to all blogs
+        </Link>
+      </div>
+    );
+  }
 
   return (
-    <div className="md:pt-16 pt-28 min-h-screen md:grid md:grid-cols-[75%_auto]">
-      <div className="flex flex-col">
+    <AnimationWrapper>
+      <div className="md:pt-16 pt-28 min-h-screen">
         <div className="flex flex-row justify-start items-end md:py-8 mb-2 py-3 pl-[10%] gap-4">
           <p className="text-lg md:text-xl text-slate-500 italic">
             Results for:
           </p>
           <p className="text-3xl md:text-4xl capitalize font-bold">{query}</p>
         </div>
-        <div className="pl-6">
-          <div className="flex-wrap border-gray-200 dark:border-gray-700 space-x-6 text-sm font-medium text-slate-950 dark:text-gray-400 ">
-            <Link
-              to={`/search/posts/${query}`}
-              className={`${
-                location.includes("posts") &&
-                "border border-transparent rounded-lg bg-gray-800 text-white  dark:border-slate-500 dark:bg-cyan-600  items-stretch justify-center p-3 text-center font-bold transition-[color,background-color,border-color,text-decoration-color,fill,stroke,box-shadow] focus:z-10 focus:outline-none"
-              } px-4 `}
-            >
-              Posts
-            </Link>
-            <Link
-              to={`/search/users/${query}`}
-              className={`${
-                location.includes("users") &&
-                "border border-transparent rounded-lg bg-gray-800 text-white  dark:border-slate-500 dark:bg-cyan-600  items-stretch justify-center p-3 text-center font-bold transition-[color,background-color,border-color,text-decoration-color,fill,stroke,box-shadow] focus:z-10 focus:outline-none"
-              } px-4`}
-            >
-              Users
-            </Link>
-            <Link
-              to={`/search/tags/${query}`}
-              className={`${
-                location.includes("tags") &&
-                "border border-transparent rounded-lg bg-gray-800 text-white  dark:border-slate-500 dark:bg-cyan-600  items-stretch justify-center p-3 text-center font-bold transition-[color,background-color,border-color,text-decoration-color,fill,stroke,box-shadow] focus:z-10 focus:outline-none"
-              } px-4`}
-            >
-              Tags
-            </Link>
-          </div>
-          <div className="pt-10">
-            {location.includes("posts") && <SearchPosts />}
-            {location.includes("users") && <SearchUsers />}
-            {location.includes("tags") && <SearchTags />}
-          </div>
-        </div>
+        <Tabs aria-label="Default tabs" variant="default">
+          {postsResult.results !== 0 && (
+            <Tabs.Item active title="Posts" icon={SiPostman}>
+              {" "}
+              <SearchPosts />
+            </Tabs.Item>
+          )}
+          {tagsResult.length !== 0 && (
+            <Tabs.Item title="Tags" icon={AiOutlineTags}>
+              <SearchTags />
+            </Tabs.Item>
+          )}
+          {usersResult.data?.length !== 0 && (
+            <Tabs.Item title="Users" icon={LuUsers}>
+              <SearchUsers />
+            </Tabs.Item>
+          )}
+        </Tabs>
       </div>
-      <div className="hidden md:block md:border-l md:pl-4 md:dark:border-slate-700 md:border-b-2">
-        {!location.includes("posts") && (
-          <div>
-            <SearchPosts />
-          </div>
-        )}
-        {!location.includes("users") && (
-          <div>
-            <SearchUsers />
-          </div>
-        )}
-        {!location.includes("tags") && (
-          <div>
-            <SearchTags />
-          </div>
-        )}
-      </div>
-    </div>
+    </AnimationWrapper>
   );
 }
 

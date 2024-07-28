@@ -7,6 +7,7 @@ import themeReducer from "./features/Dashboard/themeSlice";
 import blogReducer from "./features/blogs/blogSlice";
 import homeReducer from "./features/Home/homeSlice";
 import dashReducer from "./features/Dashboard/dashSlice";
+import searchReducer from "./features/Header/searchSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -14,13 +15,14 @@ const rootReducer = combineReducers({
   blog: blogReducer,
   home: homeReducer,
   dash: dashReducer,
+  search: searchReducer,
 });
 
 const persistConfig = {
   key: "root",
   storage,
   version: 1,
-  blacklist: ["blog", "home", "dash"],
+  blacklist: ["blog", "home", "dash", "search"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

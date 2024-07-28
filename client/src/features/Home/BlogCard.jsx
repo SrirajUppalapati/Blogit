@@ -60,7 +60,7 @@ function BlogCard({ blog }) {
             {width > 800 && (
               <div className="flex capitalize justify-center items-center gap-3 text-[0.75rem]">
                 Tags:
-                {tags.map((curr, index) => (
+                {tags?.map((curr, index) => (
                   <FilterTags
                     tag={curr}
                     key={index}

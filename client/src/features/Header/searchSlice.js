@@ -6,10 +6,13 @@ import {
 } from "../../api/searchAPI";
 
 const initialState = {
-  tagsResult: [],
-  postsResult: [],
-  usersResult: [],
-  loading: false,
+  tagsResult: {},
+  postsResult: {},
+  usersResult: {},
+  tagsLoading: false,
+  usersLoading: false,
+  postsLoading: false,
+
   error: null,
 };
 
@@ -27,20 +30,38 @@ export const searchUser = createAsyncThunk("/search/user", ({ query }) =>
 
 const thunks = [searchTag, searchTitle, searchUser];
 
-const searchSlice = new createSlice({
+const searchSlice = createSlice({
   name: "search",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     thunks.map((curr) =>
       builder
-        .addCase(curr.pending, (state, action) => {
-          state.loading = true;
+        .addCase(curr.pending, (state) => {
+          if (curr === searchTag) {
+            state.tagsLoading = true;
+          }
+          if (curr === searchTitle) {
+            state.postsLoading = true;
+          }
+          if (curr === searchUser) {
+            state.usersLoading = true;
+          }
           state.error = null;
         })
         .addCase(curr.fulfilled, (state, action) => {
-          state.loading = false;
-          state.searchResult = action.payload;
+          if (curr === searchTag) {
+            state.tagsLoading = false;
+            state.tagsResult = action.payload;
+          }
+          if (curr === searchTitle) {
+            state.postsLoading = false;
+            state.postsResult = action.payload;
+          }
+          if (curr === searchUser) {
+            state.usersLoading = false;
+            state.usersResult = action.payload;
+          }
         })
         .addCase(curr.rejected, (state, action) => {
           state.loading = false;

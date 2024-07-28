@@ -1,27 +1,29 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import TrendingBlogCard from "../Home/TrendingBlogCard";
 import { useParams } from "react-router-dom";
-import { searchTitle } from "./searchSlice";
+import DatNotFound from "../../api/DatNotFound";
 
 function SearchPosts() {
-  const dispatch = useDispatch();
-  const { query } = useParams();
-  const [check, setCheck] = useState(false);
+  const { postsResult } = useSelector((state) => state.search);
 
-  useEffect(
-    function () {
-      dispatch(searchTitle({ query })).then(({ payload }) => {
-        if (payload.data.length === 0) {
-          setCheck(true);
-        }
-      });
-    },
-    [dispatch, query]
-  );
-  if (check) {
-    return <div>No data</div>;
+  const { query } = useParams();
+
+  if (postsResult.results === 0) {
+    const type = "post";
+    return DatNotFound({ query, type });
   }
-  return <div className="">SearchPosts</div>;
+
+  return (
+    postsResult?.data && (
+      <div className="">
+        {postsResult.data.map((curr, index) => (
+          <div key={index}>
+            <TrendingBlogCard blog={curr} id={index + 1} />
+          </div>
+        ))}
+      </div>
+    )
+  );
 }
 
 export default SearchPosts;

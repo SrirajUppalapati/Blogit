@@ -29,14 +29,9 @@ const searchTitle = catchAsync(async (req, res, next) => {
   let query = Blog.find({
     title: { $regex: search, $options: "i" },
   })
-    .populate("author", "username")
-    .select("title description blogId")
+    .populate("author", "username name profilePicture")
+    .select("title description blogId updatedAt createdAt")
     .sort({ updatedAt: -1 });
-
-  const page = req.query.page * 1 || 1;
-  const limit = 7;
-  const skip = (page - 1) * limit;
-  query = query.skip(skip).limit(limit);
 
   const data = await query;
 
@@ -47,7 +42,7 @@ searchUser = catchAsync(async (req, res, next) => {
   const user = req.query.q || "";
 
   let query = User.find({ name: { $regex: user, $options: "i" } }).select(
-    "name username profilePicture"
+    "name username profilePicture bio"
   );
 
   const page = req.query.page * 1 || 1;

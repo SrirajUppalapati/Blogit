@@ -29,7 +29,7 @@ function UserActivity({ activity }) {
       </button>
       <p className="flex flex-row justify-center items-center gap-2 text-xs font-light">
         <FaEye className="text-xs" />
-        {activity.total_reads}
+        {activity?.total_reads}
       </p>
     </div>
   );

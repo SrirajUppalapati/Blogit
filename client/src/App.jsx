@@ -43,10 +43,7 @@ function App() {
           <Route path="profile/:username" element={<Profile />} />
           <Route path="signup" element={<Signup />} />
           <Route path="signin" element={<Signin />} />
-          <Route path="/search/posts/:query" element={<SearchPage />} />
-          <Route path="/search/users/:query" element={<SearchPage />} />
-          <Route path="/search/tags/:query" element={<SearchPage />} />
-
+          <Route path="/search/:query" element={<SearchPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

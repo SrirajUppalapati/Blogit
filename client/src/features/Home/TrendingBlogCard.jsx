@@ -7,7 +7,7 @@ function TrendingBlogCard({ blog, id }) {
   const { author, blogId, description, title, updatedAt, createdAt } = blog;
 
   return (
-    <Link to={`blog/${blogId}`} className="hover:cursor-pointer">
+    <Link to={`/blog/${blogId}`} className="hover:cursor-pointer">
       <div className="flex flex-row justify-start items-center ">
         <div className="ml-10 text-4xl sm:text-3xl font-bold md:text-5xl dark:text-slate-700 text-slate-100 leading-none">
           {id < 10 ? `0${id}` : id}
