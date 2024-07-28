@@ -45,11 +45,6 @@ searchUser = catchAsync(async (req, res, next) => {
     "name username profilePicture bio"
   );
 
-  const page = req.query.page * 1 || 1;
-  const limit = 7;
-  const skip = (page - 1) * limit;
-  query = query.skip(skip).limit(limit);
-
   const data = await query;
   res.status(200).json({ status: "success", results: data.length, data });
 });
