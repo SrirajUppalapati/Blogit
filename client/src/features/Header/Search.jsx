@@ -9,7 +9,7 @@ function Search() {
 
   function handleKeyDown(e) {
     const query = e.target.value;
-    if (e.code === "Enter" && query.length > 4) {
+    if (e.code === "Enter" && query.length >= 3) {
       navigate(`/search/${query}`);
     }
     if (e.code === "Escape") {

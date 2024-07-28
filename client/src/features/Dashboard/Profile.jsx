@@ -4,13 +4,13 @@ import { useParams } from "react-router-dom";
 import { getUserProfile } from "./dashSlice";
 import Spinner from "../../components/Spinner";
 import BlogCard from "../Home/BlogCard";
-import { FaGithub, FaTwitter, FaYoutube } from "react-icons/fa";
-import { IoIosLink } from "react-icons/io";
+import SocialLinks from "../Home/SocialLinks";
 
 function Profile() {
   const dispatch = useDispatch();
   const { userProfile, loading } = useSelector((state) => state.dash);
   const { username } = useParams();
+
   useEffect(
     function () {
       dispatch(getUserProfile({ username }));
@@ -76,25 +76,8 @@ function Profile() {
             </p>
           </div>
         </div>
-        <div className="flex flex-row justify-center items-center gap-x-8 pt-10">
-          {socialLinks?.youtube && (
-            <a href={socialLinks?.youtube}>
-              {<FaYoutube className="md:text-xl text-lg" />}
-            </a>
-          )}
-          {socialLinks?.twitter && (
-            <a href={socialLinks?.twitter}>
-              {<FaTwitter className="text-xl" />}
-            </a>
-          )}
-          {socialLinks?.github && (
-            <a href={socialLinks?.github}>{<FaGithub className="text-xl" />}</a>
-          )}
-          {socialLinks?.website && (
-            <a href={socialLinks?.website}>
-              {<IoIosLink className="text-xl" />}
-            </a>
-          )}{" "}
+        <div className="flex flex-row justify-center items-center pt-10">
+          <SocialLinks socialLinks={socialLinks} gap="gap-x-8" />
         </div>
       </div>
     </div>

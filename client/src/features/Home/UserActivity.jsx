@@ -13,23 +13,24 @@ function UserActivity({ activity }) {
     e.preventDefault();
   }
 
+  console.log(activity.totalComments);
   return (
     <div className=" flex flex-row md:gap-5 items-center gap-2">
       <button onClick={handleLike} className="border-0 focus:ring-0">
         <div className="text-[0.75rem] flex justify-center items-center gap-2">
           {like ? <BiSolidLike /> : <BiLike />}
-          {activity?.total_likes}
+          {activity?.totalLikes}
         </div>
       </button>
       <button onClick={handleComments}>
         <div className="text-[0.75rem] flex justify-center items-center gap-2">
           <LiaComments />
-          {activity?.total_comments}
+          {activity?.totalComments}
         </div>
       </button>
       <p className="flex flex-row justify-center items-center gap-2 text-xs font-light">
         <FaEye className="text-xs" />
-        {activity?.total_reads}
+        {activity?.totalReads}
       </p>
     </div>
   );

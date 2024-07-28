@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 
 const commentSchema = mongoose.Schema(
   {
-    blog_id: {
+    blogId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "blogs",
     },
-    blog_author: {
+    blogAuthor: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "blogs",
@@ -20,7 +20,7 @@ const commentSchema = mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId],
       ref: "comments",
     },
-    commented_by: {
+    commentedBy: {
       type: mongoose.Schema.Types.ObjectId,
       require: true,
       ref: "users",

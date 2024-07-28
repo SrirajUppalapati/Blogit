@@ -7,17 +7,17 @@ const notificationSchema = mongoose.Schema(
       enum: ["like", "comment", "reply"],
       required: true,
     },
-    blog: {
+    blogId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "blogs",
     },
-    notification_for: {
+    notificationFor: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "users",
     },
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "users",
@@ -30,7 +30,7 @@ const notificationSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "comments",
     },
-    replied_on_comment: {
+    repliedOnComment: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "comments",
     },

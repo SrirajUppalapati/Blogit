@@ -40,7 +40,7 @@ const getTrendingBlogs = catchAsync(async (req, res, next) => {
       path: "author",
       select: "name email username profilePicture -_id",
     })
-    .sort({ "activity.total_reads": -1, total_likes: -1, updatedAt: -1 })
+    .sort({ "activity.totalReads": -1, totalLikes: -1, updatedAt: -1 })
     .limit(10);
 
   res.status(200).json({
@@ -55,12 +55,12 @@ const getOneBlog = catchAsync(async (req, res, next) => {
   const incimentValue = mode === "edit" ? 0 : 1;
   let blog = await Blog.findOneAndUpdate(
     { blogId },
-    { $inc: { "activity.total_reads": incimentValue } },
+    { $inc: { "activity.totalReads": incimentValue } },
     { new: true, runValidators: true }
   )
     .populate("author", "name profilePicture username activity socialLinks")
     .select(
-      "blogId title banner description content tags activity.total_likes activity.total_comments activity.total_reads updatedAt"
+      "blogId title banner description content tags activity.totalLikes activity.totalComments activity.totalReads updatedAt"
     );
 
   if (!blog) {
@@ -106,6 +106,10 @@ const updateBlog = catchAsync(async (req, res, next) => {
     return next(new AppError("Couldnt update the blog.", 400));
   }
   res.status(201).json({ message: "success", data: blog });
+});
+
+const likeBlog = catchAsync(async (req, res, next) => {
+  const { like } = req.params;
 });
 
 const getTopTenTags = catchAsync(async (req, res, next) => {

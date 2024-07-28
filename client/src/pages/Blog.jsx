@@ -64,7 +64,7 @@ function Blog() {
           </div>
 
           {author?.socialLinks && (
-            <SocialLinks socialLinks={author.socialLinks} />
+            <SocialLinks socialLinks={author.socialLinks} gap="gap-x-2" />
           )}
         </div>
         <HR className="text-slate-100 md:mx-[20%]" />

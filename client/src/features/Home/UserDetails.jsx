@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-function UserDetails({ author }) {
+function UserDetails({ author, text }) {
   const navigate = useNavigate();
   function handleSubmit(e) {
     e.preventDefault();
@@ -18,7 +18,9 @@ function UserDetails({ author }) {
             alt="profile"
             className="max-w-7 max-h-7 rounded-full border-2 dark:border-slate-700"
           />
-          <span className="capitalize text-sm">{author?.name}</span>
+          <span className={`capitalize ${text ? text : "text-sm"}`}>
+            {author?.name}
+          </span>
         </button>
       </div>
     </div>

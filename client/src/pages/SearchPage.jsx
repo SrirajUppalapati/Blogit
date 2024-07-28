@@ -1,17 +1,21 @@
 import { Tabs } from "flowbite-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import SearchPosts from "./SearchPosts";
-import SearchUsers from "./SearchUsers";
-import SearchTags from "./SearchTags";
+import SearchPosts from "../features/Header/SearchPosts";
+import SearchUsers from "../features/Header/SearchUsers";
+import SearchTags from "../features/Header/SearchTags";
 import { useEffect } from "react";
-import { searchTag, searchTitle, searchUser } from "./searchSlice";
+import {
+  searchTag,
+  searchTitle,
+  searchUser,
+} from "../features/Header/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../../components/Spinner";
+import Spinner from "../components/Spinner";
 import { LuUsers } from "react-icons/lu";
 import { AiOutlineTags } from "react-icons/ai";
 import { SiPostman } from "react-icons/si";
-import DatNotFound from "../../api/DatNotFound";
-import AnimationWrapper from "../../components/AnimationWrapper";
+import DatNotFound from "../api/DatNotFound";
+import AnimationWrapper from "../components/AnimationWrapper";
 
 function SearchPage() {
   const { query } = useParams();
@@ -29,7 +33,7 @@ function SearchPage() {
 
   useEffect(
     function () {
-      if (query.length > 4) {
+      if (query.length >= 3) {
         dispatch(searchTag({ query }));
       }
     },
@@ -38,7 +42,7 @@ function SearchPage() {
 
   useEffect(
     function () {
-      if (query.length > 4) {
+      if (query.length >= 3) {
         dispatch(searchTitle({ query }));
       }
     },
@@ -47,7 +51,7 @@ function SearchPage() {
 
   useEffect(
     function () {
-      if (query.length > 4) {
+      if (query.length >= 3) {
         dispatch(searchUser({ query }));
       }
     },

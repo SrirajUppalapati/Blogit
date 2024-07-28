@@ -14,7 +14,10 @@ import PageNotFound from "./pages/PageNotFound";
 import Header from "./features/Header/Header";
 import Toaster from "./components/Toaster";
 import Profile from "./features/Dashboard/Profile";
-import SearchPage from "./features/Header/SearchPage";
+import React from "react";
+import Spinner from "./components/Spinner";
+//
+const LazySearch = React.lazy(() => import("./pages/SearchPage"));
 
 function App() {
   return (
@@ -43,7 +46,14 @@ function App() {
           <Route path="profile/:username" element={<Profile />} />
           <Route path="signup" element={<Signup />} />
           <Route path="signin" element={<Signin />} />
-          <Route path="/search/:query" element={<SearchPage />} />
+          <Route
+            path="/search/:query"
+            element={
+              <React.Suspense fallback={<Spinner />}>
+                <LazySearch />
+              </React.Suspense>
+            }
+          />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

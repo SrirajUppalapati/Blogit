@@ -25,7 +25,7 @@ function Blogs() {
             >
               <AllBlogs />
             </TabItem>
-            <TabItem title="Trending" icon={IoMdTrendingUp}>
+            <TabItem title="Trending" icon={IoMdTrendingUp} color="gray">
               <div className="overflow-y-auto h-[calc(100vh-10rem)] mini-scrollbar">
                 <TrendingBlogs />
               </div>
