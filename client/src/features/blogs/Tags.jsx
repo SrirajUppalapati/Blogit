@@ -29,7 +29,8 @@ function Tags() {
 
         <input
           type="text"
-          className="relative focus:ring-0 border-0 bg-slate-50 dark:bg-slate-900 rounded-md dark:text-slate-50 w-full text-sm p-3"
+          className="relative focus:ring-0 border-0 bg-slate-50 dark:bg-gray-700 rounded-md dark:text-slate-50 w-full text-sm p-3"
+          color="gray"
           onKeyDown={handleTagsKeyDown}
           disabled={blog.tags.length === 5}
         />

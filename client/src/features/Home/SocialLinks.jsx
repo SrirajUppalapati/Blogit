@@ -7,7 +7,6 @@ function SocialLinks({ socialLinks, gap }) {
     window.open(url, "_blank", "noreferrer");
   };
 
-  console.log(!gap);
   return (
     <div className={`flex ${gap} pl-4 md:pl-0`}>
       {socialLinks?.youtube && (

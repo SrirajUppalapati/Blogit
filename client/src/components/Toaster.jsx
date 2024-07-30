@@ -21,7 +21,7 @@ function Toaster() {
           className: "success",
         },
         error: {
-          duration: 6000,
+          duration: 3000,
           className: "error",
         },
       }}

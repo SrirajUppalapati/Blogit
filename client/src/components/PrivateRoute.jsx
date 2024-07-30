@@ -12,7 +12,7 @@ function PrivateRoute({ children }) {
     }
   }, [currentUser, navigate]);
 
-  return currentUser ? <>{children}</> : null;
+  return currentUser && <>{children}</>;
 }
 
 export default PrivateRoute;

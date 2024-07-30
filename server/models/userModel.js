@@ -87,11 +87,10 @@ const userSchema = mongoose.Schema(
       ref: "blogs",
       default: [],
     },
-    createdAt: { type: Date, default: Date.now() },
     passwordResetToken: String,
     passwordResetExpires: Date,
   },
-  { timeStamps: true },
+  { timestamps: true },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },

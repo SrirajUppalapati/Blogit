@@ -1,16 +1,11 @@
 import { useSelector } from "react-redux";
 import UserDetails from "../Home/UserDetails";
 import { useParams } from "react-router-dom";
-import DatNotFound from "../../api/DatNotFound";
 
 function SearchUsers() {
   const { usersResult } = useSelector((state) => state.search);
   const { query } = useParams();
 
-  if (usersResult.data?.length === 0) {
-    const type = "users";
-    return DatNotFound({ query, type });
-  }
   return (
     <div className="flex flex-col gap-6 pl-10">
       <div className="flex justify-start items-center gap-2">

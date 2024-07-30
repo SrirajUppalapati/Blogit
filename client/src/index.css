@@ -71,6 +71,10 @@
   margin-right: 10px;
 }
 
+.backdrop-blur {
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+}
 .ce-block__content,
 .ce-toolbar__content {
   max-width: 1000px;

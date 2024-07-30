@@ -1,10 +1,11 @@
 import axios from "axios";
 
-export const createBlogAPI = async ({ blog }) => {
+export const createBlogAPI = async ({ blog, token }) => {
   try {
     const data = await axios.post(
       `${import.meta.env.VITE_API_URL}/blog/createblog`,
-      blog
+      blog,
+      { headers: { authorization: `Bearer ${token}` } }
     );
     if (!data) {
       throw new Error("Couldnt upload data.");
@@ -52,11 +53,12 @@ export const getOneBlogAPI = async ({ blogId, mode }) => {
   }
 };
 
-export const updateOneBlogAPI = async ({ blog, blogId }) => {
+export const updateOneBlogAPI = async ({ blog, blogId, token }) => {
   try {
     const data = await axios.patch(
       `${import.meta.env.VITE_API_URL}/blog/${blogId}`,
-      blog
+      blog,
+      { headers: { authorization: `Bearer ${token}` } }
     );
     if (!data) {
       throw new Error(`Couldnt update the blog with id: ${blogId}`);
@@ -92,5 +94,33 @@ export const tagsWithMostPostsAPI = async () => {
     return data.data.data;
   } catch ({ response }) {
     throw response.data.message;
+  }
+};
+
+export const likeBlogAPI = async ({ blogId, token, likedByUser }) => {
+  try {
+    const data = await axios.patch(
+      `${import.meta.env.VITE_API_URL}/blog/likeblog`,
+      { blogId, likedByUser },
+      { headers: { authorization: `Bearer ${token}` } }
+    );
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const checkLikeAPI = async ({ blogId, token }) => {
+  try {
+    const data = await axios.post(
+      `${import.meta.env.VITE_API_URL}/blog/checkliked`,
+      { blogId },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return data.data;
+  } catch (err) {
+    throw err;
   }
 };

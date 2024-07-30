@@ -55,7 +55,7 @@ function BlogCard({ blog }) {
               {dateTOString(updatedAt) || dateTOString(createdAt)}
             </p>
 
-            <UserActivity activity={activity} />
+            <UserActivity activity={activity} blogid={blogId} />
 
             {width > 800 && (
               <div className="flex capitalize justify-center items-center gap-3 text-[0.75rem]">

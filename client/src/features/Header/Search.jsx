@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { MdSearch } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Search() {
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
   const navigate = useNavigate();
-
+  const location = useLocation().pathname;
   function handleKeyDown(e) {
     const query = e.target.value;
     if (e.code === "Enter" && query.length >= 3) {
@@ -14,7 +14,7 @@ function Search() {
     }
     if (e.code === "Escape") {
       setText("");
-      navigate("/");
+      if (location.includes("search")) navigate(-1);
     }
   }
 

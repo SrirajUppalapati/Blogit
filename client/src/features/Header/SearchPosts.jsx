@@ -1,17 +1,10 @@
 import { Card } from "flowbite-react";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import DatNotFound from "../../api/DatNotFound";
+import { Link } from "react-router-dom";
 import UserDetails from "../Home/UserDetails";
 
 function SearchPosts() {
   const { postsResult } = useSelector((state) => state.search);
-  const { query } = useParams();
-
-  if (postsResult.results === 0) {
-    const type = "post";
-    return DatNotFound({ query, type });
-  }
 
   return (
     <div className="grid grid-cols-2 gap-y-8 gap-x-8 px-4 md:grid-cols-4">

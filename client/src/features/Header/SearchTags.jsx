@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { changeFilter } from "../Home/homeSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import DatNotFound from "../../api/DatNotFound";
 
 function SearchTags() {
   const { tagsResult } = useSelector((state) => state.search);
@@ -15,10 +14,6 @@ function SearchTags() {
     navigate("/");
   }
 
-  if (tagsResult.length === 0) {
-    const type = "tags";
-    return DatNotFound({ query, type });
-  }
   return (
     <div className="pl-5">
       <div className="flex justify-start items-center gap-2 pl-3 pb-5">

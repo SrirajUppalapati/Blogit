@@ -59,25 +59,16 @@ const blogSchema = mongoose.Schema(
         type: Number,
         default: 0,
       },
-      totalParentComments: {
-        type: Number,
-        default: 0,
-      },
     },
     comments: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "comments",
     },
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now(),
+    repliedTo: {
+      type: Boolean,
     },
   },
-  { timeStamps: true }
+  { timestamps: true }
 );
 
 blogSchema.set({ timeStamps: true });

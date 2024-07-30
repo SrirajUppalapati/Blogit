@@ -13,6 +13,7 @@ const ErrorHandler = require("./controllers/errorController");
 const cookieParser = require("cookie-parser");
 const blogRouter = require("./routes/blogRoute");
 const searchRouter = require("./routes/searchRoute");
+const commentRouter = require("./routes/commentRoute");
 
 const app = express();
 
@@ -65,6 +66,7 @@ app.use("/api/v1/blog", blogRouter);
 
 app.use("/api/v1/search", searchRouter);
 
+app.use("/api/v1/comment", commentRouter);
 //Route error handler
 app.all("*", (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl} on this server.`, 404));

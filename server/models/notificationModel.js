@@ -12,9 +12,10 @@ const notificationSchema = mongoose.Schema(
       required: true,
       ref: "blogs",
     },
-    notificationFor: {
+    authorId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+      lowercase: true,
       ref: "users",
     },
     userId: {
@@ -39,9 +40,7 @@ const notificationSchema = mongoose.Schema(
       default: false,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const Notification = mongoose.model("notifications", notificationSchema);

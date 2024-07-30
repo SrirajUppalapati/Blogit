@@ -9,8 +9,6 @@ import { setEditor } from "./blogSlice";
 function Editor() {
   const { blog, editor } = useSelector((state) => state.blog);
 
-  const { loading } = useSelector((state) => state.home);
-
   const { blogId } = useParams();
 
   const dispatch = useDispatch();
@@ -36,7 +34,7 @@ function Editor() {
         );
       }
     },
-    [blog.content, loading, blogId, dispatch]
+    [blog.content, blogId, dispatch]
   );
 
   return <div id="editorjs"></div>;

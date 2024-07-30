@@ -1,6 +1,7 @@
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const Blog = require("../models/blogModel");
+const Notification = require("../models/notificationModel");
 
 const getAllBlogs = catchAsync(async (req, res, next) => {
   let query;
@@ -92,7 +93,6 @@ const createBlog = catchAsync(async (req, res, next) => {
 
 const updateBlog = catchAsync(async (req, res, next) => {
   const { title, content, description, tags, banner } = req.body;
-
   const blog = await Blog.findOneAndUpdate(
     { blogId: req.params.blogId, author: req.user.id },
     { title, content, description, tags, banner, updatedAt: Date.now() },
@@ -106,10 +106,6 @@ const updateBlog = catchAsync(async (req, res, next) => {
     return next(new AppError("Couldnt update the blog.", 400));
   }
   res.status(201).json({ message: "success", data: blog });
-});
-
-const likeBlog = catchAsync(async (req, res, next) => {
-  const { like } = req.params;
 });
 
 const getTopTenTags = catchAsync(async (req, res, next) => {
@@ -131,6 +127,52 @@ const getTopTenTags = catchAsync(async (req, res, next) => {
   res.status(200).json({ data: topTen });
 });
 
+const likeBlog = catchAsync(async (req, res, next) => {
+  const { blogId, likedByUser } = req.body;
+  const val = likedByUser ? 1 : -1;
+  const liked = await Blog.findOneAndUpdate(
+    { _id: blogId },
+    { $inc: { "activity.totalLikes": val } },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .populate("author")
+    .select("activity.totalLikes");
+
+  if (!liked) {
+    return next(new AppError("You are not the correct user."), 400);
+  }
+  let data;
+  if (likedByUser) {
+    data = await Notification.create({
+      type: "like",
+      blogId,
+      authorId: liked.author._id,
+      userId: req.user.id,
+    });
+  } else {
+    data = await Notification.findOneAndDelete({
+      type: "like",
+      blogId,
+      authorId: liked.author._id,
+      userId: req.user.id,
+    });
+  }
+  res.status(200).json({ message: "success", data });
+});
+
+const checkLiked = catchAsync(async (req, res, next) => {
+  const { blogId } = req.body;
+  const data = await Notification.findOne({
+    _id: blogId,
+    userId: req.user.id,
+    type: "like",
+  });
+  res.status(200).json({ status: "success", result: data ? true : false });
+});
+
 module.exports = {
   createBlog,
   getAllBlogs,
@@ -138,4 +180,6 @@ module.exports = {
   updateBlog,
   getTopTenTags,
   getTrendingBlogs,
+  likeBlog,
+  checkLiked,
 };

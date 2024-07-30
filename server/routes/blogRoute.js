@@ -9,6 +9,8 @@ const {
   getTrendingBlogs,
   searchTags,
   searchTitle,
+  likeBlog,
+  checkLiked,
 } = require("../controllers/blogController");
 
 const router = express.Router();
@@ -23,7 +25,12 @@ router.route("/trendingblogs").get(getTrendingBlogs);
 
 router.use(verifyJWT);
 
+router.route("/checkliked").post(checkLiked);
+
+router.route("/likeblog").patch(likeBlog);
+
 router.route("/createblog").post(createBlog);
+
 router.route("/:blogId").patch(updateBlog);
 
 module.exports = router;

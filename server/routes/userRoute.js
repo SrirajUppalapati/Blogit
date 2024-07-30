@@ -6,7 +6,6 @@ const {
   signout,
 } = require("../controllers/authController");
 const { getAllUsers, getUser } = require("../controllers/userController");
-const { verifyJWT } = require("../utils/jwt");
 
 const router = express.Router();
 
@@ -19,4 +18,5 @@ router.route("/google").post(googleAuth);
 router.route("/signout").post(signout);
 
 router.route("/:username").get(getUser);
+
 module.exports = router;

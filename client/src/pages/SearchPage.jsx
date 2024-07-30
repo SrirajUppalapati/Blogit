@@ -1,5 +1,5 @@
 import { Tabs } from "flowbite-react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SearchPosts from "../features/Header/SearchPosts";
 import SearchUsers from "../features/Header/SearchUsers";
 import SearchTags from "../features/Header/SearchTags";
@@ -14,8 +14,8 @@ import Spinner from "../components/Spinner";
 import { LuUsers } from "react-icons/lu";
 import { AiOutlineTags } from "react-icons/ai";
 import { SiPostman } from "react-icons/si";
-import DatNotFound from "../api/DatNotFound";
 import AnimationWrapper from "../components/AnimationWrapper";
+import toast from "react-hot-toast";
 
 function SearchPage() {
   const { query } = useParams();
@@ -31,79 +31,40 @@ function SearchPage() {
     tagsResult,
   } = useSelector((state) => state.search);
 
-  useEffect(
-    function () {
-      if (query.length >= 3) {
-        dispatch(searchTag({ query }));
-      }
-    },
-    [dispatch, query]
-  );
+  useEffect(() => {
+    if (query.length >= 3) {
+      dispatch(searchTag({ query }));
+      dispatch(searchTitle({ query }));
+      dispatch(searchUser({ query }));
+    }
+  }, [dispatch, query]);
 
-  useEffect(
-    function () {
-      if (query.length >= 3) {
-        dispatch(searchTitle({ query }));
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.code === "Escape") {
+        navigate(-1);
       }
-    },
-    [dispatch, query]
-  );
+    };
 
-  useEffect(
-    function () {
-      if (query.length >= 3) {
-        dispatch(searchUser({ query }));
-      }
-    },
-    [dispatch, query]
-  );
+    document.addEventListener("keydown", handleKeyDown, false);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown, false);
+    };
+  }, [navigate]);
 
-  useEffect(
-    function () {
-      document.addEventListener(
-        "keydown",
-        (e) => {
-          if (e.code === "Escape") {
-            navigate("/");
-          }
-        },
-        false
-      );
-      return document.removeEventListener(
-        "keydown",
-        (e) => {
-          if (e.code === "Escape") {
-            navigate("/");
-          }
-        },
-        false
-      );
-    },
-    [navigate]
-  );
+  useEffect(() => {
+    if (
+      postsResult.results === 0 &&
+      tagsResult.length === 0 &&
+      usersResult.data?.length === 0
+    ) {
+      toast.error(`No search results for ${query}`);
+      navigate(-1);
+    }
+  }, [postsResult, tagsResult, usersResult, query, navigate]);
 
   if (tagsLoading || postsLoading || usersLoading) {
     return <Spinner />;
-  }
-
-  console.log(postsResult, tagsResult, usersResult);
-  if (
-    postsResult.results === 0 &&
-    tagsResult.length === 0 &&
-    usersResult.data?.length === 0
-  ) {
-    const type = "Posts, Users or Tags";
-    return (
-      <div className="min-h-screen flex flex-col justify-center items-center gap-20">
-        <DatNotFound query={query} type={type} />
-        <Link
-          to="/"
-          className="text-lg hover:underline underline-offset-8 dark:hover:text-slate-500 hover:text-slate-500"
-        >
-          &larr; Go back to all blogs
-        </Link>
-      </div>
-    );
   }
 
   return (
@@ -118,7 +79,6 @@ function SearchPage() {
         <Tabs aria-label="Default tabs" variant="default">
           {postsResult.results !== 0 && (
             <Tabs.Item active title="Posts" icon={SiPostman}>
-              {" "}
               <SearchPosts />
             </Tabs.Item>
           )}

@@ -43,6 +43,10 @@ const homeSlice = new createSlice({
       state.filter = action.payload;
       state.page = 1;
     },
+
+    editBlog: (state, action) => {
+      state.blog = action.payload;
+    },
   },
   extraReducers: (builder) => {
     thunks.map((curr) =>
@@ -81,6 +85,6 @@ const homeSlice = new createSlice({
   },
 });
 
-export const { increasePage, changeFilter } = homeSlice.actions;
+export const { increasePage, changeFilter, editBlog } = homeSlice.actions;
 
 export default homeSlice.reducer;
