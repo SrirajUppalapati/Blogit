@@ -34,7 +34,6 @@ function LikeBlog() {
       });
 
       let count = blog.activity.totalLikes;
-      console.log(count);
       count = newLikeState ? count + 1 : count - 1;
       dispatch(
         editBlog({ ...blog, activity: { ...blog.activity, totalLikes: count } })

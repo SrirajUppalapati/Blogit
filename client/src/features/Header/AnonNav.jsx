@@ -2,12 +2,13 @@ import { Button, Dropdown } from "flowbite-react";
 import { FaPaperPlane } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import AnimationWrapper from "../../components/AnimationWrapper";
 
 function AnonNav() {
   const { theme } = useSelector((state) => state.theme);
 
   return (
-    <>
+    <AnimationWrapper>
       <div className="md:hidden">
         <Dropdown arrowIcon={true} inline>
           <div className="flex flex-col gap-y-2 mx-3 my-2 rounded">
@@ -48,7 +49,7 @@ function AnonNav() {
           </Button>
         </Link>
       </div>
-    </>
+    </AnimationWrapper>
   );
 }
 

@@ -4,7 +4,7 @@ import { HR } from "flowbite-react";
 import UserDetails from "./UserDetails";
 
 function TrendingBlogCard({ blog, id }) {
-  const { author, blogId, description, title, updatedAt, createdAt } = blog;
+  const { author, blogId, description, title, createdAt } = blog;
 
   return (
     <Link to={`/blog/${blogId}`} className="hover:cursor-pointer">
@@ -15,7 +15,7 @@ function TrendingBlogCard({ blog, id }) {
         <div className="flex flex-col pl-10">
           <UserDetails author={author} />
           <p className="text-[0.65rem] font-light ml-8">
-            {dateTOString(updatedAt) || dateTOString(createdAt)}
+            {dateTOString(createdAt)}
           </p>
           <div className="dark:text-white text-black">
             <p className="font-bold text-xl mt-4 leading-tight text-pretty break-words line-clamp-2 md:text-lg">

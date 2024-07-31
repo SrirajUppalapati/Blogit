@@ -15,7 +15,6 @@ function BlogCard({ blog }) {
     blogId,
     description,
     title,
-    updatedAt,
     banner,
     createdAt,
     tags,
@@ -51,9 +50,7 @@ function BlogCard({ blog }) {
             </p>
           </div>
           <div className="mt-4 flex flex-row gap-10 items-center">
-            <p className="text-xs font-light">
-              {dateTOString(updatedAt) || dateTOString(createdAt)}
-            </p>
+            <p className="text-xs font-light">{dateTOString(createdAt)}</p>
 
             <UserActivity activity={activity} blogid={blogId} />
 

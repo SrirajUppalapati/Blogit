@@ -7,6 +7,7 @@ import UserNav from "./UserNav";
 import AnonNav from "./AnonNav";
 import { FaMoon, FaSun } from "react-icons/fa";
 import Search from "./Search";
+import AnimationWrapper from "../../components/AnimationWrapper";
 
 function Header() {
   const { currentUser } = useSelector((state) => state.auth);
@@ -15,7 +16,7 @@ function Header() {
   const location = useLocation().pathname;
 
   return (
-    <>
+    <AnimationWrapper>
       <div className={`fixed top-0 left-0 w-full z-50`}>
         <Navbar
           fluid
@@ -55,7 +56,7 @@ function Header() {
           </div>
         </Navbar>
       </div>
-    </>
+    </AnimationWrapper>
   );
 }
 

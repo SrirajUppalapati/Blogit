@@ -15,13 +15,15 @@ function TrendingBlogs() {
   );
 
   return (
-    <div className="flex flex-col gap-4 pt-5 pr-5">
-      {trendingBlogs.map((curr, index) => (
-        <AnimationWrapper key={index}>
-          <TrendingBlogCard blog={curr} id={index + 1} />
-        </AnimationWrapper>
-      ))}
-    </div>
+    <AnimationWrapper>
+      <div className="flex flex-col gap-4 pt-5 pr-5">
+        {trendingBlogs.map((curr, index) => (
+          <AnimationWrapper key={index}>
+            <TrendingBlogCard blog={curr} id={index + 1} />
+          </AnimationWrapper>
+        ))}
+      </div>
+    </AnimationWrapper>
   );
 }
 

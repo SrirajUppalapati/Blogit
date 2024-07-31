@@ -11,9 +11,9 @@ const getUser = catchAsync(async (req, res, next) => {
     })
     .select("-password -_id -role");
 
-  if (!data) {
+  if (!data.length) {
     return next(
-      new AppError(`No document found with id ${req.params.id}`, 404)
+      new AppError(`No document found with id ${req.params.username}`, 404)
     );
   }
 

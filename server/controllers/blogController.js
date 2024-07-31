@@ -15,7 +15,7 @@ const getAllBlogs = catchAsync(async (req, res, next) => {
       path: "author",
       select: "name email username profilePicture -_id",
     })
-    .sort({ updatedAt: -1 });
+    .sort({ createdAt: -1 });
 
   const page = req.query.page * 1 || 1;
   const limit = 15;
@@ -41,7 +41,7 @@ const getTrendingBlogs = catchAsync(async (req, res, next) => {
       path: "author",
       select: "name email username profilePicture -_id",
     })
-    .sort({ "activity.totalReads": -1, totalLikes: -1, updatedAt: -1 })
+    .sort({ "activity.totalReads": -1, totalLikes: -1, createdAt: -1 })
     .limit(10);
 
   res.status(200).json({
@@ -61,7 +61,7 @@ const getOneBlog = catchAsync(async (req, res, next) => {
   )
     .populate("author", "name profilePicture username activity socialLinks")
     .select(
-      "blogId title banner description content tags activity.totalLikes activity.totalComments activity.totalReads updatedAt"
+      "blogId title banner description content tags activity.totalLikes activity.totalComments activity.totalReads createdAt"
     );
 
   if (!blog) {
@@ -95,7 +95,7 @@ const updateBlog = catchAsync(async (req, res, next) => {
   const { title, content, description, tags, banner } = req.body;
   const blog = await Blog.findOneAndUpdate(
     { blogId: req.params.blogId, author: req.user.id },
-    { title, content, description, tags, banner, updatedAt: Date.now() },
+    { title, content, description, tags, banner, updatedAt: Date.now },
     {
       new: true,
       runValidators: true,
@@ -105,6 +105,7 @@ const updateBlog = catchAsync(async (req, res, next) => {
   if (!blog) {
     return next(new AppError("Couldnt update the blog.", 400));
   }
+
   res.status(201).json({ message: "success", data: blog });
 });
 
@@ -112,10 +113,7 @@ const getTopTenTags = catchAsync(async (req, res, next) => {
   const topTen = await Blog.aggregate([
     {
       $match: {
-        $or: [
-          { createdAt: { $gt: new Date("2024-01-01T00:00:00Z") } },
-          { updatedAt: { $gt: new Date("2024-01-01T00:00:00Z") } },
-        ],
+        createdAt: { $gt: new Date("2024-01-01T00:00:00Z") },
       },
     },
     { $unwind: "$tags" },
@@ -160,6 +158,9 @@ const likeBlog = catchAsync(async (req, res, next) => {
       userId: req.user.id,
     });
   }
+  if (!data) {
+    return next(new AppError("Couldn't create the notification.", 400));
+  }
   res.status(200).json({ message: "success", data });
 });
 
@@ -170,6 +171,9 @@ const checkLiked = catchAsync(async (req, res, next) => {
     userId: req.user.id,
     type: "like",
   });
+  if (!data) {
+    return next(new AppError("Couldn't check number of likes.", 400));
+  }
   res.status(200).json({ status: "success", result: data ? true : false });
 });
 

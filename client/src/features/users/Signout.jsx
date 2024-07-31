@@ -24,6 +24,7 @@ function Signout() {
   if (loading) {
     return <Spinner />;
   }
+
   return (
     <span
       onClick={handleSignout}

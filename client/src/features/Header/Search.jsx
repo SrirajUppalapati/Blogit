@@ -29,7 +29,7 @@ function Search() {
           <MdSearch className="text-xl" />
         </button>
       </div>
-      <div className="mt-2 px-4 absolute w-full top-full md:inset-0 md:left-[10%] md:top-[7%] lg:left-[7%] md:w-fit">
+      <div className="mt-2 px-4 absolute w-full top-full md:inset-0 md:left-[10%] md:top-[7%] lg:left-[10%] md:w-fit">
         <input
           type="text"
           placeholder="Search"

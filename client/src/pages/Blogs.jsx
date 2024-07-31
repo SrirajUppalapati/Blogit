@@ -2,7 +2,7 @@ import AnimationWrapper from "../components/AnimationWrapper";
 import { HR, TabItem, Tabs } from "flowbite-react";
 import { IoMdHome, IoMdTrendingUp } from "react-icons/io";
 import AllBlogs from "../features/Home/AllBlogs";
-import TrendingBlogs from "../features/Home/TrendingBlogs";
+import TrendingBlogs from "../features/Home/TrendingBLogs";
 import BlogFilters from "../features/Home/BlogFilters";
 
 function Blogs() {

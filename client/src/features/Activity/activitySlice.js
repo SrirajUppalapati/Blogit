@@ -17,7 +17,10 @@ const activitySlice = new createSlice({
   initialState,
   reducers: {
     addComments: (state, action) => {
-      state.comments = action.payload;
+      state.comments = [action.payload, ...state.comments];
+    },
+    deleteComments: (state, action) => {
+      state.comments.splice(action.payload, 1);
     },
   },
   extraReducers: (builder) =>
@@ -36,6 +39,6 @@ const activitySlice = new createSlice({
       }),
 });
 
-export const { addComments } = activitySlice.actions;
+export const { addComments, deleteComments } = activitySlice.actions;
 
 export default activitySlice.reducer;

@@ -1,46 +1,50 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, HR } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import AnimationWrapper from "../../components/AnimationWrapper";
 import Banner from "./Banner";
 import Editor from "./Editor";
 import BlogTItle from "./BlogTItle";
-import { useCallback } from "react";
 import { writeBlog } from "./blogSlice";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 function CreateBlog({ publishBlog, handleErrors }) {
   const { theme } = useSelector((state) => state.theme);
   const { editor } = useSelector((state) => state.blog);
   const dispatch = useDispatch();
 
-  const handleFormSubmit = useCallback(
-    async function (e) {
-      e.preventDefault();
+  useEffect(function () {
+    if (editor.isReady) {
+      window.location.reload();
+    }
+  }, []);
 
-      if (!handleErrors()) {
-        return;
-      }
-      if (editor.isReady) {
-        try {
-          const data = await editor.save();
-          if (data.blocks.length) {
-            dispatch(writeBlog({ content: data }));
-            if (!handleErrors()) {
-              return;
-            }
-            publishBlog(true);
+  const handleFormSubmit = async function (e) {
+    e.preventDefault();
+
+    if (!handleErrors()) {
+      return;
+    }
+    if (editor.isReady) {
+      try {
+        const data = await editor.save();
+        if (data.blocks.length) {
+          dispatch(writeBlog({ content: data }));
+          if (!handleErrors()) {
             return;
-          } else {
-            toast.error("Please add some content.");
           }
-        } catch (error) {
-          console.error("Failed to save editor content:", error);
-          toast.error("Failed to save content.");
+          publishBlog(true);
+          return;
+        } else {
+          toast.error("Please add some content.");
         }
+      } catch (error) {
+        console.error("Failed to save editor content:", error);
+        toast.error("Failed to save content.");
       }
-    },
-    [editor, dispatch, handleErrors, publishBlog]
-  );
+    }
+  };
 
   return (
     <AnimationWrapper>

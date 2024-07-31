@@ -24,9 +24,21 @@ export const createCommentAPI = async ({ data, token }) => {
     if (!data) {
       throw new Error("Couldnt get all blogs");
     }
+
     return data.data;
   } catch (err) {
-    console.log(err);
+    throw err;
+  }
+};
+
+export const deleteCommentAPI = async ({ id, token }) => {
+  try {
+    const data = await axios.delete(
+      `${import.meta.env.VITE_API_URL}/comment/deletecomment/${id}`,
+      { headers: { authorization: `Bearer ${token}` } }
+    );
+    return data.data;
+  } catch (err) {
     throw err;
   }
 };

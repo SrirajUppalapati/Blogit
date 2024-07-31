@@ -60,10 +60,6 @@ const blogSchema = mongoose.Schema(
         default: 0,
       },
     },
-    comments: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "comments",
-    },
     repliedTo: {
       type: Boolean,
     },

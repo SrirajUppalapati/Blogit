@@ -24,17 +24,6 @@ const commentSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    children: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "comments",
-    },
-    parent: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "comments",
-    },
-    isReply: {
-      type: Boolean,
-    },
   },
   { timestamps: true }
 );
@@ -53,24 +42,13 @@ commentSchema.pre("save", async function () {
       runValidators: true,
     }
   );
-  if (!this.parent) {
-    await Notification.create({
-      type: "comment",
-      blogId: this.blogId,
-      authorId: this.authorId,
-      userId: this.userId,
-      comment: this._id,
-    });
-  } else {
-    await Notification.create({
-      type: "reply",
-      blogId: this.blogId,
-      authorId: this.authorId,
-      userId: this.userId,
-      comment: this._id,
-      repliedOnComment: this.parent,
-    });
-  }
+  await Notification.create({
+    type: "comment",
+    blogId: this.blogId,
+    authorId: this.authorId,
+    userId: this.userId,
+    comment: this._id,
+  });
 });
 
 const Comment = mongoose.model("comments", commentSchema);

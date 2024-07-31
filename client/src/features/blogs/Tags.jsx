@@ -2,6 +2,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { writeBlog } from "./blogSlice";
 import Tag from "./Tag";
+import AnimationWrapper from "../../components/AnimationWrapper";
 
 function Tags() {
   const dispatch = useDispatch();
@@ -34,9 +35,13 @@ function Tags() {
           onKeyDown={handleTagsKeyDown}
           disabled={blog.tags.length === 5}
         />
-        {blog.tags?.map((tag, index) => (
-          <Tag tag={tag} key={index} />
-        ))}
+        <div className="flex flex-row">
+          {blog.tags?.map((tag, index) => (
+            <AnimationWrapper key={index}>
+              <Tag tag={tag} />
+            </AnimationWrapper>
+          ))}
+        </div>
         <p className="text-xs text-right text-slate-300 mt-1 italic mr-1">
           {5 - blog.tags?.length || 5} Tags left
         </p>

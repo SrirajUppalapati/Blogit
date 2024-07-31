@@ -5,7 +5,8 @@ const {
   googleAuth,
   signout,
 } = require("../controllers/authController");
-const { getAllUsers, getUser } = require("../controllers/userController");
+const { getUser } = require("../controllers/userController");
+const { verifyJWT } = require("../utils/jwt");
 
 const router = express.Router();
 

@@ -5,6 +5,7 @@ export const getUserProfileAPI = async ({ username }) => {
     const data = await axios.get(
       `${import.meta.env.VITE_API_URL}/users/${username}`
     );
+
     if (!data) {
       throw new Error(`Couldnt get the user with id: ${username}`);
     }

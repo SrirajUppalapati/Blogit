@@ -11,8 +11,9 @@ export const createBlogAPI = async ({ blog, token }) => {
       throw new Error("Couldnt upload data.");
     }
     return data;
-  } catch ({ response }) {
-    throw response.data.message;
+  } catch (data) {
+    console.log(data);
+    // throw response.data.message;
   }
 };
 
