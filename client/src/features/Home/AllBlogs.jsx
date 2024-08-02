@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeFilter, getBlogs, increasePage } from "./homeSlice";
-import { Spinner } from "flowbite-react";
+import Spinner from "../../components/Spinner";
 import BlogCard from "./BlogCard";
 import toast from "react-hot-toast";
 import { MdClose } from "react-icons/md";
@@ -9,7 +9,9 @@ import AnimationWrapper from "../../components/AnimationWrapper";
 
 function AllBlogs() {
   const dispatch = useDispatch();
-  const { blogs, loading, page, filter } = useSelector((state) => state.home);
+  const { blogs, blogsLoading, page, filter } = useSelector(
+    (state) => state.home
+  );
   const [disable, setDisable] = useState(false);
   const lastBlogRef = useRef(null);
 
@@ -68,9 +70,9 @@ function AllBlogs() {
         <button
           onClick={handlePage}
           className={`${disable && "hidden"} pl-10 hover:underline`}
-          disabled={loading}
+          disabled={blogsLoading}
         >
-          {loading ? <Spinner color="gray" /> : "Load more"}
+          {blogsLoading ? <Spinner /> : "Load more"}
         </button>
       </div>
     </AnimationWrapper>

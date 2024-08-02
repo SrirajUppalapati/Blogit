@@ -171,9 +171,7 @@ const checkLiked = catchAsync(async (req, res, next) => {
     userId: req.user.id,
     type: "like",
   });
-  if (!data) {
-    return next(new AppError("Couldn't check number of likes.", 400));
-  }
+
   res.status(200).json({ status: "success", result: data ? true : false });
 });
 

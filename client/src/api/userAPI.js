@@ -14,3 +14,37 @@ export const getUserProfileAPI = async ({ username }) => {
     throw response.data.message;
   }
 };
+
+export const updateUserProfileAPI = async ({ data, token }) => {
+  try {
+    const user = await axios.patch(
+      `${import.meta.env.VITE_API_URL}/profile/updateprofile`,
+      data,
+      { headers: { authorization: `Bearer ${token}` } }
+    );
+
+    if (!user) {
+      throw new Error(`Couldnt update the profile!`);
+    }
+    return user.data.data;
+  } catch ({ response }) {
+    throw response.data.message;
+  }
+};
+
+export const updateUserPasswordAPI = async ({ data, token }) => {
+  try {
+    const user = await axios.patch(
+      `${import.meta.env.VITE_API_URL}/profile/updatepassword`,
+      data,
+      { headers: { authorization: `Bearer ${token}` } }
+    );
+
+    if (!user) {
+      throw new Error(`Couldnt update the password!`);
+    }
+    return user.data.data;
+  } catch ({ response }) {
+    throw response.data.message;
+  }
+};

@@ -9,7 +9,9 @@ const initialState = {
   blogs: [],
   trendingBlogs: [],
   blog: [],
-  loading: false,
+  trendingLoading: false,
+  blogsLoading: false,
+  oneBlogLoading: false,
   error: null,
   page: 1,
   filter: null,
@@ -52,11 +54,18 @@ const homeSlice = new createSlice({
     thunks.map((curr) =>
       builder
         .addCase(curr.pending, (state) => {
-          state.loading = true;
+          if (curr === getBlogs) state.blogsLoading = true;
+
+          if (curr === getTrendingBlogs) state.trendingLoading = true;
+
+          if (curr === getOneBlog) state.oneBlogLoading = true;
+
           state.error = null;
         })
         .addCase(curr.rejected, (state, action) => {
-          state.loading = false;
+          state.blogsLoading = false;
+          state.trendingLoading = false;
+          state.oneBlogLoading = false;
           state.error = action.error;
         })
     );
@@ -68,18 +77,18 @@ const homeSlice = new createSlice({
         } else {
           state.blogs = state.blogs.concat(action.payload);
         }
-        state.loading = false;
+        state.blogsLoading = false;
         state.error = null;
       })
       .addCase(getTrendingBlogs.fulfilled, (state, action) => {
         state.trendingBlogs = action.payload;
-        state.loading = false;
+        state.trendingLoading = false;
         state.error = null;
       })
 
       .addCase(getOneBlog.fulfilled, (state, action) => {
         state.blog = action.payload;
-        state.loading = false;
+        state.oneBlogLoading = false;
         state.error = null;
       });
   },

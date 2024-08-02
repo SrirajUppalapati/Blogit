@@ -26,7 +26,7 @@ const logIn = catchAsync(async (req, res, next) => {
   }
 
   const user = await User.findOne({ email }).select(
-    "name email username profilePicture password"
+    "-role -__v -updatedAt -createdAt"
   );
 
   if (!user || !(await user.checkPassword(password, user.password))) {
@@ -39,9 +39,7 @@ const logIn = catchAsync(async (req, res, next) => {
 const googleAuth = catchAsync(async (req, res, next) => {
   const { email, name, profilePicture } = req.body;
 
-  const user = await User.findOne({ email }).select(
-    "-socialLinks -accountInfo -bio -blogs -role -__v"
-  );
+  const user = await User.findOne({ email }).select("-role -__v");
 
   if (user) {
     return createAndSendJWT(user, res, 200);
@@ -67,7 +65,7 @@ const signout = (req, res, next) => {
   res
     .clearCookie("token", {
       path: "/",
-      domain: process.env.COOKIE_DOMAIN || undefined,
+      domain: "localhost",
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",

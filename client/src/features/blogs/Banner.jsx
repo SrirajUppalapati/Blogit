@@ -4,7 +4,7 @@ import { uploadBanner } from "./blogSlice";
 
 function Banner() {
   const dispatch = useDispatch();
-  const { blog, loading } = useSelector((state) => state.blog);
+  const { blog, bannerLoading } = useSelector((state) => state.blog);
 
   function handleImageUpload(e) {
     e.preventDefault();
@@ -14,7 +14,7 @@ function Banner() {
 
   return (
     <div className="flex w-full items-center justify-center mb-4">
-      {loading ? (
+      {bannerLoading ? (
         <div className="h-[360px] w-[640px] flex items-center justify-center bg-slate-100 dark:bg-slate-400 rounded-lg border-2 border-dashed border-gray-300">
           <Spinner size="lg" />
         </div>
@@ -61,7 +61,7 @@ function Banner() {
             type="file"
             accept="image/*"
             onChange={handleImageUpload}
-            disabled={loading}
+            disabled={bannerLoading}
           />
         </Label>
       )}

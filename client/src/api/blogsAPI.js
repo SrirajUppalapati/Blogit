@@ -11,9 +11,8 @@ export const createBlogAPI = async ({ blog, token }) => {
       throw new Error("Couldnt upload data.");
     }
     return data;
-  } catch (data) {
-    console.log(data);
-    // throw response.data.message;
+  } catch ({ response }) {
+    throw response.data.message;
   }
 };
 
@@ -106,8 +105,8 @@ export const likeBlogAPI = async ({ blogId, token, likedByUser }) => {
       { headers: { authorization: `Bearer ${token}` } }
     );
     return data;
-  } catch (err) {
-    throw err;
+  } catch ({ response }) {
+    throw response.data.message;
   }
 };
 
@@ -121,7 +120,7 @@ export const checkLikeAPI = async ({ blogId, token }) => {
       }
     );
     return data.data;
-  } catch (err) {
-    throw err;
+  } catch ({ response }) {
+    throw response.data.message;
   }
 };

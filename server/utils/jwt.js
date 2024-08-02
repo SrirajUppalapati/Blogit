@@ -17,10 +17,11 @@ const createAndSendJWT = (user, res, statusCode) => {
   const cookieOptions = {
     maxAge: Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000,
     httpOnly: true,
+    domain: "localhost",
     sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     secure: process.env.NODE_ENV === "production",
   };
-
+  user.password = undefined;
   res.cookie("token", token, cookieOptions);
   res.status(statusCode).json({ status: "success", token, data: user });
 };
@@ -36,11 +37,11 @@ const verifyJWT = catchAsync(async (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
     const user = await User.findById(decoded.id);
     if (!user) {
-      return next(new AppError("User no longer exists.", 400));
+      return next(new AppError("Please logout and login Again!", 400));
     }
+    req.user = decoded;
     next();
   } catch (err) {
     return next(new AppError("Invalid or expired token", 400));

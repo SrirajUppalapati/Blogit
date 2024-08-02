@@ -3,16 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTrendingBlogs } from "./homeSlice";
 import AnimationWrapper from "../../components/AnimationWrapper";
 import TrendingBlogCard from "./TrendingBlogCard";
+import Spinner from "../../components/Spinner";
 
 function TrendingBlogs() {
   const dispatch = useDispatch();
-  const { trendingBlogs } = useSelector((state) => state.home);
+  const { trendingBlogs, trendingLoading } = useSelector((state) => state.home);
   useEffect(
     function () {
       dispatch(getTrendingBlogs());
     },
     [dispatch]
   );
+
+  if (trendingLoading) {
+    return <Spinner />;
+  }
 
   return (
     <AnimationWrapper>

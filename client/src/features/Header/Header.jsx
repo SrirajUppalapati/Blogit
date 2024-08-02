@@ -1,18 +1,15 @@
 import { Navbar } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { FaPaperPlane } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleTheme } from "../Dashboard/themeSlice";
+import { useSelector } from "react-redux";
 import UserNav from "./UserNav";
 import AnonNav from "./AnonNav";
-import { FaMoon, FaSun } from "react-icons/fa";
 import Search from "./Search";
 import AnimationWrapper from "../../components/AnimationWrapper";
 
 function Header() {
   const { currentUser } = useSelector((state) => state.auth);
   const { theme } = useSelector((state) => state.theme);
-  const dispatch = useDispatch();
   const location = useLocation().pathname;
 
   return (
@@ -37,12 +34,6 @@ function Header() {
 
           <Search />
           <div className="flex gap-5 justify-center items-center ml-5">
-            <button
-              onClick={() => dispatch(toggleTheme(theme))}
-              className="text-xl"
-            >
-              {theme === "dark" ? <FaMoon /> : <FaSun />}
-            </button>
             {!location.startsWith("/write") && (
               <Link to="/write" className="hidden md:block">
                 <p className="flex justify-center items-center italic gap-[0.3rem] text-sm border-2 px-3 py-2 rounded-2xl bg-slate-800 text-white   enabled:hover:bg-gray-900 dark:border-cyan-600 dark:bg-cyan-600 dark:text-white dark:enabled:hover:border-cyan-700 dark:enabled:hover:bg-cyan-700">

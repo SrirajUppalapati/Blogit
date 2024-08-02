@@ -16,7 +16,7 @@ import CommentBlog from "../features/Activity/CommentBlog";
 
 function Blog() {
   const dispatch = useDispatch();
-  const { blog, loading } = useSelector((state) => state.home);
+  const { blog, oneBlogLoading } = useSelector((state) => state.home);
   const { currentUser } = useSelector((state) => state.auth);
   const { blogId } = useParams();
 
@@ -33,7 +33,7 @@ function Blog() {
     [dispatch, blogId, navigate]
   );
 
-  if (loading || !Object.keys(blog).length) {
+  if (oneBlogLoading || !Object.keys(blog).length) {
     return <Spinner />;
   }
 

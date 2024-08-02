@@ -12,6 +12,16 @@ mongoose.connect(DB, { autoIndex: true }).then(() => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Running on port ${PORT}`);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.log(err);
+  server.close(() => process.exit(1));
+});
+
+process.on("uncaughtException", (err) => {
+  console.log(err);
+  server.close(() => process.exit(1));
 });

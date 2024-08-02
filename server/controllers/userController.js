@@ -23,4 +23,44 @@ const getUser = catchAsync(async (req, res, next) => {
   });
 });
 
-module.exports = { getUser };
+const updateProfile = catchAsync(async (req, res, next) => {
+  const { name, email, username, bio, profilePicture, socialLinks } = req.body;
+  const data = await User.findByIdAndUpdate(
+    req.user.id,
+    { name, email, username, bio, profilePicture, socialLinks },
+    { new: true, runValidators: true }
+  ).select("-password -_id -role");
+
+  if (!data) {
+    return next(new AppError(`Please login to access the profile!`, 400));
+  }
+
+  res.status(200).json({ status: "success", data });
+});
+
+const updatePassword = catchAsync(async (req, res, next) => {
+  const { currentPassword, newPassword } = req.body;
+  const user = await User.findById(req.user.id).select("password");
+
+  if (!user || !(await user.checkPassword(currentPassword, user.password))) {
+    return next(
+      new AppError("Incorrect current password, please try again!", 400)
+    );
+  }
+
+  const data = await User.findByIdAndUpdate(
+    req.user.id,
+    { password: newPassword },
+    { new: true, runValidators: true }
+  );
+
+  if (!data) {
+    return next(new AppError(`Please login to access the profile!`, 400));
+  }
+
+  res
+    .status(200)
+    .json({ status: "success", message: "Password successfully updated!" });
+});
+
+module.exports = { getUser, updateProfile, updatePassword };

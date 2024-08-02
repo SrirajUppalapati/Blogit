@@ -14,7 +14,8 @@ const initialState = {
   },
   editor: { isReady: false },
   error: null,
-  loading: false,
+  bannerLoading: false,
+  blogLoading: false,
 };
 
 export const uploadBanner = createAsyncThunk(
@@ -60,41 +61,41 @@ const blogSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(uploadBanner.pending, (state) => {
-        state.loading = true;
+        state.bannerLoading = true;
         state.error = null;
       })
       .addCase(uploadBanner.fulfilled, (state, action) => {
         state.blog.banner = action.payload;
-        state.loading = false;
+        state.bannerLoading = false;
       })
       .addCase(uploadBanner.rejected, (state, action) => {
-        state.loading = false;
+        state.bannerLoading = false;
         state.error = action.payload;
       })
       .addCase(uploadBlog.pending, (state) => {
-        state.loading = true;
+        state.blogLoading = true;
         state.error = null;
       })
       .addCase(uploadBlog.fulfilled, (state, action) => {
-        state.loading = false;
+        state.blogLoading = false;
         state.blog = initialState.blog;
         state.error = null;
       })
       .addCase(uploadBlog.rejected, (state, action) => {
-        state.loading = false;
+        state.blogLoading = false;
         state.error = action.payload || "Something went wrong!";
       })
       .addCase(updateBlog.pending, (state) => {
-        state.loading = true;
+        state.blogLoading = true;
         state.error = null;
       })
       .addCase(updateBlog.fulfilled, (state, action) => {
-        state.loading = false;
+        state.blogLoading = false;
         state.blog = initialState.blog;
         state.error = null;
       })
       .addCase(updateBlog.rejected, (state, action) => {
-        state.loading = false;
+        state.blogLoading = false;
         state.error = action.payload || "Something went wrong!";
       });
   },

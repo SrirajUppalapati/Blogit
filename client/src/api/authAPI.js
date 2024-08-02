@@ -44,7 +44,6 @@ export const signInWithGoogleAPI = async () => {
         "Popup was blocked by the browser. Please allow popups and try again."
       );
     }
-    console.log(err);
     throw err;
   }
 };

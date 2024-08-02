@@ -60,8 +60,9 @@ const blogSchema = mongoose.Schema(
         default: 0,
       },
     },
-    repliedTo: {
-      type: Boolean,
+    comments: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "comments",
     },
   },
   { timestamps: true }

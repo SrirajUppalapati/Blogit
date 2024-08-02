@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
   const dispatch = useDispatch();
-  const { blog, loading } = useSelector((state) => state.blog);
+  const { blog, blogLoading } = useSelector((state) => state.blog);
   const { theme } = useSelector((state) => state.theme);
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
     }
   }
 
-  if (loading || !Object.keys(blog).length) {
+  if (blogLoading || !Object.keys(blog).length) {
     return <Spinner />;
   }
 
@@ -108,9 +108,9 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
             onClick={handlePublish}
             className="focus:ring-0"
             color={theme === "dark" ? "cyan" : "dark"}
-            disabled={loading}
+            disabled={blogLoading}
           >
-            {loading ? <Spinner /> : "Publish"}
+            {blogLoading ? <Spinner /> : "Publish"}
           </Button>
         </div>
       </Modal>

@@ -68,7 +68,7 @@ function UserNav() {
           </Dropdown.Item>
           <Dropdown.Item>
             <Link
-              to="/settings"
+              to="/settings/updateprofile"
               className="flex justify-center items-center gap-x-1 text-sm"
             >
               <FiSettings className="text-xs" />

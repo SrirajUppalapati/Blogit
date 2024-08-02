@@ -8,14 +8,16 @@ import BlogTItle from "./BlogTItle";
 import { writeBlog } from "./blogSlice";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 function CreateBlog({ publishBlog, handleErrors }) {
   const { theme } = useSelector((state) => state.theme);
   const { editor } = useSelector((state) => state.blog);
   const dispatch = useDispatch();
+  const { blogId } = useParams();
 
   useEffect(function () {
-    if (editor.isReady) {
+    if (editor.isReady && !blogId) {
       window.location.reload();
     }
   }, []);
