@@ -24,8 +24,6 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
           if (res.payload) {
             toast.success(`Updated blog successfully!`);
             navigate("/");
-          } else {
-            toast.error(res.error.message);
           }
         });
       } else {

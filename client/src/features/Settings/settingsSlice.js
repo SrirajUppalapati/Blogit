@@ -39,7 +39,7 @@ export const uploadProfilePicture = createAsyncThunk(
 );
 
 const settingSlice = createSlice({
-  name: "dash",
+  name: "setting",
   initialState,
   reducers: {
     setUser: (state, action) => {

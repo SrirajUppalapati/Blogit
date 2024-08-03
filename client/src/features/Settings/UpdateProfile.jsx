@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../../components/Spinner";
 import { useEffect } from "react";
-import { setUser } from "./settingsSlice";
+import { setUser, updateUserProfile } from "./settingsSlice";
 import { useForm } from "react-hook-form";
 import ProfilePhoto from "./ProfilePhoto";
 import { Button } from "flowbite-react";
 import LeftSection from "./LeftSection";
 import RightSection from "./RightSection";
+import toast from "react-hot-toast";
+import { editCurrentUser } from "../users/authSlice";
+import { useNavigate } from "react-router-dom";
 
 function UpdateProfile() {
   const {
@@ -16,9 +19,10 @@ function UpdateProfile() {
   } = useForm();
 
   const { profileLoading, user } = useSelector((state) => state.setting);
-  const { currentUser } = useSelector((state) => state.auth);
+  const { currentUser, token } = useSelector((state) => state.auth);
   const { theme } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(
     function () {
@@ -28,7 +32,19 @@ function UpdateProfile() {
   );
 
   function onSubmit(data) {
-    console.log(data);
+    const updatedUser = { ...user, ...data };
+
+    dispatch(setUser(updatedUser));
+
+    dispatch(updateUserProfile({ data: updatedUser, token })).then((result) => {
+      if (result.error) {
+        toast.error(result.error.message);
+      } else {
+        toast.success("Profile successfully updated!");
+        navigate("/");
+      }
+    });
+    dispatch(editCurrentUser(updatedUser));
   }
 
   if (profileLoading || !Object.keys(user).length) {
@@ -36,14 +52,8 @@ function UpdateProfile() {
   }
 
   return (
-    <div className="pt-20 flex md:flex-row flex-col gap-10 justify-center items-center ">
-      <div className="flex md:flex-col gap-2 pl-10">
-        <p className="md:text-6xl text-3xl text-center dark:text-slate-600 text-slate-300 italic">
-          Your <br className="hidden md:inline-block" />
-          Profile
-        </p>
-      </div>
-      <div className="flex flex-col items-center justify-center gap-y-10 md:border-l pl-10 dark:border-slate-800 border-slate-100">
+    <div className="flex justify-center items-center pt-16">
+      <div className="flex flex-col items-center justify-center gap-y-10 dark:border-slate-800 border-slate-100">
         <ProfilePhoto />
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -53,17 +63,15 @@ function UpdateProfile() {
             <LeftSection errors={errors} register={register} />
             <RightSection errors={errors} register={register} />
           </div>
-          <div className="mt-10">
-            <Button
-              type="submit"
-              className="center mt-5"
-              color={theme === "dark" ? "cyan" : "dark"}
-              onClick={handleSubmit}
-              disabled={profileLoading}
-            >
-              {profileLoading ? <Spinner /> : "Submit"}
-            </Button>
-          </div>
+          <Button
+            type="submit"
+            className="center mt-20"
+            color={theme === "dark" ? "cyan" : "dark"}
+            onClick={handleSubmit}
+            disabled={profileLoading}
+          >
+            {profileLoading ? <Spinner /> : "Submit"}
+          </Button>
         </form>
       </div>
     </div>

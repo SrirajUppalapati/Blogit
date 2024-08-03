@@ -33,6 +33,11 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
+  reducers: {
+    editCurrentUser: (state, action) => {
+      state.currentUser = { ...action.payload };
+    },
+  },
   extraReducers: (builder) => {
     thunks.forEach((thunk) =>
       builder
@@ -58,5 +63,5 @@ const authSlice = createSlice({
     );
   },
 });
-
+export const { editCurrentUser } = authSlice.actions;
 export default authSlice.reducer;

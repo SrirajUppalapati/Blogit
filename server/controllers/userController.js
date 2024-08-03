@@ -1,7 +1,7 @@
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/userModel");
-
+const bcrypt = require("bcryptjs");
 const getUser = catchAsync(async (req, res, next) => {
   const data = await User.find({ username: req.params.username })
     .populate({
@@ -48,13 +48,10 @@ const updatePassword = catchAsync(async (req, res, next) => {
     );
   }
 
-  const data = await User.findByIdAndUpdate(
-    req.user.id,
-    { password: newPassword },
-    { new: true, runValidators: true }
-  );
+  user.password = newPassword;
+  await user.save();
 
-  if (!data) {
+  if (!user) {
     return next(new AppError(`Please login to access the profile!`, 400));
   }
 

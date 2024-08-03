@@ -99,11 +99,16 @@ const userSchema = mongoose.Schema(
 
 //Hash the password as soon as the user changes it
 userSchema.pre("save", async function (next) {
+  console.log("Is password modified:", this.isModified("password"));
   if (!this.isModified("password")) {
-    next();
+    return next();
   }
-  this.password = await bcrypt.hash(this.password, 15);
-  next();
+  try {
+    this.password = await bcrypt.hash(this.password, 15);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 //Check the login apssword with hashed password
