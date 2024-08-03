@@ -7,8 +7,7 @@ const {
   updateBlog,
   getTopTenTags,
   getTrendingBlogs,
-  searchTags,
-  searchTitle,
+  deleteBlog,
   likeBlog,
   checkLiked,
 } = require("../controllers/blogController");
@@ -31,6 +30,6 @@ router.route("/likeblog").patch(likeBlog);
 
 router.route("/createblog").post(createBlog);
 
-router.route("/:blogId").patch(updateBlog);
+router.route("/:blogId").patch(updateBlog).delete(deleteBlog);
 
 module.exports = router;

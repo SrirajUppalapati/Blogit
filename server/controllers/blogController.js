@@ -175,6 +175,14 @@ const checkLiked = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: "success", result: data ? true : false });
 });
 
+const deleteBlog = catchAsync(async (req, res, next) => {
+  const { blogId } = req.params;
+  await Blog.findOneAndDelete({
+    blogId,
+  });
+
+  res.status(200).json({ status: "success" });
+});
 module.exports = {
   createBlog,
   getAllBlogs,
@@ -184,4 +192,5 @@ module.exports = {
   getTrendingBlogs,
   likeBlog,
   checkLiked,
+  deleteBlog,
 };

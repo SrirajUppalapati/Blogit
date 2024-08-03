@@ -69,6 +69,21 @@ export const updateOneBlogAPI = async ({ blog, blogId, token }) => {
   }
 };
 
+export const deleteOneBlogAPI = async ({ blogId, token }) => {
+  try {
+    const data = await axios.delete(
+      `${import.meta.env.VITE_API_URL}/blog/${blogId}`,
+      { headers: { authorization: `Bearer ${token}` } }
+    );
+    if (!data) {
+      throw new Error(`Couldnt update the blog with id: ${blogId}`);
+    }
+    return data.data.data;
+  } catch ({ response }) {
+    throw response.data.message;
+  }
+};
+
 export const getTrendingBlogsAPI = async () => {
   try {
     const data = await axios.get(

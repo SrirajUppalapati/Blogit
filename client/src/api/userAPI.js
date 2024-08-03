@@ -48,3 +48,16 @@ export const updateUserPasswordAPI = async ({ data, token }) => {
     throw response.data.message;
   }
 };
+
+export const getUserBlogsAPI = async ({ token }) => {
+  try {
+    const blogs = await axios.get(
+      `${import.meta.env.VITE_API_URL}/profile/blogs`,
+      { headers: { authorization: `Bearer ${token}` } }
+    );
+
+    return blogs.data;
+  } catch ({ response }) {
+    throw response.data.message;
+  }
+};

@@ -3,9 +3,13 @@ import DashSideBar from "../features/Dashboard/DashSideBar";
 
 function Dashboard() {
   return (
-    <div>
-      <DashSideBar />
-      <Outlet />
+    <div className="min-h-screen">
+      <div>
+        <DashSideBar />
+      </div>
+      <div>
+        <Outlet />
+      </div>
     </div>
   );
 }

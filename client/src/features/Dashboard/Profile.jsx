@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 function Profile() {
   const dispatch = useDispatch();
-  const { userProfile, loading } = useSelector((state) => state.dash);
+  const { userProfile, userLoading } = useSelector((state) => state.dash);
   const { username } = useParams();
 
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ function Profile() {
     [dispatch, username, navigate]
   );
 
-  if (loading || !userProfile?.length) {
+  if (userLoading || !userProfile?.length) {
     return <Spinner />;
   }
 

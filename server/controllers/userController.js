@@ -60,4 +60,23 @@ const updatePassword = catchAsync(async (req, res, next) => {
     .json({ status: "success", message: "Password successfully updated!" });
 });
 
-module.exports = { getUser, updateProfile, updatePassword };
+const userBlogs = catchAsync(async (req, res, next) => {
+  const data = await User.findById(req.user.id)
+    .populate("blogs")
+    .select("blogs")
+    .sort("createdAt");
+
+  let comments, likes, reads;
+  if (data) {
+    comments = data.blogs.reduce(
+      (acc, curr) => acc + curr.activity.totalComments,
+      0
+    );
+    likes = data.blogs.reduce((acc, curr) => acc + curr.activity.totalLikes, 0);
+    reads = data.blogs.reduce((acc, curr) => acc + curr.activity.totalReads, 0);
+  }
+
+  res.status(200).json({ status: "success", data, likes, reads, comments });
+});
+
+module.exports = { getUser, updateProfile, updatePassword, userBlogs };

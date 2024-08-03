@@ -79,6 +79,20 @@ blogSchema.pre("save", async function () {
     strict: true,
   });
 });
+
+blogSchema.post("findOneAndDelete", async function (doc) {
+  if (doc) {
+    await User.findByIdAndUpdate(
+      doc.author,
+      {
+        $inc: { "accountInfo.totalPosts": -1 },
+        $pull: { blogs: doc._id },
+      },
+      { new: true, runValidators: true }
+    );
+  }
+});
+
 blogSchema.post("save", async function () {
   const user = await User.findByIdAndUpdate(
     this.author,
@@ -89,6 +103,7 @@ blogSchema.post("save", async function () {
     { new: true, runValidators: true }
   );
 });
+
 const Blog = mongoose.model("blogs", blogSchema);
 
 module.exports = Blog;
