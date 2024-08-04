@@ -42,6 +42,7 @@ server/coverage/
 # Environment files
 client/.env
 server/.env
+server/config.env
 
 # Generated files
 client/.eslintcache
