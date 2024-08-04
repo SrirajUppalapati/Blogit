@@ -5,7 +5,6 @@ import { FaMoon, FaSun } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { LuBookMinus } from "react-icons/lu";
-import { CiTrash } from "react-icons/ci";
 import { CgClose, CgProfile } from "react-icons/cg";
 import { TbPasswordUser } from "react-icons/tb";
 import { useState } from "react";
@@ -23,7 +22,7 @@ function DashSideBar() {
   return (
     <>
       <button
-        className="fixed top-[13%] md:top-[8%] left-2 z-50 lg:hidden"
+        className="fixed top-20 md:top-[8%] left-2 z-50 lg:hidden"
         onClick={handleClose}
       >
         {show ? <CgClose /> : <RxHamburgerMenu />}
@@ -47,14 +46,6 @@ function DashSideBar() {
                 <p className="flex justify-left items-center gap-x-2 text-lg pl-3 py-2 font-light hover:font-normal">
                   <IoMdNotificationsOutline className="text-lg" />
                   Notifications
-                </p>
-              </Sidebar.Item>
-            </NavLink>
-            <NavLink to="/dashboard">
-              <Sidebar.Item as={"div"}>
-                <p className="flex justify-left items-center gap-x-3 text-lg pl-3 py-2 font-light hover:font-normal">
-                  <CiTrash />
-                  Trash
                 </p>
               </Sidebar.Item>
             </NavLink>

@@ -52,7 +52,7 @@ function UpdateProfile() {
   }
 
   return (
-    <div className="flex justify-center items-center pt-16">
+    <div className="pt-16">
       <div className="flex flex-col items-center justify-center gap-y-10 dark:border-slate-800 border-slate-100">
         <ProfilePhoto />
         <form

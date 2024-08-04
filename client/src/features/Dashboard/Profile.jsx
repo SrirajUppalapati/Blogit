@@ -1,18 +1,20 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getUserProfile } from "./dashSlice";
 import Spinner from "../../components/Spinner";
 import BlogCard from "../Home/BlogCard";
 import SocialLinks from "../Home/SocialLinks";
 import AnimationWrapper from "../../components/AnimationWrapper";
 import toast from "react-hot-toast";
+import { Button } from "flowbite-react";
 
 function Profile() {
   const dispatch = useDispatch();
   const { userProfile, userLoading } = useSelector((state) => state.dash);
-  const { username } = useParams();
+  const { currentUser } = useSelector((state) => state.auth);
 
+  const { username } = useParams();
   const navigate = useNavigate();
   useEffect(
     function () {
@@ -65,6 +67,16 @@ function Profile() {
             >
               {email}
             </a>
+            {currentUser?.username === username && (
+              <div className="flex items-center justify-center">
+                <Link to={`/settings/updateprofile`}>
+                  <Button color="dark" className="px-1 py-1">
+                    Edit
+                  </Button>
+                </Link>
+              </div>
+            )}
+
             <p className="mt-2 text-slate-600 dark:text-slate-400 italic text-center">
               {bio}
             </p>

@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const { default: slugify } = require("slugify");
 const validator = require("validator");
 const User = require("./userModel");
+const Comment = require("./commentModel");
+const Notification = require("./notificationModel");
 
 const blogSchema = mongoose.Schema(
   {
@@ -90,6 +92,9 @@ blogSchema.post("findOneAndDelete", async function (doc) {
       },
       { new: true, runValidators: true }
     );
+
+    await Comment.deleteMany({ blogId: doc._id });
+    await Notification.deleteMany({ blogId: doc._id });
   }
 });
 
