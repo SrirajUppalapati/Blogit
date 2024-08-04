@@ -30,7 +30,7 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
         dispatch(uploadBlog({ blog, token })).then((res) => {
           if (res.payload) {
             toast.success(`Published blog successfully!`);
-            navigate("/");
+            navigate("/dashboard");
           } else {
             toast.error(res.error.message);
           }

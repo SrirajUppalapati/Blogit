@@ -47,7 +47,7 @@ commentSchema.pre("save", async function () {
     blogId: this.blogId,
     authorId: this.authorId,
     userId: this.userId,
-    comment: this._id,
+    comment: this.comment,
   });
 });
 

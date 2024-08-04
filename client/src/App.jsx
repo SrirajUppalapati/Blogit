@@ -3,7 +3,6 @@ import Dashboard from "./pages/Dashboard";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import WriteBlog from "./pages/WriteBlog";
-import Notification from "./pages/Notification";
 import Blog from "./pages/Blog";
 import PrivateRoute from "./components/PrivateRoute";
 import Applayout from "./components/Applayout";
@@ -36,7 +35,6 @@ function App() {
           >
             <Route path="/write" element={<WriteBlog />} />
             <Route path="write/:blogId" element={<WriteBlog />} />
-            <Route path="notification" element={<Notification />} />
             <Route path="dashboard" element={<Dashboard />}>
               <Route index element={<DashBlogs />} />
               <Route path="notifications" element={<DashNotifications />} />

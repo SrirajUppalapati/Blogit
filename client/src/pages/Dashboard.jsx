@@ -7,7 +7,7 @@ function Dashboard() {
       <div>
         <DashSideBar />
       </div>
-      <div>
+      <div className="lg:pl-[20%] mx-10 md:pt-[10%] pt-[15%] lg:pt-[3%]">
         <Outlet />
       </div>
     </div>

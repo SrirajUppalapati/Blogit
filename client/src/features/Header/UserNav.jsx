@@ -8,16 +8,30 @@ import { Link, useLocation } from "react-router-dom";
 import Signout from "../users/Signout";
 import { FaPaperPlane } from "react-icons/fa";
 import AnimationWrapper from "../../components/AnimationWrapper";
+import { useEffect, useState } from "react";
+import { checkSeenAPI } from "../../api/notificationAPI";
+import { VscBellDot } from "react-icons/vsc";
 
 function UserNav() {
-  const { currentUser } = useSelector((state) => state.auth);
+  const { currentUser, token } = useSelector((state) => state.auth);
   const location = useLocation().pathname;
+
+  const [check, setCheck] = useState(false);
+
+  useEffect(function () {
+    checkSeenAPI({ token }).then((data) => setCheck(data.data));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <AnimationWrapper>
       <div className="flex gap-5 justify-center items-center mr-2">
-        <Link to="/notification">
-          <IoMdNotificationsOutline className="text-2xl" />
+        <Link to="/dashboard/notifications">
+          {check ? (
+            <VscBellDot className="text-2xl" />
+          ) : (
+            <IoMdNotificationsOutline className="text-2xl" />
+          )}
         </Link>
         <Dropdown
           arrowIcon={false}

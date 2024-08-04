@@ -16,6 +16,9 @@ module.exports = (err, req, res, next) => {
     status: err.status,
   };
 
+  if (err.statusCode === 500) {
+    error.message = "Something went wrong!";
+  }
   if (err.code === 11000) {
     error.message = handleDuplicateFieldsDB(err);
   } else if (error.name === "CastError") {

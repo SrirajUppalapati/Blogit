@@ -23,7 +23,7 @@ function DashBlogs() {
 
   if (blogsData?.data?.blogs?.length === 0) {
     return (
-      <div className="flex flex-col mx-10 pt-[10%] lg:pl-[20%] gap-10 justify-center items-center">
+      <div className="flex flex-col gap-10 justify-center items-center">
         <img
           src={`https://cdn-icons-png.flaticon.com/512/7466/7466140.png`}
           className="max-h-[300px] max-w-[300px]"
@@ -39,7 +39,7 @@ function DashBlogs() {
     );
   }
   return (
-    <div className="flex flex-col mx-10 pt-10  lg:pl-[20%] gap-5">
+    <div className="flex flex-col gap-5 pb-10">
       <div className="grid grid-cols-2 gap-4">
         <p>
           Blogs: <span>{blogsData?.data?.blogs?.length}</span>

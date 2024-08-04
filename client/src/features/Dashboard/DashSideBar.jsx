@@ -28,7 +28,9 @@ function DashSideBar() {
       >
         {show ? <CgClose /> : <RxHamburgerMenu />}
       </button>
-      <Sidebar className={`fixed z-40 ${!show && "hidden lg:block"}`}>
+      <Sidebar
+        className={`fixed z-40 ${!show && "hidden lg:block"} overflow-y-auto`}
+      >
         <Sidebar.Items className="pt-10">
           <Sidebar.ItemGroup>
             <p className="text-xl pt-3 pb-2 pl-2 font-bold">Dashboard</p>

@@ -15,7 +15,6 @@ const notificationSchema = mongoose.Schema(
     authorId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      lowercase: true,
       ref: "users",
     },
     userId: {
@@ -24,16 +23,7 @@ const notificationSchema = mongoose.Schema(
       ref: "users",
     },
     comment: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "comments",
-    },
-    reply: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "comments",
-    },
-    repliedOnComment: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "comments",
+      type: String,
     },
     seen: {
       type: Boolean,

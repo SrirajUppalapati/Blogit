@@ -167,7 +167,7 @@ const likeBlog = catchAsync(async (req, res, next) => {
 const checkLiked = catchAsync(async (req, res, next) => {
   const { blogId } = req.body;
   const data = await Notification.findOne({
-    _id: blogId,
+    blogId: blogId,
     userId: req.user.id,
     type: "like",
   });
