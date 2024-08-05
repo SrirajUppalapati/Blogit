@@ -18,7 +18,11 @@ export const createBlogAPI = async ({ blog, token }) => {
 
 export const getAllBlogsAPI = async ({ page, filter }) => {
   try {
-    console.log(import.meta.env.VITE_API_URL);
+    console.log(
+      `${
+        import.meta.env.VITE_API_URL
+      }/blog/allblogs/?page=${page}&tags=${filter}`
+    );
     let data;
     if (filter) {
       data = await axios.get(
