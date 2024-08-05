@@ -31,9 +31,6 @@ app.use(
 //Security for the HTTP headers
 app.use(helmet());
 
-//Log the http request
-if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
-
 //Limit the number of requests from a same IP.
 const limiter = rateLimiter({
   max: 100,
