@@ -69,13 +69,17 @@ function AllBlogs() {
             </AnimationWrapper>
           );
         })}
-        <button
-          onClick={handlePage}
-          className={`${disable && "hidden"} pl-10 hover:underline`}
-          disabled={blogsLoading}
-        >
-          {blogsLoading ? <Spinner /> : "Load more"}
-        </button>
+        {blogsLoading ? (
+          <Spinner />
+        ) : (
+          <button
+            onClick={handlePage}
+            className={`${disable && "hidden"} pl-10 hover:underline`}
+            disabled={blogsLoading}
+          >
+            Load more
+          </button>
+        )}
       </div>
     </AnimationWrapper>
   );
