@@ -8,6 +8,7 @@ import SocialLinks from "../Home/SocialLinks";
 import AnimationWrapper from "../../components/AnimationWrapper";
 import toast from "react-hot-toast";
 import { Button } from "flowbite-react";
+import NoDataFound from "../../components/NoDataFound";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -43,13 +44,17 @@ function Profile() {
             <p className="text-4xl uppercase">{name}</p>
             <p className="text-xs">@{username}</p>
           </div>
-          {blogs?.map((curr, index) => (
-            <AnimationWrapper key={index}>
-              <div className="mb-4">
-                <BlogCard blog={curr} />
-              </div>
-            </AnimationWrapper>
-          ))}
+          {!blogs.length ? (
+            <NoDataFound />
+          ) : (
+            blogs?.map((curr, index) => (
+              <AnimationWrapper key={index}>
+                <div className="mb-4">
+                  <BlogCard blog={curr} />
+                </div>
+              </AnimationWrapper>
+            ))
+          )}
         </div>
         <div className="md:sticky md:top-[5%] md:w-80 md:max-h-screen md:border-l md:border-slate-200 md:dark:border-slate-700 md:bg-slate-100 md:dark:bg-slate-800 p-6 space-y-6 md:pt-20 pb-10">
           <div className="flex flex-col items-center">

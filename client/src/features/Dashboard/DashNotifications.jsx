@@ -3,10 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { allNotifications } from "./dashSlice";
 import Spinner from "../../components/Spinner";
 import { Button, Dropdown } from "flowbite-react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import NotificationCard from "./NotificationCard";
 import { BsFilterRight } from "react-icons/bs";
 import AnimationWrapper from "../../components/AnimationWrapper";
+import NodataFound from "../../components/NoDataFound";
 
 function DashNotifications() {
   const { token } = useSelector((state) => state.auth);
@@ -138,19 +139,7 @@ function DashNotifications() {
         </div>
       </div>
       {notifications?.results === 0 ? (
-        <div className="flex flex-col gap-10 justify-center items-center pt-20">
-          <img
-            src={`https://cdn-icons-png.flaticon.com/512/7466/7466140.png`}
-            className="max-h-[300px] max-w-[300px]"
-            alt="no data"
-          />
-          <Link
-            to="/write"
-            className="hover:underline hover:underline-offset-2 hover:text-blue-400"
-          >
-            Start writing your blogs
-          </Link>
-        </div>
+        <NodataFound />
       ) : (
         <div className="pb-16">
           {notifications?.data?.map((curr, index) => (

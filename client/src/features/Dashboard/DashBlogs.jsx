@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserBlogs } from "./dashSlice";
 import Spinner from "../../components/Spinner";
 import TableRow from "./TableRow";
-import { Link } from "react-router-dom";
 import AnimationWrapper from "../../components/AnimationWrapper";
+import NoDataFound from "../../components/NoDataFound";
 
 function DashBlogs() {
   const { token } = useSelector((state) => state.auth);
@@ -23,21 +23,7 @@ function DashBlogs() {
   }
 
   if (blogsData?.data?.blogs?.length === 0) {
-    return (
-      <div className="flex flex-col gap-10 justify-center items-center">
-        <img
-          src={`https://cdn-icons-png.flaticon.com/512/7466/7466140.png`}
-          className="max-h-[300px] max-w-[300px]"
-          alt="no data"
-        />
-        <Link
-          to="/write"
-          className="hover:underline hover:underline-offset-2 hover:text-blue-400"
-        >
-          Start writing your blogs
-        </Link>
-      </div>
-    );
+    return <NoDataFound />;
   }
   return (
     <AnimationWrapper>

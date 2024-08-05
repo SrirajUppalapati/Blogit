@@ -30,7 +30,7 @@ function SignupForm() {
       if (data.payload) {
         toast.success("SignUp successful!");
       } else {
-        toast.error(data.error.message);
+        toast.error(data?.error?.message);
       }
     });
   }
