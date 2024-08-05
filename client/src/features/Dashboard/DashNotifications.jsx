@@ -6,6 +6,7 @@ import { Button, Dropdown } from "flowbite-react";
 import { Link, useSearchParams } from "react-router-dom";
 import NotificationCard from "./NotificationCard";
 import { BsFilterRight } from "react-icons/bs";
+import AnimationWrapper from "../../components/AnimationWrapper";
 
 function DashNotifications() {
   const { token } = useSelector((state) => state.auth);
@@ -45,7 +46,7 @@ function DashNotifications() {
   }
 
   return (
-    <>
+    <AnimationWrapper>
       <div className="flex flex-row-reverse justify-between items-center">
         <div className="pr-2">
           <Dropdown
@@ -153,11 +154,13 @@ function DashNotifications() {
       ) : (
         <div className="pb-16">
           {notifications?.data?.map((curr, index) => (
-            <NotificationCard notification={curr} key={index} index={index} />
+            <AnimationWrapper key={index}>
+              <NotificationCard notification={curr} index={index} />
+            </AnimationWrapper>
           ))}
         </div>
       )}
-    </>
+    </AnimationWrapper>
   );
 }
 

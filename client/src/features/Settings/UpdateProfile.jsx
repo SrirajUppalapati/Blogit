@@ -10,6 +10,7 @@ import RightSection from "./RightSection";
 import toast from "react-hot-toast";
 import { editCurrentUser } from "../users/authSlice";
 import { useNavigate } from "react-router-dom";
+import AnimationWrapper from "../../components/AnimationWrapper";
 
 function UpdateProfile() {
   const {
@@ -52,29 +53,31 @@ function UpdateProfile() {
   }
 
   return (
-    <div className="pt-16">
-      <div className="flex flex-col items-center justify-center gap-y-10 dark:border-slate-800 border-slate-100">
-        <ProfilePhoto />
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col justify-center items-center pb-20"
-        >
-          <div className="flex flex-col md:flex-row gap-10 justify-center items-start">
-            <LeftSection errors={errors} register={register} />
-            <RightSection errors={errors} register={register} />
-          </div>
-          <Button
-            type="submit"
-            className="center mt-20"
-            color={theme === "dark" ? "cyan" : "dark"}
-            onClick={handleSubmit}
-            disabled={profileLoading}
+    <AnimationWrapper>
+      <div className="pt-16">
+        <div className="flex flex-col items-center justify-center gap-y-10 dark:border-slate-800 border-slate-100">
+          <ProfilePhoto />
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col justify-center items-center pb-20"
           >
-            {profileLoading ? <Spinner /> : "Submit"}
-          </Button>
-        </form>
+            <div className="flex flex-col md:flex-row gap-10 justify-center items-start">
+              <LeftSection errors={errors} register={register} />
+              <RightSection errors={errors} register={register} />
+            </div>
+            <Button
+              type="submit"
+              className="center mt-20"
+              color={theme === "dark" ? "cyan" : "dark"}
+              onClick={handleSubmit}
+              disabled={profileLoading}
+            >
+              {profileLoading ? <Spinner /> : "Submit"}
+            </Button>
+          </form>
+        </div>
       </div>
-    </div>
+    </AnimationWrapper>
   );
 }
 

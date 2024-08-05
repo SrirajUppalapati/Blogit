@@ -9,6 +9,7 @@ import { CgClose, CgProfile } from "react-icons/cg";
 import { TbPasswordUser } from "react-icons/tb";
 import { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
+import AnimationWrapper from "../../components/AnimationWrapper";
 
 function DashSideBar() {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ function DashSideBar() {
   }
 
   return (
-    <>
+    <AnimationWrapper>
       <button
         className="fixed top-20 md:top-[8%] left-2 z-50 lg:hidden"
         onClick={handleClose}
@@ -86,7 +87,7 @@ function DashSideBar() {
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>
-    </>
+    </AnimationWrapper>
   );
 }
 
