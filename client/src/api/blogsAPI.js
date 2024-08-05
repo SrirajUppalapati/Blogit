@@ -2,145 +2,166 @@ import axios from "axios";
 
 export const createBlogAPI = async ({ blog, token }) => {
   try {
-    const data = await axios.post(
+    const response = await axios.post(
       `${import.meta.env.VITE_API_URL}/blog/createblog`,
       blog,
       { headers: { authorization: `Bearer ${token}` } }
     );
-    if (!data) {
-      throw new Error("Couldnt upload data.");
+    if (!response || !response.data) {
+      throw new Error("Couldn't upload data.");
     }
-    return data;
-  } catch ({ response }) {
-    throw response.data.message;
+    return response.data;
+  } catch (error) {
+    const message = error.response
+      ? error.response.data.message
+      : error.message;
+    throw new Error(message);
   }
 };
 
 export const getAllBlogsAPI = async ({ page, filter }) => {
   try {
-    console.log(
-      `${
-        import.meta.env.VITE_API_URL
-      }/blog/allblogs/?page=${page}&tags=${filter}`
-    );
-    let data;
-    if (filter) {
-      data = await axios.get(
-        `${
+    const url = filter
+      ? `${
           import.meta.env.VITE_API_URL
         }/blog/allblogs/?page=${page}&tags=${filter}`
-      );
-    } else {
-      data = await axios.get(
-        `${import.meta.env.VITE_API_URL}/blog/allblogs/?page=${page}`
-      );
+      : `${import.meta.env.VITE_API_URL}/blog/allblogs/?page=${page}`;
+
+    const response = await axios.get(url);
+    if (!response || !response.data) {
+      throw new Error("Couldn't get all blogs");
     }
-    if (!data) {
-      throw new Error("Couldnt get all blogs");
-    }
-    return data.data.data;
-  } catch ({ response }) {
-    throw response.data.message;
+    return response.data.data;
+  } catch (error) {
+    const message = error.response
+      ? error.response.data.message
+      : error.message;
+    throw new Error(message);
   }
 };
 
 export const getOneBlogAPI = async ({ blogId, mode }) => {
   try {
-    const data = await axios.patch(
+    const response = await axios.patch(
       `${import.meta.env.VITE_API_URL}/blog/allblogs/${blogId}/?mode=${mode}`
     );
-    if (!data) {
-      throw new Error(`Couldnt get the blog with id: ${blogId}`);
+    if (!response || !response.data) {
+      throw new Error(`Couldn't get the blog with id: ${blogId}`);
     }
-    return data.data.data;
-  } catch ({ response }) {
-    throw response.data.message;
+    return response.data.data;
+  } catch (error) {
+    const message = error.response
+      ? error.response.data.message
+      : error.message;
+    throw new Error(message);
   }
 };
 
 export const updateOneBlogAPI = async ({ blog, blogId, token }) => {
   try {
-    const data = await axios.patch(
+    const response = await axios.patch(
       `${import.meta.env.VITE_API_URL}/blog/${blogId}`,
       blog,
       { headers: { authorization: `Bearer ${token}` } }
     );
-    if (!data) {
-      throw new Error(`Couldnt update the blog with id: ${blogId}`);
+    if (!response || !response.data) {
+      throw new Error(`Couldn't update the blog with id: ${blogId}`);
     }
-    return data.data.data;
-  } catch ({ response }) {
-    throw response.data.message;
+    return response.data.data;
+  } catch (error) {
+    const message = error.response
+      ? error.response.data.message
+      : error.message;
+    throw new Error(message);
   }
 };
 
 export const deleteOneBlogAPI = async ({ blogId, token }) => {
   try {
-    const data = await axios.delete(
+    const response = await axios.delete(
       `${import.meta.env.VITE_API_URL}/blog/${blogId}`,
       { headers: { authorization: `Bearer ${token}` } }
     );
-    if (!data) {
-      throw new Error(`Couldnt update the blog with id: ${blogId}`);
+    if (!response || !response.data) {
+      throw new Error(`Couldn't delete the blog with id: ${blogId}`);
     }
-    return data.data.data;
-  } catch ({ response }) {
-    throw response.data.message;
+    return response.data.data;
+  } catch (error) {
+    const message = error.response
+      ? error.response.data.message
+      : error.message;
+    throw new Error(message);
   }
 };
 
 export const getTrendingBlogsAPI = async () => {
   try {
-    const data = await axios.get(
+    const response = await axios.get(
       `${import.meta.env.VITE_API_URL}/blog/trendingblogs`
     );
-    if (!data) {
-      throw new Error("Couldnt get all blogs");
+    if (!response || !response.data) {
+      throw new Error("Couldn't get trending blogs");
     }
-    return data.data.data;
-  } catch ({ response }) {
-    throw response.data.message;
+    return response.data.data;
+  } catch (error) {
+    const message = error.response
+      ? error.response.data.message
+      : error.message;
+    throw new Error(message);
   }
 };
 
 export const tagsWithMostPostsAPI = async () => {
   try {
-    const data = await axios.get(
+    const response = await axios.get(
       `${import.meta.env.VITE_API_URL}/blog/toptentags`
     );
-    if (!data) {
-      throw new Error("Couldnt get the tags");
+    if (!response || !response.data) {
+      throw new Error("Couldn't get the tags");
     }
-    return data.data.data;
-  } catch ({ response }) {
-    throw response.data.message;
+    return response.data.data;
+  } catch (error) {
+    const message = error.response
+      ? error.response.data.message
+      : error.message;
+    throw new Error(message);
   }
 };
 
 export const likeBlogAPI = async ({ blogId, token, likedByUser }) => {
   try {
-    const data = await axios.patch(
+    const response = await axios.patch(
       `${import.meta.env.VITE_API_URL}/blog/likeblog`,
       { blogId, likedByUser },
       { headers: { authorization: `Bearer ${token}` } }
     );
-    return data;
-  } catch ({ response }) {
-    throw response.data.message;
+    if (!response || !response.data) {
+      throw new Error("Couldn't like the blog");
+    }
+    return response.data;
+  } catch (error) {
+    const message = error.response
+      ? error.response.data.message
+      : error.message;
+    throw new Error(message);
   }
 };
 
 export const checkLikeAPI = async ({ blogId, token }) => {
   try {
-    const data = await axios.post(
+    const response = await axios.post(
       `${import.meta.env.VITE_API_URL}/blog/checkliked`,
       { blogId },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+      { headers: { Authorization: `Bearer ${token}` } }
     );
-    return data.data;
-  } catch ({ response }) {
-    throw response.data.message;
+    if (!response || !response.data) {
+      throw new Error("Couldn't check the like status");
+    }
+    return response.data;
+  } catch (error) {
+    const message = error.response
+      ? error.response.data.message
+      : error.message;
+    throw new Error(message);
   }
 };
