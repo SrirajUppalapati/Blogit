@@ -53,46 +53,46 @@ function UserNav() {
             </span>
           </Dropdown.Header>
           {!location.startsWith("/write") && (
-            <Dropdown.Item className="md:hidden">
-              <Link to="/write">
+            <Link to="/write">
+              <Dropdown.Item className="md:hidden">
                 <p className="flex justify-center items-center italic gap-[0.3rem] text-sm ">
                   <FaPaperPlane className="text-[0.6rem] hover:text-xs" />
                   Write a blog
                 </p>
-              </Link>
-            </Dropdown.Item>
+              </Dropdown.Item>
+            </Link>
           )}
-          <Dropdown.Item>
-            <Link
-              to="/dashboard"
-              className="flex justify-center items-center gap-x-1 text-sm"
-            >
+          <Link
+            to="/dashboard"
+            className="flex justify-center items-center gap-x-1 text-sm"
+          >
+            <Dropdown.Item>
               <MdDashboard className="text-xs" />
               Dashboard
-            </Link>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <Link
-              to={`/profile/${currentUser.username}`}
-              className="flex justify-center items-center gap-x-1 text-sm"
-            >
+            </Dropdown.Item>
+          </Link>
+          <Link
+            to={`/profile/${currentUser.username}`}
+            className="flex justify-center items-center gap-x-1 text-sm"
+          >
+            <Dropdown.Item>
               <FaUser className="text-xs" />
               Profile
-            </Link>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <Link
-              to="/settings/updateprofile"
-              className="flex justify-center items-center gap-x-1 text-sm"
-            >
+            </Dropdown.Item>
+          </Link>
+          <Link
+            to="/settings/updateprofile"
+            className="flex justify-center items-center gap-x-1 text-sm"
+          >
+            <Dropdown.Item>
               <FiSettings className="text-xs" />
               Settings
-            </Link>
-          </Dropdown.Item>
+            </Dropdown.Item>
+          </Link>
           <Dropdown.Divider />
-          <Dropdown.Item>
+          <div className="flex justify-start items-center">
             <Signout />
-          </Dropdown.Item>
+          </div>
         </Dropdown>
       </div>
     </AnimationWrapper>
