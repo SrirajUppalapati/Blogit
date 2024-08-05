@@ -19,7 +19,7 @@ function UserNav() {
   const [check, setCheck] = useState(false);
 
   useEffect(function () {
-    checkSeenAPI({ token }).then((data) => setCheck(data.data));
+    checkSeenAPI({ token }).then((data) => setCheck(data?.data));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

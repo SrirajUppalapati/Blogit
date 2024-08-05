@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Blog = require("./blogModel");
 const Notification = require("./notificationModel");
 
 const commentSchema = mongoose.Schema(
@@ -16,7 +15,7 @@ const commentSchema = mongoose.Schema(
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      require: true,
+      required: true,
       ref: "users",
     },
     comment: {
@@ -28,7 +27,9 @@ const commentSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-commentSchema.pre("save", async function () {
+commentSchema.pre("save", async function (next) {
+  const Blog = mongoose.model("blogs");
+
   await Blog.findOneAndUpdate(
     { _id: this.blogId },
     {
@@ -42,6 +43,7 @@ commentSchema.pre("save", async function () {
       runValidators: true,
     }
   );
+
   await Notification.create({
     type: "comment",
     blogId: this.blogId,
@@ -49,7 +51,10 @@ commentSchema.pre("save", async function () {
     userId: this.userId,
     comment: this.comment,
   });
+
+  next();
 });
 
 const Comment = mongoose.model("comments", commentSchema);
+
 module.exports = Comment;

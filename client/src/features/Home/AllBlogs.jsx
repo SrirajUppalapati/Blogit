@@ -22,7 +22,9 @@ function AllBlogs() {
           setDisable(true);
         }
       })
-      .catch((err) => toast.error(err));
+      .catch(() => {
+        toast.error("Something went wrong.");
+      });
   }, [page, filter, dispatch]);
 
   useEffect(() => {
