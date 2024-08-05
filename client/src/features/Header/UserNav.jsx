@@ -62,37 +62,34 @@ function UserNav() {
               </Dropdown.Item>
             </Link>
           )}
-          <Link
-            to="/dashboard"
-            className="flex justify-center items-center gap-x-1 text-sm"
-          >
+          <Link to="/dashboard">
             <Dropdown.Item>
-              <MdDashboard className="text-xs" />
-              Dashboard
+              <div className="flex justify-center items-center gap-x-1 text-sm">
+                <MdDashboard className="text-xs" />
+                Dashboard
+              </div>
             </Dropdown.Item>
           </Link>
-          <Link
-            to={`/profile/${currentUser.username}`}
-            className="flex justify-center items-center gap-x-1 text-sm"
-          >
+          <Link to={`/profile/${currentUser.username}`}>
             <Dropdown.Item>
-              <FaUser className="text-xs" />
-              Profile
+              <div className="flex justify-center items-center gap-x-1 text-sm">
+                <FaUser className="text-xs" />
+                Profile
+              </div>
             </Dropdown.Item>
           </Link>
-          <Link
-            to="/settings/updateprofile"
-            className="flex justify-center items-center gap-x-1 text-sm"
-          >
+          <Link to="/settings/updateprofile">
             <Dropdown.Item>
-              <FiSettings className="text-xs" />
-              Settings
+              <div className="flex justify-center items-center gap-x-1 text-sm">
+                <FiSettings className="text-xs" />
+                Settings
+              </div>
             </Dropdown.Item>
           </Link>
           <Dropdown.Divider />
-          <div className="flex justify-start items-center">
+          <Dropdown.Item>
             <Signout />
-          </div>
+          </Dropdown.Item>
         </Dropdown>
       </div>
     </AnimationWrapper>
