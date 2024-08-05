@@ -87,9 +87,9 @@ function UserNav() {
             </Dropdown.Item>
           </Link>
           <Dropdown.Divider />
-          <Dropdown.Item>
+          <div className="flex flex-row">
             <Signout />
-          </Dropdown.Item>
+          </div>
         </Dropdown>
       </div>
     </AnimationWrapper>

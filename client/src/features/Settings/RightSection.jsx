@@ -17,11 +17,11 @@ function RightSection({ errors, register }) {
           <FaTwitterSquare className="input-icon" />
           <TextInput
             name="twitter"
-            type="url"
+            type="text"
             defaultValue={user.socialLinks.twitter}
             className="w-full"
             placeholder="Please enter your twitter url"
-            id="email"
+            id="twitter"
             color="gray"
             {...register("socialLinks.twitter", {
               pattern: {
@@ -43,11 +43,11 @@ function RightSection({ errors, register }) {
           <FaYoutubeSquare className="input-icon" />
           <TextInput
             name="youtube"
-            type="url"
+            type="text"
             defaultValue={user.socialLinks.youtube}
             className="w-full"
             placeholder="Please enter your youtube url"
-            id="email"
+            id="youtube"
             color="gray"
             {...register("socialLinks.youtube", {
               pattern: {
@@ -69,11 +69,11 @@ function RightSection({ errors, register }) {
           <FaGithubSquare className="input-icon" />
           <TextInput
             name="github"
-            type="url"
+            type="text"
             defaultValue={user.socialLinks.github}
             className="w-full"
             placeholder="Please enter your github url"
-            id="email"
+            id="github"
             color="gray"
             {...register("socialLinks.github", {
               pattern: {
@@ -95,11 +95,11 @@ function RightSection({ errors, register }) {
           <PiLinkSimpleBreakFill className="input-icon" />
           <TextInput
             name="website"
-            type="url"
+            type="text"
             defaultValue={user.socialLinks.website}
             className="w-full"
             placeholder="Please enter your website url"
-            id="email"
+            id="website"
             color="gray"
             {...register("socialLinks.website", {
               pattern: {
@@ -110,7 +110,7 @@ function RightSection({ errors, register }) {
             })}
           />
         </div>
-        {errors?.website && (
+        {errors?.socialLinks?.website && (
           <span className="ml-8 text-red-600 font-bold text-xs">
             {errors?.socialLinks?.website?.message}
           </span>

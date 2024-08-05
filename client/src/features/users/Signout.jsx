@@ -26,15 +26,13 @@ function Signout() {
   }
 
   return (
-    <div className="flex">
-      <span
-        onClick={handleSignout}
-        className="flex justify-center items-center gap-x-1 text-xs"
-      >
-        <FaSignOutAlt className="text-sm" />
-        Signout
-      </span>
-    </div>
+    <button
+      onClick={handleSignout}
+      className="flex w-full cursor-pointer items-center justify-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white"
+    >
+      <FaSignOutAlt className="text-sm" />
+      Signout
+    </button>
   );
 }
 
