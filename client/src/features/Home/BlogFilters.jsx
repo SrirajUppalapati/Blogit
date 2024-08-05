@@ -10,8 +10,9 @@ function BlogFilters() {
   const [tags, setTags] = useState([]);
 
   useEffect(function () {
-    tagsWithMostPostsAPI().then((data) => setTags(data));
-    // .catch((err) => toast.error(err));
+    tagsWithMostPostsAPI()
+      .then((data) => setTags(data))
+      .catch((err) => toast.error(err));
   }, []);
 
   return (

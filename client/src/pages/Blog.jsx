@@ -25,7 +25,7 @@ function Blog() {
     function () {
       dispatch(getOneBlog({ blogId })).then((data) => {
         if (!data.payload) {
-          // toast.error(data.error.message);
+          toast.error(data.error.message);
           navigate(-1);
         }
       });

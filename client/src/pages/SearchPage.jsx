@@ -58,7 +58,7 @@ function SearchPage() {
       tagsResult.length === 0 &&
       usersResult.data?.length === 0
     ) {
-      // toast.error(`No search results for ${query}`);
+      toast.error(`No search results for ${query}`);
       navigate(-1);
     }
   }, [postsResult, tagsResult, usersResult, query, navigate]);

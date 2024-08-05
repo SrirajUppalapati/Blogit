@@ -32,7 +32,7 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
             toast.success(`Published blog successfully!`);
             navigate("/dashboard");
           } else {
-            // toast.error(res.error.message);
+            toast.error(res.error.message);
           }
         });
       }
