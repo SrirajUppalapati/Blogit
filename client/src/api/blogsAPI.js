@@ -93,8 +93,8 @@ export const getTrendingBlogsAPI = async () => {
       throw new Error("Couldnt get all blogs");
     }
     return data.data.data;
-  } catch (err) {
-    throw err.response.data.message;
+  } catch ({ response }) {
+    throw response.data.message;
   }
 };
 
