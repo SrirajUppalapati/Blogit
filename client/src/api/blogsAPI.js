@@ -33,6 +33,7 @@ export const getAllBlogsAPI = async ({ page, filter }) => {
     if (!data) {
       throw new Error("Couldnt get all blogs");
     }
+    console.log(data);
     return data.data.data;
   } catch ({ response }) {
     throw response.data.message;
