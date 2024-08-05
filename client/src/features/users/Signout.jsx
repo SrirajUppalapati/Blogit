@@ -16,7 +16,7 @@ function Signout() {
         navigate("/");
         toast.success("Signout successful!");
       } else {
-        toast.error(data.error);
+        // toast.error(data.error);
       }
     });
   }

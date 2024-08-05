@@ -20,7 +20,7 @@ function Profile() {
     function () {
       dispatch(getUserProfile({ username })).then((data) => {
         if (data.error) {
-          toast.error(data.error.message);
+          // toast.error(data.error.message);
           navigate(-1);
         }
       });

@@ -39,7 +39,7 @@ function UpdateProfile() {
 
     dispatch(updateUserProfile({ data: updatedUser, token })).then((result) => {
       if (result.error) {
-        toast.error(result.error.message);
+        // toast.error(result.error.message);
       } else {
         toast.success("Profile successfully updated!");
         navigate("/");
