@@ -22,7 +22,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://blogit-1-3kqf.onrender.com",
     credentials: true,
   })
 );
