@@ -32,8 +32,7 @@ export const uploadProfilePicture = createAsyncThunk(
       const url = await getDownloadURL(img.ref);
       return url;
     } catch (err) {
-      // toast.error("Please upload image files.");
-      console.error(err);
+      toast.error("Please upload image files.");
     }
   }
 );

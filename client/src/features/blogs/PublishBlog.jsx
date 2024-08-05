@@ -31,10 +31,9 @@ function PublishBlog({ openPublish, setOpenPublish, handleErrors }) {
           if (res.payload) {
             toast.success(`Published blog successfully!`);
             navigate("/dashboard");
+          } else {
+            toast.error(res.error.message);
           }
-          // else {
-          //   toast.error(res.error.message);
-          // }
         });
       }
     }

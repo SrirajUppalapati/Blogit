@@ -27,7 +27,7 @@ function UpdatePassword() {
   function onSubmit(data) {
     dispatch(updateUserPassword({ data, token })).then((data) => {
       if (data.error) {
-        // toast.error(data.error.message);
+        toast.error(data.error.message);
       } else {
         navigate("/");
         toast.success("Successfully updated password!");
