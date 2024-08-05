@@ -67,9 +67,7 @@ function DashBlogs() {
               </Table.Head>
               <Table.Body className="divide-y">
                 {blogsData?.data?.blogs?.map((curr, index) => (
-                  <AnimationWrapper key={index}>
-                    <TableRow blog={curr} />
-                  </AnimationWrapper>
+                  <TableRow blog={curr} key={index} />
                 ))}
               </Table.Body>
             </Table>
