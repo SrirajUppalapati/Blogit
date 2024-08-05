@@ -23,7 +23,13 @@ function RightSection({ errors, register }) {
             placeholder="Please enter your twitter url"
             id="email"
             color="gray"
-            {...register("socialLinks.twitter")}
+            {...register("socialLinks.twitter", {
+              pattern: {
+                value:
+                  /\b(?:https?|ftp):\/\/(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?\b/,
+                message: "Please use a url format.",
+              },
+            })}
           />
         </div>
         {errors?.socialLinks?.twitter && (
@@ -43,7 +49,13 @@ function RightSection({ errors, register }) {
             placeholder="Please enter your youtube url"
             id="email"
             color="gray"
-            {...register("socialLinks.youtube")}
+            {...register("socialLinks.youtube", {
+              pattern: {
+                value:
+                  /\b(?:https?|ftp):\/\/(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?\b/,
+                message: "Please use a url format.",
+              },
+            })}
           />
         </div>
         {errors?.socialLinks?.youtube && (
@@ -63,7 +75,13 @@ function RightSection({ errors, register }) {
             placeholder="Please enter your github url"
             id="email"
             color="gray"
-            {...register("socialLinks.github")}
+            {...register("socialLinks.github", {
+              pattern: {
+                value:
+                  /\b(?:https?|ftp):\/\/(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?\b/,
+                message: "Please use a url format.",
+              },
+            })}
           />
         </div>
         {errors?.socialLinks?.github && (
@@ -83,7 +101,13 @@ function RightSection({ errors, register }) {
             placeholder="Please enter your website url"
             id="email"
             color="gray"
-            {...register("socialLinks.website")}
+            {...register("socialLinks.website", {
+              pattern: {
+                value:
+                  /\b(?:https?|ftp):\/\/(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?\b/,
+                message: "Please use a url format.",
+              },
+            })}
           />
         </div>
         {errors?.website && (
