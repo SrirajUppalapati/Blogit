@@ -7,7 +7,7 @@ export const getSearchTag = async ({ query }) => {
     );
     return data.data.data;
   } catch (err) {
-    console.error(err);
+    throw new Error("Unable to search tags.");
   }
 };
 
@@ -18,7 +18,7 @@ export const getSearchTitle = async ({ query }) => {
     );
     return data.data;
   } catch (err) {
-    console.error(err);
+    throw new Error("Unable to search titles.");
   }
 };
 
@@ -29,6 +29,6 @@ export const getSearchUser = async ({ query }) => {
     );
     return data.data;
   } catch (err) {
-    console.error(err);
+    throw new Error("Unable to search users.");
   }
 };

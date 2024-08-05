@@ -41,10 +41,7 @@ function CreateBlog({ publishBlog, handleErrors }) {
         } else {
           toast.error("Please add some content.");
         }
-      } catch (error) {
-        console.error("Failed to save editor content:", error);
-        toast.error("Failed to save content.");
-      }
+      } catch (error) {}
     }
   };
 

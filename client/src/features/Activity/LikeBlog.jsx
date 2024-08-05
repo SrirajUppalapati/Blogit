@@ -12,13 +12,13 @@ function LikeBlog() {
   const dispatch = useDispatch();
   useEffect(() => {
     if (token) {
-      checkLikeAPI({ blogId: blog._id, token, userId: currentUser.username })
-        .then((data) => {
-          setLike(data.result);
-        })
-        .catch((err) => {
-          console.error("Error checking like status:", err);
-        });
+      checkLikeAPI({
+        blogId: blog._id,
+        token,
+        userId: currentUser.username,
+      }).then((data) => {
+        setLike(data.result);
+      });
     }
   }, [token, blog._id, currentUser]);
 

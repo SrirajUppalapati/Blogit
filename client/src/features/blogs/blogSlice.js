@@ -29,7 +29,6 @@ export const uploadBanner = createAsyncThunk(
       return url;
     } catch (err) {
       toast.error("Please upload image files.");
-      console.error(err);
     }
   }
 );

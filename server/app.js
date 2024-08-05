@@ -7,6 +7,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const morgan = require("morgan");
 const { json } = require("body-parser");
+const compression = require("compression");
 const usersRouter = require("./routes/userRoute");
 const AppError = require("./utils/appError");
 const ErrorHandler = require("./controllers/errorController");
@@ -53,13 +54,7 @@ app.use(mongoSanitize());
 //Cleaning the request.body data - Data sanitization against HTML scripting
 app.use(xss());
 
-//Prevent multiples of a same parameter in a query
-// app.use(hpp());
-
-app.use((req, res, next) => {
-  // console.log(req.cookies);
-  next();
-});
+app.use(compression());
 
 // Route handlers
 app.use("/api/v1/users", usersRouter);
