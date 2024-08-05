@@ -26,13 +26,15 @@ function Signout() {
   }
 
   return (
-    <span
-      onClick={handleSignout}
-      className="flex justify-center items-center gap-x-1 text-xs"
-    >
-      <FaSignOutAlt className="text-sm" />
-      Signout
-    </span>
+    <div className="flex">
+      <span
+        onClick={handleSignout}
+        className="flex justify-center items-center gap-x-1 text-xs"
+      >
+        <FaSignOutAlt className="text-sm" />
+        Signout
+      </span>
+    </div>
   );
 }
 
