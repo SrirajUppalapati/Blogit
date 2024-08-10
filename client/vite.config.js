@@ -4,16 +4,16 @@ import eslint from "vite-plugin-eslint";
 
 export default defineConfig({
   plugins: [react(), eslint()],
-  // build: {
-  //   outDir: "dist",
-  // },
-  // server: {
-  //   proxy: {
-  //     "/api": {
-  //       target: "https://blogit-xzae.onrender.com",
-  //       changeOrigin: true,
-  //       secure: false,
-  //     },
-  //   },
-  // },
+  build: {
+    outDir: "public",
+  },
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://blogit-xzae.onrender.com",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });
