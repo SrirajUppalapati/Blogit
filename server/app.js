@@ -20,12 +20,7 @@ const notificationRouter = require("./routes/notificationRoute");
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "https://blogit-1-3kqf.onrender.com",
-    credentials: true,
-  })
-);
+app.use(cors());
 
 // Global Middlewares
 //Security for the HTTP headers
