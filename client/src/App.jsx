@@ -16,8 +16,8 @@ import DashBlogs from "./features/Dashboard/DashBlogs";
 import DashNotifications from "./features/Dashboard/DashNotifications";
 import UpdateProfile from "./features/Settings/UpdateProfile";
 import UpdatePassword from "./features/Settings/UpdatePassword";
-import Blogs from "./pages/Blogs";
 const LazySearch = React.lazy(() => import("./pages/SearchPage"));
+const LazyBlogs = React.lazy(() => import("./pages/Blogs"));
 
 function App() {
   return (
@@ -44,7 +44,14 @@ function App() {
             </Route>
           </Route>
 
-          <Route path="/" element={<Blogs />} />
+          <Route
+            path="/"
+            element={
+              <React.Suspense fallback={<Spinner />}>
+                <LazyBlogs />
+              </React.Suspense>
+            }
+          />
           <Route path="blog/:blogId" element={<Blog />} />
           <Route path="profile/:username" element={<Profile />} />
           <Route path="signup" element={<Signup />} />

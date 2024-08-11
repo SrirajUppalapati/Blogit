@@ -4,6 +4,7 @@ import { IoMdHome, IoMdTrendingUp } from "react-icons/io";
 import TrendingBlogs from "../features/Home/TrendingBLogs";
 import BlogFilters from "../features/Home/BlogFilters";
 import React from "react";
+import Spinner from "../components/Spinner";
 const LazyAllBlogs = React.lazy(() => import("../features/Home/AllBlogs"));
 
 function Blogs() {
@@ -24,7 +25,9 @@ function Blogs() {
               icon={IoMdHome}
               className="focus:ring-0"
             >
-              <LazyAllBlogs />
+              <React.Suspense fallback={<Spinner />}>
+                <LazyAllBlogs />
+              </React.Suspense>
             </TabItem>
             <TabItem title="Trending" icon={IoMdTrendingUp} color="gray">
               <div className="overflow-y-auto h-[calc(100vh-10rem)] mini-scrollbar">
@@ -41,7 +44,9 @@ function Blogs() {
       <div className="min-h-screen pt-20">
         <div className="grid grid-cols-[60%_40%] ">
           <div className="pr-4">
-            <LazyAllBlogs />
+            <React.Suspense fallback={<Spinner />}>
+              <LazyAllBlogs />
+            </React.Suspense>
           </div>
           <div className="relative">
             <div className="fixed right-0 w-[40%] h-[calc(100vh-7rem)] flex flex-col dark:border-slate-600">
