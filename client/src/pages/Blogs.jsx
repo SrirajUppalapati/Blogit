@@ -1,9 +1,10 @@
 import AnimationWrapper from "../components/AnimationWrapper";
 import { HR, TabItem, Tabs } from "flowbite-react";
 import { IoMdHome, IoMdTrendingUp } from "react-icons/io";
-import AllBlogs from "../features/Home/AllBlogs";
 import TrendingBlogs from "../features/Home/TrendingBLogs";
 import BlogFilters from "../features/Home/BlogFilters";
+import React from "react";
+const LazyAllBlogs = React.lazy(() => import("../features/Home/AllBlogs"));
 
 function Blogs() {
   const width = window.innerWidth;
@@ -23,7 +24,7 @@ function Blogs() {
               icon={IoMdHome}
               className="focus:ring-0"
             >
-              <AllBlogs />
+              <LazyAllBlogs />
             </TabItem>
             <TabItem title="Trending" icon={IoMdTrendingUp} color="gray">
               <div className="overflow-y-auto h-[calc(100vh-10rem)] mini-scrollbar">
@@ -40,7 +41,7 @@ function Blogs() {
       <div className="min-h-screen pt-20">
         <div className="grid grid-cols-[60%_40%] ">
           <div className="pr-4">
-            <AllBlogs />
+            <LazyAllBlogs />
           </div>
           <div className="relative">
             <div className="fixed right-0 w-[40%] h-[calc(100vh-7rem)] flex flex-col dark:border-slate-600">

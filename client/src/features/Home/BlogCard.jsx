@@ -74,6 +74,7 @@ function BlogCard({ blog }) {
             src={banner}
             alt="banner"
             className="w-[100px] h-[70px] md:w-[200px] md:h-[113px] border-2 rounded-lg dark:border-slate-800"
+            loading="lazy"
           />
         </div>
       </div>
