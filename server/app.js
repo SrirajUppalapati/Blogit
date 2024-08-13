@@ -78,24 +78,8 @@ app.all("*", (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl} on this server.`, 404));
 });
 
-// Global Error Handler
 app.use(ErrorHandler);
 
-// Logging: Production error logging
-const logger = winston.createLogger({
-  level: "error",
-  format: winston.format.json(),
-  transports: [
-    new winston.transports.File({ filename: "error.log", level: "error" }),
-  ],
-});
-
-app.use((err, req, res, next) => {
-  logger.error(err.message, { metadata: err });
-  next(err);
-});
-
-// Graceful Shutdown
 process.on("SIGTERM", () => {
   console.log("SIGTERM received. Shutting down gracefully.");
   server.close(() => {
