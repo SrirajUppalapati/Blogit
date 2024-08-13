@@ -3,6 +3,8 @@ client/node_modules/
 server/node_modules/
 
 server/generateDummyData.js
+client/src/getallimages.js
+server/images.json
 
 # Build output
 client/dist/
