@@ -6,12 +6,15 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const morgan = require("morgan");
-const { json } = require("body-parser");
 const compression = require("compression");
-const usersRouter = require("./routes/userRoute");
+const cookieParser = require("cookie-parser");
+const path = require("path");
 const AppError = require("./utils/appError");
 const ErrorHandler = require("./controllers/errorController");
-const cookieParser = require("cookie-parser");
+const winston = require("winston");
+
+// Routers
+const usersRouter = require("./routes/userRoute");
 const blogRouter = require("./routes/blogRoute");
 const searchRouter = require("./routes/searchRoute");
 const commentRouter = require("./routes/commentRoute");
@@ -20,52 +23,88 @@ const notificationRouter = require("./routes/notificationRoute");
 
 const app = express();
 
-app.use(cors());
-
-// Global Middlewares
-//Security for the HTTP headers
+// Middleware: Security for HTTP headers
 app.use(helmet());
 
-//Limit the number of requests from a same IP.
+// Rate Limiter: Limit the number of requests from the same IP
 const limiter = rateLimiter({
   max: 100,
-  windowMs: 60 * 60 * 100,
-  message: "Too many requests from one ip, please try again in 1 hour.",
+  windowMs: 60 * 60 * 1000, // 1 hour
+  message: "Too many requests from this IP, please try again in an hour.",
 });
+app.use(limiter);
 
-app.use("/api/v1/users", limiter);
+// CORS: Enable Cross-Origin Resource Sharing
+app.use(cors());
 
-//Reading the data from body to request.body.
-app.use(express.json());
+// Body Parser: Read data from body into req.body with size limit
+app.use(express.json({ limit: "10kb" }));
 
+// Cookie Parser: Parse cookies from the HTTP Request
 app.use(cookieParser());
 
-//Cleaning the request.body data - Data sanitization aganinst NOsql injection
+// Data Sanitization: Against NoSQL injection and XSS
 app.use(mongoSanitize());
-
-//Cleaning the request.body data - Data sanitization against HTML scripting
 app.use(xss());
 
+// Prevent Parameter Pollution
+app.use(
+  hpp({
+    whitelist: ["filter", "sort"], // Allow these parameters to have multiple values
+  })
+);
+
+// Compression: Compress all responses
 app.use(compression());
 
-// Route handlers
+// Static Files: Serve static files with caching
+app.use(
+  express.static(path.join(__dirname, "public"), { maxAge: "1d", etag: false })
+);
+
+// Logger: Only in development mode
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+} else {
+  app.use(morgan("combined"));
+}
+
+// Route Handlers
 app.use("/api/v1/users", usersRouter);
-
 app.use("/api/v1/blog", blogRouter);
-
 app.use("/api/v1/search", searchRouter);
-
 app.use("/api/v1/comment", commentRouter);
-
 app.use("/api/v1/profile", profileRouter);
-
 app.use("/api/v1/notification", notificationRouter);
-//Route error handler
+
+// Handle Unmatched Routes
 app.all("*", (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl} on this server.`, 404));
 });
 
-// Global error handler
+// Global Error Handler
 app.use(ErrorHandler);
+
+// Logging: Production error logging
+const logger = winston.createLogger({
+  level: "error",
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.File({ filename: "error.log", level: "error" }),
+  ],
+});
+
+app.use((err, req, res, next) => {
+  logger.error(err.message, { metadata: err });
+  next(err);
+});
+
+// Graceful Shutdown
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received. Shutting down gracefully.");
+  server.close(() => {
+    console.log("Process terminated.");
+  });
+});
 
 module.exports = app;
