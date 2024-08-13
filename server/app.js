@@ -11,7 +11,6 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const AppError = require("./utils/appError");
 const ErrorHandler = require("./controllers/errorController");
-const winston = require("winston");
 
 // Routers
 const usersRouter = require("./routes/userRoute");
