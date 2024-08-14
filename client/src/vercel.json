@@ -1,4 +1,3 @@
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
-git add ../client/src/vercel.json
