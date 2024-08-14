@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const rateLimiter = require("express-rate-limit");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
@@ -24,14 +23,6 @@ const app = express();
 
 // Middleware: Security for HTTP headers
 app.use(helmet());
-
-// Rate Limiter: Limit the number of requests from the same IP
-const limiter = rateLimiter({
-  max: 100,
-  windowMs: 60 * 60 * 1000, // 1 hour
-  message: "Too many requests from this IP, please try again in an hour.",
-});
-app.use(limiter);
 
 // CORS: Enable Cross-Origin Resource Sharing
 app.use(cors());
