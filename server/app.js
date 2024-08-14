@@ -70,11 +70,4 @@ app.all("*", (req, res, next) => {
 
 app.use(ErrorHandler);
 
-process.on("SIGTERM", () => {
-  console.log("SIGTERM received. Shutting down gracefully.");
-  server.close(() => {
-    console.log("Process terminated.");
-  });
-});
-
 module.exports = app;
