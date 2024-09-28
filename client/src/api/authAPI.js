@@ -6,10 +6,7 @@ export const signInAPI = async (data) => {
   try {
     const user = await axios.post(
       `${import.meta.env.VITE_API_URL}/users/login`,
-      data,
-      {
-        withCredentials: true,
-      }
+      data
     );
     return user.data;
   } catch (err) {
